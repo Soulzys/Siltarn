@@ -1,0 +1,1204 @@
+﻿Log file open, 01/20/24 18:02:48
+LogWindows: Failed to load 'aqProf.dll' (GetLastError=126)
+LogWindows: File 'aqProf.dll' does not exist
+LogProfilingDebugging: Loading WinPixEventRuntime.dll for PIX profiling (from ../../../Engine/Binaries/ThirdParty/Windows/WinPixEventRuntime/x64).
+LogWindows: Failed to load 'VtuneApi.dll' (GetLastError=126)
+LogWindows: File 'VtuneApi.dll' does not exist
+LogWindows: Failed to load 'VtuneApi32e.dll' (GetLastError=126)
+LogWindows: File 'VtuneApi32e.dll' does not exist
+LogConsoleResponse: Display: Failed to find resolution value strings in scalability ini. Falling back to default.
+LogConsoleResponse: Display: Failed to find resolution value strings in scalability ini. Falling back to default.
+LogCore: Display: UnrealTraceServer: Unable to launch the trace store with '"../../../Engine//Binaries/Win64/UnrealTraceServer.exe" fork' (00000002)
+LogCsvProfiler: Display: Metadata set : platform="Windows"
+LogCsvProfiler: Display: Metadata set : config="Development"
+LogCsvProfiler: Display: Metadata set : buildversion="++UE5+Release-5.0-CL-20979098"
+LogCsvProfiler: Display: Metadata set : engineversion="5.0.3-20979098+++UE5+Release-5.0"
+LogCsvProfiler: Display: Metadata set : commandline="" Siltarn""
+LogCsvProfiler: Display: Metadata set : os="Windows 11 (23H2) [10.0.22631.3007] "
+LogCsvProfiler: Display: Metadata set : cpu="GenuineIntel|12th Gen Intel(R) Core(TM) i7-12700H"
+LogCsvProfiler: Display: Metadata set : pgoenabled="0"
+LogCsvProfiler: Display: Metadata set : loginid="e752bec74bc2deb1cba439b71e7e83af"
+LogCsvProfiler: Display: Metadata set : llm="0"
+LogIoDispatcher: Display: Reading toc: ../../../Siltarn/Content/Paks/global.utoc
+LogIoDispatcher: Display: Toc signature hash: 0000000000000000000000000000000000000000
+LogIoDispatcher: Display: Mounting container '../../../Siltarn/Content/Paks/global.utoc' in location slot 0
+LogPakFile: Display: Initialized I/O dispatcher file backend. Mounted the global container: ../../../Siltarn/Content/Paks/global.utoc
+LogPakFile: Display: Found Pak file ../../../Siltarn/Content/Paks/Siltarn-Windows.pak attempting to mount.
+LogPakFile: Display: Mounting pak file ../../../Siltarn/Content/Paks/Siltarn-Windows.pak.
+LogIoDispatcher: Display: Reading toc: ../../../Siltarn/Content/Paks/Siltarn-Windows.utoc
+LogIoDispatcher: Display: Toc signature hash: 0000000000000000000000000000000000000000
+LogIoDispatcher: Display: Mounting container '../../../Siltarn/Content/Paks/Siltarn-Windows.utoc' in location slot 0
+LogPakFile: Display: Mounted IoStore container "../../../Siltarn/Content/Paks/Siltarn-Windows.utoc"
+LogPakFile: Display: Mounted Pak file '../../../Siltarn/Content/Paks/Siltarn-Windows.pak', mount point: '../../../'
+LogPlatformFile: Not using cached read wrapper
+LogStats: Stats thread started at 0.394996
+LogICUInternationalization: ICU TimeZone Detection - Raw Offset: +1:00, Platform Override: ''
+LogInit: Session CrashGUID >====================================================
+         Session CrashGUID >   UECC-Windows-F12746B14A8C20E947D42AA41ECD35C8
+         Session CrashGUID >====================================================
+LogPluginManager: Mounting Engine plugin Paper2D
+LogPluginManager: Mounting Engine plugin AISupport
+LogPluginManager: Mounting Engine plugin EnvironmentQueryEditor
+LogPluginManager: Mounting Engine plugin ControlRig
+LogPluginManager: Mounting Engine plugin ControlRigSpline
+LogPluginManager: Mounting Engine plugin IKRig
+LogPluginManager: Mounting Engine plugin Bridge
+LogPluginManager: Mounting Engine plugin CameraShakePreviewer
+LogPluginManager: Mounting Engine plugin GameplayCameras
+LogPluginManager: Mounting Engine plugin OodleNetwork
+LogPluginManager: Mounting Engine plugin AnimationSharing
+LogPluginManager: Mounting Engine plugin PixWinPlugin
+LogPluginManager: Mounting Engine plugin PluginUtils
+LogPluginManager: Mounting Engine plugin UObjectPlugin
+LogPluginManager: Mounting Engine plugin AssetManagerEditor
+LogPluginManager: Mounting Engine plugin EditorScriptingUtilities
+LogPluginManager: Mounting Engine plugin FacialAnimation
+LogPluginManager: Mounting Engine plugin GeometryMode
+LogPluginManager: Mounting Engine plugin SequencerAnimTools
+LogPluginManager: Mounting Engine plugin SpeedTreeImporter
+LogPluginManager: Mounting Engine plugin DatasmithContent
+LogPluginManager: Mounting Engine plugin VariantManagerContent
+LogPluginManager: Mounting Engine plugin AutomationUtils
+LogPluginManager: Mounting Engine plugin BackChannel
+LogPluginManager: Mounting Engine plugin ChaosCloth
+LogPluginManager: Mounting Engine plugin ChaosClothEditor
+LogPluginManager: Mounting Engine plugin ChaosEditor
+LogPluginManager: Mounting Engine plugin ChaosNiagara
+LogPluginManager: Mounting Engine plugin ChaosSolverPlugin
+LogPluginManager: Mounting Engine plugin CharacterAI
+LogPluginManager: Mounting Engine plugin FullBodyIK
+LogPluginManager: Mounting Engine plugin GeometryCollectionPlugin
+LogPluginManager: Mounting Engine plugin OpenImageDenoise
+LogPluginManager: Mounting Engine plugin PlatformCrypto
+LogPluginManager: Mounting Engine plugin PythonScriptPlugin
+LogPluginManager: Mounting Engine plugin Niagara
+LogPluginManager: Mounting Engine plugin AlembicImporter
+LogPluginManager: Mounting Engine plugin AvfMedia
+LogPluginManager: Mounting Engine plugin ImgMedia
+LogPluginManager: Mounting Engine plugin MediaCompositing
+LogPluginManager: Mounting Engine plugin WebMMedia
+LogPluginManager: Mounting Engine plugin WmfMedia
+LogPluginManager: Mounting Engine plugin MeshPainting
+LogPluginManager: Mounting Engine plugin TcpMessaging
+LogPluginManager: Mounting Engine plugin UdpMessaging
+LogPluginManager: Mounting Engine plugin ActorSequence
+LogPluginManager: Mounting Engine plugin LevelSequenceEditor
+LogPluginManager: Mounting Engine plugin MatineeToLevelSequence
+LogPluginManager: Mounting Engine plugin SequencerScripting
+LogPluginManager: Mounting Engine plugin TemplateSequence
+LogPluginManager: Mounting Engine plugin OnlineServices
+LogPluginManager: Mounting Engine plugin OnlineBase
+LogPluginManager: Mounting Engine plugin OnlineSubsystem
+LogPluginManager: Mounting Engine plugin OnlineSubsystemNull
+LogPluginManager: Mounting Engine plugin OnlineSubsystemUtils
+LogPluginManager: Mounting Engine plugin LauncherChunkInstaller
+LogPluginManager: Mounting Engine plugin ActorLayerUtilities
+LogPluginManager: Mounting Engine plugin AndroidFileServer
+LogPluginManager: Mounting Engine plugin AndroidPermission
+LogPluginManager: Mounting Engine plugin AppleImageUtils
+LogPluginManager: Mounting Engine plugin ArchVisCharacter
+LogPluginManager: Mounting Engine plugin AssetTags
+LogPluginManager: Mounting Engine plugin AudioCapture
+LogPluginManager: Mounting Engine plugin AudioSynesthesia
+LogPluginManager: Mounting Engine plugin CableComponent
+LogPluginManager: Mounting Engine plugin ChunkDownloader
+LogPluginManager: Mounting Engine plugin CustomMeshComponent
+LogPluginManager: Mounting Engine plugin ExampleDeviceProfileSelector
+LogPluginManager: Mounting Engine plugin GeometryCache
+LogPluginManager: Mounting Engine plugin GeometryProcessing
+LogPluginManager: Mounting Engine plugin GooglePAD
+LogPluginManager: Mounting Engine plugin LocationServicesBPLibrary
+LogPluginManager: Mounting Engine plugin MobilePatchingUtils
+LogPluginManager: Mounting Engine plugin ProceduralMeshComponent
+LogPluginManager: Mounting Engine plugin PropertyAccessEditor
+LogPluginManager: Mounting Engine plugin ResonanceAudio
+LogPluginManager: Mounting Engine plugin RuntimePhysXCooking
+LogPluginManager: Mounting Engine plugin SignificanceManager
+LogPluginManager: Mounting Engine plugin SoundFields
+LogPluginManager: Mounting Engine plugin Synthesis
+LogPluginManager: Mounting Engine plugin WebMMoviePlayer
+LogPluginManager: Mounting Engine plugin WindowsDeviceProfileSelector
+LogPluginManager: Mounting Engine plugin WindowsMoviePlayer
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/2D/Paper2D/Content/' mounted to '/Paper2D/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Animation/ControlRig/Content/' mounted to '/ControlRig/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Animation/ControlRigSpline/Content/' mounted to '/ControlRigSpline/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Animation/IKRig/Content/' mounted to '/IKRig/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Bridge/Content/' mounted to '/Bridge/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Developer/AnimationSharing/Content/' mounted to '/AnimationSharing/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Editor/GeometryMode/Content/' mounted to '/GeometryMode/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Editor/SpeedTreeImporter/Content/' mounted to '/SpeedTreeImporter/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Enterprise/DatasmithContent/Content/' mounted to '/DatasmithContent/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Experimental/ChaosClothEditor/Content/' mounted to '/ChaosClothEditor/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Experimental/ChaosNiagara/Content/' mounted to '/ChaosNiagara/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Experimental/ChaosSolverPlugin/Content/' mounted to '/ChaosSolverPlugin/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Experimental/FullBodyIK/Content/' mounted to '/FullBodyIK/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Experimental/GeometryCollectionPlugin/Content/' mounted to '/GeometryCollectionPlugin/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Experimental/PythonScriptPlugin/Content/' mounted to '/PythonScriptPlugin/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/FX/Niagara/Content/' mounted to '/Niagara/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Media/MediaCompositing/Content/' mounted to '/MediaCompositing/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/MovieScene/SequencerScripting/Content/' mounted to '/SequencerScripting/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Runtime/AudioSynesthesia/Content/' mounted to '/AudioSynesthesia/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Runtime/GeometryProcessing/Content/' mounted to '/GeometryProcessing/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Runtime/ResonanceAudio/Content/' mounted to '/ResonanceAudio/'
+LogPackageName: Display: FPackageName: Mount point added: '../../../Engine/Plugins/Runtime/Synthesis/Content/' mounted to '/Synthesis/'
+PixWinPlugin: PIX capture plugin failed to initialize! Check that the process is launched from PIX.
+LogInit: Using libcurl 7.55.1-DEV
+LogInit:  - built for x86_64-pc-win32
+LogInit:  - supports SSL with OpenSSL/1.1.1
+LogInit:  - supports HTTP deflate (compression) using libz 1.2.8
+LogInit:  - other features:
+LogInit:      CURL_VERSION_SSL
+LogInit:      CURL_VERSION_LIBZ
+LogInit:      CURL_VERSION_IPV6
+LogInit:      CURL_VERSION_ASYNCHDNS
+LogInit:      CURL_VERSION_LARGEFILE
+LogInit:      CURL_VERSION_IDN
+LogInit:  CurlRequestOptions (configurable via config and command line):
+LogInit:  - bVerifyPeer = true  - Libcurl will verify peer certificate
+LogInit:  - bUseHttpProxy = false  - Libcurl will NOT use HTTP proxy
+LogInit:  - bDontReuseConnections = false  - Libcurl will reuse connections
+LogInit:  - MaxHostConnections = 16  - Libcurl will limit the number of connections to a host
+LogInit:  - LocalHostAddr = Default
+LogInit:  - BufferSize = 65536
+LogInit: WinSock: version 1.1 (2.2), MaxSocks=32767, MaxUdp=65467
+LogOnline: OSS: Created online subsystem instance for: NULL
+LogOnline: OSS: TryLoadSubsystemAndSetDefault: Loaded subsystem for module [NULL]
+LogInit: Build: ++UE5+Release-5.0-CL-20979098
+LogInit: Engine Version: 5.0.3-20979098+++UE5+Release-5.0
+LogInit: Compatible Engine Version: 5.0.0-19505902+++UE5+Release-5.0
+LogInit: Net CL: 19505902
+LogInit: OS: Windows 11 (23H2) [10.0.22631.3007] (), CPU: 12th Gen Intel(R) Core(TM) i7-12700H, GPU: Intel(R) Iris(R) Xe Graphics
+LogInit: Compiled (64-bit): Jul  7 2022 02:24:55
+LogInit: Compiled with Visual C++: 19.29.30138.00
+LogInit: Build Configuration: Development
+LogInit: Branch Name: ++UE5+Release-5.0
+LogInit: Command Line: 
+LogInit: Base Directory: C:/Users/lopez/Documents/UE5_Projects/Siltarn/Builds/Windows/Siltarn/Binaries/Win64/
+LogInit: Allocator: binned2
+LogInit: Installed Engine Build: 0
+LogDevObjectVersion: Number of dev versions registered: 36
+LogDevObjectVersion:   Dev-ControlRig (A7820CFB-20A7-4359-8C54-2C149623CF50): 13
+LogDevObjectVersion:   Dev-IKRig (F6DFBB78-BB50-A0E4-4018-B84D60CBAF23): 0
+LogDevObjectVersion:   Dev-Blueprints (B0D832E4-1F89-4F0D-ACCF-7EB736FD4AA2): 10
+LogDevObjectVersion:   Dev-Build (E1C64328-A22C-4D53-A36C-8E866417BD8C): 0
+LogDevObjectVersion:   Dev-Core (375EC13C-06E4-48FB-B500-84F0262A717E): 4
+LogDevObjectVersion:   Dev-Editor (E4B068ED-F494-42E9-A231-DA0B2E46BB41): 40
+LogDevObjectVersion:   Dev-Framework (CFFC743F-43B0-4480-9391-14DF171D2073): 37
+LogDevObjectVersion:   Dev-Mobile (B02B49B5-BB20-44E9-A304-32B752E40360): 3
+LogDevObjectVersion:   Dev-Networking (A4E4105C-59A1-49B5-A7C5-40C4547EDFEE): 0
+LogDevObjectVersion:   Dev-Online (39C831C9-5AE6-47DC-9A44-9C173E1C8E7C): 0
+LogDevObjectVersion:   Dev-Physics (78F01B33-EBEA-4F98-B9B4-84EACCB95AA2): 20
+LogDevObjectVersion:   Dev-Platform (6631380F-2D4D-43E0-8009-CF276956A95A): 0
+LogDevObjectVersion:   Dev-Rendering (12F88B9F-8875-4AFC-A67C-D90C383ABD29): 45
+LogDevObjectVersion:   Dev-Sequencer (7B5AE74C-D270-4C10-A958-57980B212A5A): 13
+LogDevObjectVersion:   Dev-VR (D7296918-1DD6-4BDD-9DE2-64A83CC13884): 3
+LogDevObjectVersion:   Dev-LoadTimes (C2A15278-BFE7-4AFE-6C17-90FF531DF755): 1
+LogDevObjectVersion:   Private-Geometry (6EACA3D4-40EC-4CC1-B786-8BED09428FC5): 3
+LogDevObjectVersion:   Dev-AnimPhys (29E575DD-E0A3-4627-9D10-D276232CDCEA): 17
+LogDevObjectVersion:   Dev-Anim (AF43A65D-7FD3-4947-9873-3E8ED9C1BB05): 15
+LogDevObjectVersion:   Dev-ReflectionCapture (6B266CEC-1EC7-4B8F-A30B-E4D90942FC07): 1
+LogDevObjectVersion:   Dev-Automation (0DF73D61-A23F-47EA-B727-89E90C41499A): 1
+LogDevObjectVersion:   FortniteMain (601D1886-AC64-4F84-AA16-D3DE0DEAC7D6): 59
+LogDevObjectVersion:   FortniteRelease (E7086368-6B23-4C58-8439-1B7016265E91): 3
+LogDevObjectVersion:   Dev-Enterprise (9DFFBCD6-494F-0158-E221-12823C92A888): 10
+LogDevObjectVersion:   Dev-Niagara (F2AED0AC-9AFE-416F-8664-AA7FFA26D6FC): 1
+LogDevObjectVersion:   Dev-Destruction (174F1F0B-B4C6-45A5-B13F-2EE8D0FB917D): 10
+LogDevObjectVersion:   Dev-Physics-Ext (35F94A83-E258-406C-A318-09F59610247C): 41
+LogDevObjectVersion:   Dev-PhysicsMaterial-Chaos (B68FC16E-8B1B-42E2-B453-215C058844FE): 1
+LogDevObjectVersion:   Dev-CineCamera (B2E18506-4273-CFC2-A54E-F4BB758BBA07): 1
+LogDevObjectVersion:   Dev-VirtualProduction (64F58936-FD1B-42BA-BA96-7289D5D0FA4E): 1
+LogDevObjectVersion:   UE5-Main (697DD581-E64F-41AB-AA4A-51ECBEB7B628): 59
+LogDevObjectVersion:   UE5-Release (D89B5E42-24BD-4D46-8412-ACA8DF641779): 36
+LogDevObjectVersion:   UE5-PrivateFrosty (59DA5D52-1232-4948-B878-597870B8E98B): 8
+LogDevObjectVersion:   UE5-Dev-Cooker (26075A32-730F-4708-88E9-8C32F1599D05): 0
+LogDevObjectVersion:   Dev-MediaFramework (6F0ED827-A609-4895-9C91-998D90180EA4): 2
+LogDevObjectVersion:   UE5-Dev-LWCRendering (30D58BE3-95EA-4282-A6E3-B159D8EBB06A): 1
+LogInit: Presizing for max 2097152 objects, including 1 objects not considered by GC, pre-allocating 0 bytes for permanent pool.
+LogStreaming: Display: AsyncLoading2 - Created: Event Driven Loader: true, Async Loading Thread: true, Async Post Load: true
+LogStreaming: Display: AsyncLoading2 - Initialized
+LogInit: Object subsystem initialized
+LogConfig: CVar [[con.DebugLateDefault:1]] deferred - dummy variable created
+LogConfig: CVar [[con.DebugLateCheat:1]] deferred - dummy variable created
+LogConfig: CVar [[r.DetectAndWarnOfBadDrivers:0]] deferred - dummy variable created
+LogConfig: CVar [[LogNamedEventFilters:Frame *]] deferred - dummy variable created
+LogConfig: CVar [[framepro.ScopeMinTimeMicroseconds:10]] deferred - dummy variable created
+LogConfig: CVar [[QualityLevelMapping:high]] deferred - dummy variable created
+[2024.01.20-17.02.48:504][  0]LogConfig: CVar [[con.DebugLateDefault:1]] deferred - dummy variable created
+[2024.01.20-17.02.48:504][  0]LogConfig: CVar [[con.DebugLateCheat:1]] deferred - dummy variable created
+[2024.01.20-17.02.48:504][  0]LogConfig: CVar [[r.DetectAndWarnOfBadDrivers:0]] deferred - dummy variable created
+[2024.01.20-17.02.48:504][  0]LogConfig: CVar [[LogNamedEventFilters:Frame *]] deferred - dummy variable created
+[2024.01.20-17.02.48:504][  0]LogConfig: CVar [[framepro.ScopeMinTimeMicroseconds:10]] deferred - dummy variable created
+[2024.01.20-17.02.48:504][  0]LogConfig: CVar [[QualityLevelMapping:high]] deferred - dummy variable created
+[2024.01.20-17.02.48:504][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.RendererSettings] File [Engine]
+[2024.01.20-17.02.48:504][  0]LogConfig: CVar [[VisualizeCalibrationColorMaterialPath:/Engine/EngineMaterials/PPM_DefaultCalibrationColor.PPM_DefaultCalibrationColor]] deferred - dummy variable created
+[2024.01.20-17.02.48:504][  0]LogConfig: CVar [[VisualizeCalibrationGrayscaleMaterialPath:/Engine/EngineMaterials/PPM_DefaultCalibrationGrayscale.PPM_DefaultCalibrationGrayscale]] deferred - dummy variable created
+[2024.01.20-17.02.48:504][  0]LogConfig: CVar [[MaxSkinBones:(Default=65536,PerPlatform=(("Mobile", 256)))]] deferred - dummy variable created
+[2024.01.20-17.02.48:504][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.RendererOverrideSettings] File [Engine]
+[2024.01.20-17.02.48:504][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.StreamingSettings] File [Engine]
+[2024.01.20-17.02.48:505][  0]LogConfig: CVar [[s.MaxPackageSummarySize:16384]] deferred - dummy variable created
+[2024.01.20-17.02.48:505][  0]LogConfig: CVar [[FixedBootOrder:/Script/Engine/Default__SoundBase]] deferred - dummy variable created
+[2024.01.20-17.02.48:505][  0]LogConfig: CVar [[FixedBootOrder:/Script/Engine/Default__MaterialInterface]] deferred - dummy variable created
+[2024.01.20-17.02.48:505][  0]LogConfig: CVar [[FixedBootOrder:/Script/Engine/Default__DeviceProfileManager]] deferred - dummy variable created
+[2024.01.20-17.02.48:505][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.GarbageCollectionSettings] File [Engine]
+[2024.01.20-17.02.48:505][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.NetworkSettings] File [Engine]
+[2024.01.20-17.02.48:505][  0]LogConfig: CVar [[NetworkEmulationProfiles:(ProfileName="Average",ToolTip="Simulates average internet conditions")]] deferred - dummy variable created
+[2024.01.20-17.02.48:505][  0]LogConfig: CVar [[NetworkEmulationProfiles:(ProfileName="Bad",ToolTip="Simulates laggy internet conditions")]] deferred - dummy variable created
+[2024.01.20-17.02.48:509][  0]LogConfig: Applying CVar settings from Section [ViewDistanceQuality@3] File [Scalability]
+[2024.01.20-17.02.48:509][  0]LogConfig: Applying CVar settings from Section [AntiAliasingQuality@3] File [Scalability]
+[2024.01.20-17.02.48:509][  0]LogConfig: Applying CVar settings from Section [ShadowQuality@3] File [Scalability]
+[2024.01.20-17.02.48:509][  0]LogConfig: Applying CVar settings from Section [GlobalIlluminationQuality@3] File [Scalability]
+[2024.01.20-17.02.48:509][  0]LogConfig: Applying CVar settings from Section [ReflectionQuality@3] File [Scalability]
+[2024.01.20-17.02.48:509][  0]LogConfig: Applying CVar settings from Section [PostProcessQuality@3] File [Scalability]
+[2024.01.20-17.02.48:509][  0]LogConfig: Applying CVar settings from Section [TextureQuality@3] File [Scalability]
+[2024.01.20-17.02.48:509][  0]LogConfig: Applying CVar settings from Section [EffectsQuality@3] File [Scalability]
+[2024.01.20-17.02.48:509][  0]LogConfig: Applying CVar settings from Section [FoliageQuality@3] File [Scalability]
+[2024.01.20-17.02.48:509][  0]LogConfig: Applying CVar settings from Section [ShadingQuality@3] File [Scalability]
+[2024.01.20-17.02.48:509][  0]LogConfig: CVar [[r.HairStrands.Interpolation.UseSingleGuide:0]] deferred - dummy variable created
+[2024.01.20-17.02.48:613][  0]LogD3D12RHI: Aftermath initialized
+[2024.01.20-17.02.48:613][  0]LogD3D12RHI: Loading WinPixEventRuntime.dll for PIX profiling (from ../../../Engine/Binaries/ThirdParty/Windows/WinPixEventRuntime/x64).
+[2024.01.20-17.02.48:827][  0]LogD3D12RHI: Found D3D12 adapter 0: NVIDIA GeForce RTX 3070 Laptop GPU (Max supported Feature Level 12_1, shader model 6.6)
+[2024.01.20-17.02.48:827][  0]LogD3D12RHI: Adapter has 8044MB of dedicated video memory, 0MB of dedicated system memory, and 8002MB of shared system memory, 1 output[s]
+[2024.01.20-17.02.48:919][  0]LogD3D12RHI: Found D3D12 adapter 1: Intel(R) Iris(R) Xe Graphics (Max supported Feature Level 12_1, shader model 6.6)
+[2024.01.20-17.02.48:919][  0]LogD3D12RHI: Adapter has 128MB of dedicated video memory, 0MB of dedicated system memory, and 8002MB of shared system memory, 0 output[s]
+[2024.01.20-17.02.48:937][  0]LogD3D12RHI: Found D3D12 adapter 2: Microsoft Basic Render Driver (Max supported Feature Level 12_1, shader model 6.2)
+[2024.01.20-17.02.48:937][  0]LogD3D12RHI: Adapter has 0MB of dedicated video memory, 0MB of dedicated system memory, and 8002MB of shared system memory, 0 output[s]
+[2024.01.20-17.02.48:938][  0]LogD3D12RHI: Chosen D3D12 Adapter Id = 0
+[2024.01.20-17.02.48:938][  0]LogInit: Selected Device Profile: [Windows]
+[2024.01.20-17.02.48:938][  0]LogDeviceProfileManager: Applying CVar settings loaded from the selected device profile: [Windows]
+[2024.01.20-17.02.48:939][  0]LogHAL: Display: Platform has ~ 16 GB [16782430208 / 17179869184 / 16], which maps to Larger [LargestMinGB=32, LargerMinGB=12, DefaultMinGB=8, SmallerMinGB=6, SmallestMinGB=0)
+[2024.01.20-17.02.48:939][  0]LogDeviceProfileManager: Going up to parent DeviceProfile []
+[2024.01.20-17.02.48:939][  0]LogConfig: Applying CVar settings from Section [Startup] File [../../../Engine/Config/ConsoleVariables.ini]
+[2024.01.20-17.02.48:939][  0]LogConfig: Applying CVar settings from Section [ConsoleVariables] File [Engine]
+[2024.01.20-17.02.48:939][  0]LogInit: Computer: SOULSKI
+[2024.01.20-17.02.48:939][  0]LogInit: User: lopez
+[2024.01.20-17.02.48:939][  0]LogInit: CPU Page size=4096, Cores=14
+[2024.01.20-17.02.48:939][  0]LogInit: High frequency timer resolution =10.000000 MHz
+[2024.01.20-17.02.48:939][  0]LogMemory: Memory total: Physical=15.6GB (16GB approx)
+[2024.01.20-17.02.48:939][  0]LogMemory: Platform Memory Stats for Windows
+[2024.01.20-17.02.48:939][  0]LogMemory: Process Physical Memory: 171.21 MB used, 182.87 MB peak
+[2024.01.20-17.02.48:939][  0]LogMemory: Process Virtual Memory: 141.03 MB used, 141.03 MB peak
+[2024.01.20-17.02.48:939][  0]LogMemory: Physical Memory: 9225.79 MB used,  6779.18 MB free, 16004.97 MB total
+[2024.01.20-17.02.48:939][  0]LogMemory: Virtual Memory: 13228.70 MB used,  16088.27 MB free, 29316.97 MB total
+[2024.01.20-17.02.48:939][  0]LogCsvProfiler: Display: Metadata set : extradevelopmentmemorymb="0"
+[2024.01.20-17.02.48:947][  0]LogWindows: WindowsPlatformFeatures enabled
+[2024.01.20-17.02.48:949][  0]LogInit: Physics initialised using underlying interface: Chaos
+[2024.01.20-17.02.48:950][  0]LogInit: Using OS detected language (zh-CN).
+[2024.01.20-17.02.48:950][  0]LogInit: Using OS detected locale (fr-FR).
+[2024.01.20-17.02.48:950][  0]LogTextLocalizationManager: No localization for 'zh-CN' exists, so 'en' will be used for the language.
+[2024.01.20-17.02.48:951][  0]LogTextLocalizationManager: No localization for 'fr-FR' exists, so 'en' will be used for the locale.
+[2024.01.20-17.02.48:974][  0]LogWindowsTextInputMethodSystem: Available input methods:
+[2024.01.20-17.02.48:974][  0]LogWindowsTextInputMethodSystem:   - 法语(法国) - (Keyboard).
+[2024.01.20-17.02.48:974][  0]LogWindowsTextInputMethodSystem:   - 英语(美国) - (Keyboard).
+[2024.01.20-17.02.48:974][  0]LogWindowsTextInputMethodSystem:   - 中文(简体，中国) - 微软拼音 (TSF IME).
+[2024.01.20-17.02.48:975][  0]LogWindowsTextInputMethodSystem: Activated input method: 英语(美国) - (Keyboard).
+[2024.01.20-17.02.48:988][  0]LogSlate: New Slate User Created.  User Index 0, Is Virtual User: 0
+[2024.01.20-17.02.48:988][  0]LogSlate: Slate User Registered.  User Index 0, Is Virtual User: 0
+[2024.01.20-17.02.49:005][  0]LogD3D12RHI: InitD3DDevice: -D3DDebug = off -D3D12GPUValidation = off
+[2024.01.20-17.02.49:008][  0]LogD3D12RHI: [Aftermath] Aftermath crash dumping enabled
+[2024.01.20-17.02.49:008][  0]LogD3D12RHI: Emitting draw events for PIX profiling.
+[2024.01.20-17.02.49:061][  0]LogD3D12RHI: [Aftermath] Aftermath enabled and primed
+[2024.01.20-17.02.49:061][  0]LogD3D12RHI: [Aftermath] Aftermath resource tracking enabled
+[2024.01.20-17.02.49:061][  0]LogD3D12RHI: ID3D12Device1 is supported.
+[2024.01.20-17.02.49:061][  0]LogD3D12RHI: ID3D12Device2 is supported.
+[2024.01.20-17.02.49:061][  0]LogD3D12RHI: ID3D12Device3 is supported.
+[2024.01.20-17.02.49:061][  0]LogD3D12RHI: ID3D12Device4 is supported.
+[2024.01.20-17.02.49:061][  0]LogD3D12RHI: ID3D12Device5 is supported.
+[2024.01.20-17.02.49:061][  0]LogD3D12RHI: ID3D12Device6 is supported.
+[2024.01.20-17.02.49:061][  0]LogD3D12RHI: ID3D12Device7 is supported.
+[2024.01.20-17.02.49:061][  0]LogD3D12RHI: D3D12 ray tracing tier 1.0 is supported.
+[2024.01.20-17.02.49:061][  0]LogD3D12RHI: D3D12 ray tracing tier 1.1 is supported.
+[2024.01.20-17.02.49:061][  0]LogD3D12RHI: Mesh shader tier 1.0 is supported
+[2024.01.20-17.02.49:061][  0]LogD3D12RHI: AtomicInt64OnTypedResource is supported
+[2024.01.20-17.02.49:061][  0]LogD3D12RHI: AtomicInt64OnGroupShared is supported
+[2024.01.20-17.02.49:061][  0]LogD3D12RHI: AtomicInt64OnDescriptorHeapResource is supported
+[2024.01.20-17.02.49:061][  0]LogD3D12RHI: Shader Model 6.6 atomic64 is supported
+[2024.01.20-17.02.49:126][  0]LogD3D12RHI: [GPUBreadCrumb] Successfully setup breadcrumb resource for 3D Queue 0
+[2024.01.20-17.02.49:130][  0]LogD3D12RHI: [GPUBreadCrumb] Successfully setup breadcrumb resource for Copy Queue 0
+[2024.01.20-17.02.49:143][  0]LogD3D12RHI: [GPUBreadCrumb] Successfully setup breadcrumb resource for Compute Queue 0
+[2024.01.20-17.02.49:167][  0]LogD3D12RHI: Display: Not using pipeline state disk cache per r.D3D12.PSO.DiskCache=0
+[2024.01.20-17.02.49:167][  0]LogD3D12RHI: Display: Not using driver-optimized pipeline state disk cache per r.D3D12.PSO.DriverOptimizedDiskCache=0
+[2024.01.20-17.02.49:168][  0]LogD3D12RHI:     GPU DeviceId: 0x249d (for the marketing name, search the web for "GPU Device Id")
+[2024.01.20-17.02.49:168][  0]LogWindows: Attached monitors:
+[2024.01.20-17.02.49:168][  0]LogWindows:     resolution: 1920x1080, work area: (0, 0) -> (1920, 1032), device: '\\.\DISPLAY1' [PRIMARY]
+[2024.01.20-17.02.49:168][  0]LogWindows: Found 1 attached monitors.
+[2024.01.20-17.02.49:168][  0]LogWindows: EnumDisplayDevices:
+[2024.01.20-17.02.49:168][  0]LogWindows:    0. 'Intel(R) Iris(R) Xe Graphics' (P:1 D:1), name: '\\.\DISPLAY1'
+[2024.01.20-17.02.49:168][  0]LogWindows:    1. 'Intel(R) Iris(R) Xe Graphics' (P:0 D:0), name: '\\.\DISPLAY2'
+[2024.01.20-17.02.49:168][  0]LogWindows:    2. 'Intel(R) Iris(R) Xe Graphics' (P:0 D:0), name: '\\.\DISPLAY3'
+[2024.01.20-17.02.49:168][  0]LogWindows:    3. 'Intel(R) Iris(R) Xe Graphics' (P:0 D:0), name: '\\.\DISPLAY4'
+[2024.01.20-17.02.49:168][  0]LogWindows:    4. 'NVIDIA GeForce RTX 3070 Laptop GPU' (P:0 D:0), name: '\\.\DISPLAY5'
+[2024.01.20-17.02.49:168][  0]LogWindows:    5. 'NVIDIA GeForce RTX 3070 Laptop GPU' (P:0 D:0), name: '\\.\DISPLAY6'
+[2024.01.20-17.02.49:169][  0]LogWindows:    6. 'NVIDIA GeForce RTX 3070 Laptop GPU' (P:0 D:0), name: '\\.\DISPLAY7'
+[2024.01.20-17.02.49:169][  0]LogWindows:    7. 'NVIDIA GeForce RTX 3070 Laptop GPU' (P:0 D:0), name: '\\.\DISPLAY8'
+[2024.01.20-17.02.49:169][  0]LogWindows: DebugString: PrimaryIsNotTheChoosenAdapter PrimaryIsNotTheChoosenAdapter PrimaryIsNotTheChoosenAdapter PrimaryIsNotTheChoosenAdapter FoundDriverCount:4 
+[2024.01.20-17.02.49:169][  0]LogD3D12RHI:     Adapter Name: NVIDIA GeForce RTX 3070 Laptop GPU
+[2024.01.20-17.02.49:169][  0]LogD3D12RHI:   Driver Version: 516.91 (internal:31.0.15.1691, unified:516.91)
+[2024.01.20-17.02.49:169][  0]LogD3D12RHI:      Driver Date: 7-20-2022
+[2024.01.20-17.02.49:169][  0]LogRHI: Texture pool is 4583 MB (70% of 6548 MB)
+[2024.01.20-17.02.49:169][  0]LogD3D12RHI: Async texture creation enabled
+[2024.01.20-17.02.49:169][  0]LogD3D12RHI: RHI has support for 64 bit atomics
+[2024.01.20-17.02.49:213][  0]LogRHI: GeForceNow SDK initialized: 0
+[2024.01.20-17.02.49:217][  0]LogRendererCore: Ray tracing is disabled. Reason: r.RayTracing=0.
+[2024.01.20-17.02.49:218][  0]LogShaderLibrary: Display: Using IoDispatcher for shader code library Global. Total 4119 unique shaders.
+[2024.01.20-17.02.49:218][  0]LogShaderLibrary: Display: Cooked Context: Using Shared Shader Library Global
+[2024.01.20-17.02.49:218][  0]LogShaderLibrary: Display: Logical shader library 'Global' has been created, components 1
+[2024.01.20-17.02.49:218][  0]LogTemp: Display: Clearing the OS Cache
+[2024.01.20-17.02.49:250][  0]LogSlate: Using FreeType 2.10.0
+[2024.01.20-17.02.49:252][  0]LogSlate: SlateFontServices - WITH_FREETYPE: 1, WITH_HARFBUZZ: 1
+[2024.01.20-17.02.49:395][  0]LogShaderLibrary: Display: Using IoDispatcher for shader code library Siltarn. Total 1542 unique shaders.
+[2024.01.20-17.02.49:395][  0]LogShaderLibrary: Display: Cooked Context: Using Shared Shader Library Siltarn
+[2024.01.20-17.02.49:395][  0]LogShaderLibrary: Display: Logical shader library 'Siltarn' has been created, components 1
+[2024.01.20-17.02.49:395][  0]LogRHI: Display: Opened pipeline cache after state change and enqueued 0 of 0 tasks for precompile.
+[2024.01.20-17.02.49:395][  0]LogRHI: Base name for record PSOs is ../../../Siltarn/Saved/CollectedPSOs/++UE5+Release-5.0-CL-20979098-Siltarn_PCD3D_SM5_D7BAC7EA45905A19A9DDA28D936BAE99.rec.upipelinecache
+[2024.01.20-17.02.49:395][  0]LogRHI: Could not open FPipelineCacheFile: ../../../Siltarn/Content/PipelineCaches/Windows/Siltarn_PCD3D_SM5.upipelinecache
+[2024.01.20-17.02.49:395][  0]LogRHI: Display: Failed to open default shader pipeline cache for Siltarn using shader platform 0.
+[2024.01.20-17.02.49:395][  0]LogRHI: Base name for record PSOs is ../../../Siltarn/Saved/CollectedPSOs/++UE5+Release-5.0-CL-20979098-Siltarn_PCD3D_SM5_AC3BC4EB4C56DEE03016139104799198.rec.upipelinecache
+[2024.01.20-17.02.49:395][  0]LogRHI: Could not open FPipelineCacheFile: ../../../Siltarn/Content/PipelineCaches/Windows/Siltarn_PCD3D_SM5.upipelinecache
+[2024.01.20-17.02.49:395][  0]LogRHI: Display: Failed to open default shader pipeline cache for Siltarn using shader platform 0.
+[2024.01.20-17.02.49:395][  0]LogInit: Using OS detected language (zh-CN).
+[2024.01.20-17.02.49:395][  0]LogInit: Using OS detected locale (fr-FR).
+[2024.01.20-17.02.49:395][  0]LogTextLocalizationManager: No localization for 'zh-CN' exists, so 'en' will be used for the language.
+[2024.01.20-17.02.49:395][  0]LogTextLocalizationManager: No localization for 'fr-FR' exists, so 'en' will be used for the locale.
+[2024.01.20-17.02.49:397][  0]LogAssetRegistry: FAssetRegistry took 0.0018 seconds to start up
+[2024.01.20-17.02.49:518][  0]LogStreaming: Display: FlushAsyncLoading: 1 QueuedPackages, 0 AsyncPackages
+[2024.01.20-17.02.49:522][  0]LogInit: Selected Device Profile: [Windows]
+[2024.01.20-17.02.49:523][  0]LogDeviceProfileManager: Active device profile: [000002724EB19280][0000027222D29D90 50] Windows
+[2024.01.20-17.02.49:523][  0]LogDeviceProfileManager: Profiles: [000002724EB19280][0000027222D29D90 50] Windows, 
+[2024.01.20-17.02.49:523][  0]LogCsvProfiler: Display: Metadata set : deviceprofile="Windows"
+[2024.01.20-17.02.49:561][  0]LogNetVersion: Siltarn 1.0.0, NetCL: 19505902, EngineNetVer: 23, GameNetVer: 0 (Checksum: 2892853788)
+[2024.01.20-17.02.49:612][  0]LogAudioCaptureCore: Display: No Audio Capture implementations found. Audio input will be silent.
+[2024.01.20-17.02.49:612][  0]LogAudioCaptureCore: Display: No Audio Capture implementations found. Audio input will be silent.
+[2024.01.20-17.02.49:613][  0]LogClass_DebugActor: Constructor called !
+[2024.01.20-17.02.49:613][  0]LogClass_DebugActor: Instance count : 1 !
+[2024.01.20-17.02.49:613][  0]LogClass_AInteractableActor: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:613][  0]LogClass_AInteractableActor: A new instance was created ! || Instance count : 2
+[2024.01.20-17.02.49:613][  0]LogClass_AInteractableActor: A new instance was created ! || Instance count : 3
+[2024.01.20-17.02.49:613][  0]LogClass_UInteractableEntity: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:613][  0]LogClass_UInteractableEntity: A new instance was created ! || Instance count : 2
+[2024.01.20-17.02.49:613][  0]LogClass_UInteractableEntity: A new instance was created ! || Instance count : 3
+[2024.01.20-17.02.49:613][  0]LogClass_UInventory: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:613][  0]LogClass_AInteractableActor: A new instance was created ! || Instance count : 4
+[2024.01.20-17.02.49:613][  0]LogClass_UInteractableEntity: A new instance was created ! || Instance count : 4
+[2024.01.20-17.02.49:613][  0]LogClass_Pistol: Constructor called !
+[2024.01.20-17.02.49:613][  0]LogClass_Rifle: Constructor called !
+[2024.01.20-17.02.49:613][  0]LogClass_Rifle: Number of instances : 1
+[2024.01.20-17.02.49:613][  0]LogClass_AInteractableActor: A new instance was created ! || Instance count : 5
+[2024.01.20-17.02.49:625][  0]LogPackageLocalizationCache: Processed 24 localized package path(s) for 1 prioritized culture(s) in 0.000418 seconds
+[2024.01.20-17.02.49:646][  0]LogMoviePlayer: Initializing movie player
+[2024.01.20-17.02.49:649][  0]LogNiagaraDebuggerClient: Niagara Debugger Client Initialized | Session: 538BDE1A41CCCB60B3DA56809A81D940 | Instance: F10B92194163113D7236C485A3BF4FF7 (SOULSKI-7520).
+[2024.01.20-17.02.49:655][  0]LogAndroidPermission: UAndroidPermissionCallbackProxy::GetInstance
+[2024.01.20-17.02.49:660][  0]LogUObjectArray: 17558 objects as part of root set at end of initial load.
+[2024.01.20-17.02.49:660][  0]LogUObjectArray: 4 objects are not in the root set, but can never be destroyed because they are in the DisregardForGC set.
+[2024.01.20-17.02.49:660][  0]LogUObjectAllocator: 3917040 out of 0 bytes used by permanent object pool.
+[2024.01.20-17.02.49:660][  0]LogUObjectArray: CloseDisregardForGC: 17558/17558 objects in disregard for GC pool
+[2024.01.20-17.02.49:660][  0]LogStreaming: Display: AsyncLoading2 - Thread Started: true, IsInitialLoad: false
+[2024.01.20-17.02.49:663][  0]LogEngine: Initializing Engine...
+[2024.01.20-17.02.49:664][  0]LogStats: UGameplayTagsManager::InitializeManager -  0.000 s
+[2024.01.20-17.02.49:675][  0]LogStreaming: Display: AsyncLoading2 - InitialLoad Finalized: 17237 script object entries in 471.18 KB
+[2024.01.20-17.02.49:675][  0]LogInit: Initializing FReadOnlyCVARCache
+[2024.01.20-17.02.49:675][  0]LogAudio: Display: Initializing Audio Device Manager...
+[2024.01.20-17.02.49:676][  0]LogAudio: Display: Loading Default Audio Settings Objects...
+[2024.01.20-17.02.49:676][  0]LogAudio: Display: No default SoundConcurrencyObject specified (or failed to load).
+[2024.01.20-17.02.49:676][  0]LogAudio: Display: Registering Engine Module Parameter Interfaces...
+[2024.01.20-17.02.49:676][  0]LogAudio: Display: Audio Device Manager Initialized
+[2024.01.20-17.02.49:677][  0]LogAudio: Display: Creating Audio Device:                 Id: 1, Scope: Shared, Realtime: True
+[2024.01.20-17.02.49:677][  0]LogAudioMixer: Display: Audio Mixer Platform Settings:
+[2024.01.20-17.02.49:677][  0]LogAudioMixer: Display: 	Sample Rate:						  48000
+[2024.01.20-17.02.49:677][  0]LogAudioMixer: Display: 	Callback Buffer Frame Size Requested: 1024
+[2024.01.20-17.02.49:677][  0]LogAudioMixer: Display: 	Callback Buffer Frame Size To Use:	  1024
+[2024.01.20-17.02.49:677][  0]LogAudioMixer: Display: 	Number of buffers to queue:			  2
+[2024.01.20-17.02.49:677][  0]LogAudioMixer: Display: 	Max Channels (voices):				  0
+[2024.01.20-17.02.49:677][  0]LogAudioMixer: Display: 	Number of Async Source Workers:		  0
+[2024.01.20-17.02.49:677][  0]LogAudio: Display: AudioDevice MaxSources: 32
+[2024.01.20-17.02.49:678][  0]LogAudio: Display: Audio Spatialization Plugin: None (built-in).
+[2024.01.20-17.02.49:678][  0]LogAudio: Display: Audio Reverb Plugin: None (built-in).
+[2024.01.20-17.02.49:678][  0]LogAudio: Display: Audio Occlusion Plugin: None (built-in).
+[2024.01.20-17.02.49:753][  0]LogAudioDebug: Display: Lib vorbis DLL was dynamically loaded.
+[2024.01.20-17.02.49:754][  0]LogAudioMixer: Display: Initializing audio mixer using platform API: 'XAudio2'
+[2024.01.20-17.02.49:775][  0]LogAudioMixer: Display: Using Audio Hardware Device 扬声器 (C-Media(R) Audio)
+[2024.01.20-17.02.49:776][  0]LogAudioMixer: Display: Initializing Sound Submixes...
+[2024.01.20-17.02.49:776][  0]LogAudioMixer: Display: Creating Master Submix 'MasterSubmixDefault'
+[2024.01.20-17.02.49:776][  0]LogAudioMixer: Display: Creating Master Submix 'MasterReverbSubmixDefault'
+[2024.01.20-17.02.49:777][  0]LogAudioMixer: FMixerPlatformXAudio2::StartAudioStream() called. InstanceID=1
+[2024.01.20-17.02.49:778][  0]LogAudioMixer: Display: Output buffers initialized: Frames=1024, Channels=2, Samples=2048, InstanceID=1
+[2024.01.20-17.02.49:778][  0]LogAudioMixer: Display: Starting AudioMixerPlatformInterface::RunInternal(), InstanceID=1
+[2024.01.20-17.02.49:778][  0]LogAudioMixer: Display: FMixerPlatformXAudio2::SubmitBuffer() called for the first time. InstanceID=1
+[2024.01.20-17.02.49:778][  0]LogInit: FAudioDevice initialized.
+[2024.01.20-17.02.49:778][  0]LogNetVersion: Set ProjectVersion to 1.0.0.0. Version Checksum will be recalculated on next use.
+[2024.01.20-17.02.49:778][  0]LogInit: Texture streaming: Enabled
+[2024.01.20-17.02.49:780][  0]LogCsvProfiler: Display: Metadata set : largeworldcoordinates="1"
+[2024.01.20-17.02.49:784][  0]LogChaos: FPhysicsSolverBase::AsyncDt:-1.000000
+[2024.01.20-17.02.49:795][  0]LogAudio: Display: Audio Device (ID: 1) registered with world 'Untitled'.
+[2024.01.20-17.02.49:796][  0]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2024.01.20-17.02.49:797][  0]LogInit: Display: Game Engine Initialized.
+[2024.01.20-17.02.49:798][  0]LogInit: Display: Starting Game.
+[2024.01.20-17.02.49:798][  0]LogNet: Browse: /Game/Levels/DefaultLevel?Name=Player
+[2024.01.20-17.02.49:798][  0]LogLoad: LoadMap: /Game/Levels/DefaultLevel?Name=Player
+[2024.01.20-17.02.49:798][  0]LogWorld: BeginTearingDown for /Temp/Untitled_0
+[2024.01.20-17.02.49:799][  0]LogWorld: UWorld::CleanupWorld for Untitled, bSessionEnded=true, bCleanupResources=true
+[2024.01.20-17.02.49:800][  0]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2024.01.20-17.02.49:805][  0]LogStreaming: Display: 0.005 ms (0.002+0.002) ms for processing 27/27 objects in NotifyUnreachableObjects( Queued=0, Async=0). Removed 0/1 (96->96 tracked) packages and 0/26 (99->99 tracked) public exports.
+[2024.01.20-17.02.49:805][  0]LogAudio: Display: Audio Device unregistered from world 'None'.
+[2024.01.20-17.02.49:809][  0]LogUObjectHash: Compacting FUObjectHashTables data took   0.42ms
+[2024.01.20-17.02.49:845][  0]LogClass_AInteractableActor: A new instance was created ! || Instance count : 6
+[2024.01.20-17.02.49:845][  0]LogClass_Pistol: Constructor called !
+[2024.01.20-17.02.49:845][  0]LogClass_AInteractableActor: A new instance was created ! || Instance count : 7
+[2024.01.20-17.02.49:845][  0]LogClass_AInteractableActor: A new instance was created ! || Instance count : 8
+[2024.01.20-17.02.49:845][  0]LogClass_AInteractableActor: A new instance was created ! || Instance count : 9
+[2024.01.20-17.02.49:845][  0]LogClass_AInteractableActor: A new instance was created ! || Instance count : 10
+[2024.01.20-17.02.49:845][  0]LogClass_AInteractableActor: A new instance was created ! || Instance count : 11
+[2024.01.20-17.02.49:845][  0]LogAudio: Display: Audio Device (ID: 1) registered with world 'DefaultLevel'.
+[2024.01.20-17.02.49:845][  0]LogChaos: FPhysicsSolverBase::AsyncDt:-1.000000
+[2024.01.20-17.02.49:847][  0]LogAIModule: Creating AISystem for world DefaultLevel
+[2024.01.20-17.02.49:847][  0]LogLoad: Game class is 'BP_DefaultGameMode_C'
+[2024.01.20-17.02.49:853][  0]LogWorld: Bringing World /Game/Levels/DefaultLevel.DefaultLevel up for play (max tick rate 0) at 2024.01.20-18.02.49
+[2024.01.20-17.02.49:853][  0]LogWorld: Bringing up level for play took: 0.004598
+[2024.01.20-17.02.49:854][  0]LogClass_UInventory: A new instance was created ! || Instance count : 2
+[2024.01.20-17.02.49:854][  0]LogGameMode: FindPlayerStart: PATHS NOT DEFINED or NO PLAYERSTART with positive rating
+[2024.01.20-17.02.49:855][  0]LogClass_SInventoryWidget: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FLine: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FTile: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogClass_SInventoryWidget: BUILD_Tiles() : Number of tiles built : 24
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.49:855][  0]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.02.49:855][  0]LogClass_SInventoryWidget: BUILD_CrossAnchors() : Number of FCrossAnchors built : 14
+[2024.01.20-17.02.49:856][  0]LogGameMode: Display: Match State Changed from EnteringMap to WaitingToStart
+[2024.01.20-17.02.49:856][  0]LogGameState: Match State Changed from EnteringMap to WaitingToStart
+[2024.01.20-17.02.49:856][  0]LogGameMode: Display: Match State Changed from WaitingToStart to InProgress
+[2024.01.20-17.02.49:866][  0]LogClass_Pistol: Constructor called !
+[2024.01.20-17.02.49:867][  0]LogGameState: Match State Changed from WaitingToStart to InProgress
+[2024.01.20-17.02.49:867][  0]LogLoad: Took 0.068711 seconds to LoadMap(/Game/Levels/DefaultLevel)
+[2024.01.20-17.02.49:867][  0]LogViewport: Scene viewport resized to 1920x1080, mode WindowedFullscreen.
+[2024.01.20-17.02.49:891][  0]LogSlate: Took 0.000489 seconds to synchronously load lazily loaded font '../../../Engine/Content/Slate/Fonts/Roboto-Regular.ttf' (155K)
+[2024.01.20-17.02.49:897][  0]LogRHI: Display: ShaderPipelineCache: Paused Batching. 1
+[2024.01.20-17.02.49:897][  0]LogPakFile: AllPaks IndexSizes: DirectoryHashSize=143964, PathHashSize=16, EntriesSize=19104, TotalSize=163084
+[2024.01.20-17.02.49:897][  0]LogRHI: Display: ShaderPipelineCache: Resumed Batching. 0
+[2024.01.20-17.02.49:897][  0]LogRHI: Display: ShaderPipelineCache: Batching Resumed.
+[2024.01.20-17.02.49:897][  0]LogInit: Display: Engine is initialized. Leaving FEngineLoop::Init()
+[2024.01.20-17.02.49:897][  0]LogLoad: (Engine Initialization) Total time: 2.00 seconds
+[2024.01.20-17.02.50:153][  0]LogContentStreaming: Texture pool size now 1000 MB
+[2024.01.20-17.02.55:571][840]LogSlate: Took 0.000437 seconds to synchronously load lazily loaded font '../../../Siltarn/Content/UI/Resources/Fonts/Roboto/Roboto_Bold.ufont' (160K)
+[2024.01.20-17.02.55:571][840]LogSlate: Took 0.000370 seconds to synchronously load lazily loaded font '../../../Siltarn/Content/UI/Resources/Fonts/Roboto/Roboto_Regular.ufont' (155K)
+[2024.01.20-17.02.56:187][940]LogClass_AEquipableActor: Icon path name : /Game/Materials/Icons/MI_Pistol_Nautrale.MI_Pistol_Nautrale
+[2024.01.20-17.02.56:187][940]LogClass_AEquipableActor: Icon's material path name : /Game/Materials/Icons/M_IconBase.M_IconBase
+[2024.01.20-17.02.56:187][940]LogClass_SInventoryWidget: We have found a room at FTile 0 !
+[2024.01.20-17.02.56:187][940]LogClass_UInteractableEntity: A new instance was created ! || Instance count : 5
+[2024.01.20-17.02.56:187][940]LogStruct_FInventoryItem: A new instance was created ! || Instance count : 1
+[2024.01.20-17.02.57:547][169]LogClass_SInventoryWidget: Warning: IS_RoomAvailableAtTileIndex() : FTile 0 -> Already occupied case.
+[2024.01.20-17.02.57:547][169]LogClass_SInventoryWidget: Warning: IS_RoomAvailableAtTileIndex() : FTile 1 -> Already occupied case.
+[2024.01.20-17.02.57:547][169]LogClass_SInventoryWidget: We have found a room at FTile 2 !
+[2024.01.20-17.02.57:547][169]LogClass_UInteractableEntity: A new instance was created ! || Instance count : 6
+[2024.01.20-17.02.57:547][169]LogStruct_FInventoryItem: A new instance was created ! || Instance count : 2
+[2024.01.20-17.02.58:239][288]LogClass_SInventoryWidget: Warning: IS_RoomAvailableAtTileIndex() : FTile 0 -> Already occupied case.
+[2024.01.20-17.02.58:239][288]LogClass_SInventoryWidget: Warning: IS_RoomAvailableAtTileIndex() : FTile 1 -> Already occupied case.
+[2024.01.20-17.02.58:239][288]LogClass_SInventoryWidget: Warning: IS_RoomAvailableAtTileIndex() : FTile 2 -> Already occupied case.
+[2024.01.20-17.02.58:239][288]LogClass_SInventoryWidget: We have found a room at FTile 3 !
+[2024.01.20-17.02.58:239][288]LogClass_UInteractableEntity: A new instance was created ! || Instance count : 7
+[2024.01.20-17.02.58:239][288]LogStruct_FInventoryItem: A new instance was created ! || Instance count : 3
+[2024.01.20-17.02.59:058][428]LogClass_SInventoryWidget: Warning: IS_RoomAvailableAtTileIndex() : FTile 0 -> Already occupied case.
+[2024.01.20-17.02.59:058][428]LogClass_SInventoryWidget: Warning: IS_RoomAvailableAtTileIndex() : FTile 1 -> Already occupied case.
+[2024.01.20-17.02.59:058][428]LogClass_SInventoryWidget: Warning: IS_RoomAvailableAtTileIndex() : FTile 2 -> Already occupied case.
+[2024.01.20-17.02.59:058][428]LogClass_SInventoryWidget: Warning: IS_RoomAvailableAtTileIndex() : FTile 3 -> Already occupied case.
+[2024.01.20-17.02.59:058][428]LogClass_SInventoryWidget: We have found a room at FTile 4 !
+[2024.01.20-17.02.59:058][428]LogClass_UInteractableEntity: A new instance was created ! || Instance count : 8
+[2024.01.20-17.02.59:058][428]LogStruct_FInventoryItem: A new instance was created ! || Instance count : 4
+[2024.01.20-17.03.00:073][598]LogViewport: Display: Viewport MouseLockMode Changed, LockOnCapture -> DoNotLock
+[2024.01.20-17.03.00:073][598]LogViewport: Display: Viewport HideCursorDuringCapture Changed, False -> True
+[2024.01.20-17.03.00:074][598]LogViewport: Display: Viewport MouseCaptureMode Changed, CapturePermanently_IncludingInitialMouseDown -> CaptureDuringMouseDown
+[2024.01.20-17.03.00:074][598]LogViewport: Display: Player bShowMouseCursor Changed, False -> True
+[2024.01.20-17.03.00:563][678]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.00:600][678]LogSlate: Took 0.000289 seconds to synchronously load lazily loaded font '../../../Siltarn/Content/UI/Resources/Fonts/Roboto/Roboto_Italic.ufont' (157K)
+[2024.01.20-17.03.00:768][695]LogClass_SInventoryItemWidget: Left button clicked !
+[2024.01.20-17.03.00:768][695]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.00:781][695]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.00:818][703]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GEngine is NOT NULL !
+[2024.01.20-17.03.00:818][703]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GameViewport is NOT NULL !
+[2024.01.20-17.03.00:818][703]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : I arrived here ! !
+[2024.01.20-17.03.00:818][703]LogClass_FInventoryItemDragDrop: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.01:035][732]LogTemp: Warning: Trying to match location : X=449.500 Y=78.500
+[2024.01.20-17.03.01:035][732]LogTemp: Warning: After floored to int32 : _X -> 449
+[2024.01.20-17.03.01:035][732]LogTemp: Warning: After floored to int32 : _Y -> 78
+[2024.01.20-17.03.01:035][732]LogTemp: Warning: 449 < 450 (_CrossAnchorPos + m_TileSize)
+[2024.01.20-17.03.01:035][732]LogTemp: Warning: 78 < 112 (_CrossAnchorPos + m_TileSize / 2)
+[2024.01.20-17.03.01:035][732]LogTemp: Warning: _Target Pos : 6 ; 1
+[2024.01.20-17.03.01:035][732]LogStruct_FInventoryItem: FTile.s_StructId = 0 has been freed !
+[2024.01.20-17.03.01:035][732]LogStruct_FInventoryItem: FTile.s_StructId = 1 has been freed !
+[2024.01.20-17.03.01:035][732]LogStruct_FInventoryItem: FTile.s_StructId = 8 has been freed !
+[2024.01.20-17.03.01:035][732]LogStruct_FInventoryItem: FTile.s_StructId = 9 has been freed !
+[2024.01.20-17.03.01:035][732]LogTemp: Warning: Nevermind
+[2024.01.20-17.03.01:035][732]LogTemp: FTile 5 has been occupied by the item !
+[2024.01.20-17.03.01:035][732]LogTemp: FTile 6 has been occupied by the item !
+[2024.01.20-17.03.01:035][732]LogTemp: FTile 13 has been occupied by the item !
+[2024.01.20-17.03.01:035][732]LogTemp: FTile 14 has been occupied by the item !
+[2024.01.20-17.03.01:035][732]LogStruct_FTile: An instance was destroyed ! || Instance count : -1
+[2024.01.20-17.03.01:035][732]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.01:043][732]LogClass_FInventoryItemDragDrop: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.01:046][734]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.01:281][766]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.01:289][766]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.01:289][766]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.01:328][767]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.01:342][767]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.01:342][767]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.01:504][788]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.01:511][788]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.01:511][788]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.01:567][791]LogClass_SInventoryItemWidget: Left button clicked !
+[2024.01.20-17.03.01:567][791]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.01:573][791]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.01:589][795]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GEngine is NOT NULL !
+[2024.01.20-17.03.01:589][795]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GameViewport is NOT NULL !
+[2024.01.20-17.03.01:589][795]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : I arrived here ! !
+[2024.01.20-17.03.01:589][795]LogClass_FInventoryItemDragDrop: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.02:020][859]LogTemp: Warning: RelativeLocationToTile() : _X : 518
+[2024.01.20-17.03.02:020][859]LogTemp: Warning: RelativeLocationToTile() : _Y : 176
+[2024.01.20-17.03.02:020][859]LogTemp: Warning: Aiming for FTile(6, 2)
+[2024.01.20-17.03.02:020][859]LogStruct_FInventoryItem: FTile.s_StructId = 4 has been freed !
+[2024.01.20-17.03.02:020][859]LogTemp: Warning: Nevermind
+[2024.01.20-17.03.02:020][859]LogTemp: FTile 22 has been occupied by the item !
+[2024.01.20-17.03.02:020][859]LogStruct_FTile: An instance was destroyed ! || Instance count : -2
+[2024.01.20-17.03.02:020][859]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.02:026][859]LogClass_FInventoryItemDragDrop: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.02:028][860]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.02:239][889]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.02:247][889]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.02:247][889]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.02:322][896]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.02:332][896]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.02:363][903]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.02:400][904]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.02:411][904]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.02:649][944]LogViewport: Display: Viewport MouseLockMode Changed, DoNotLock -> LockOnCapture
+[2024.01.20-17.03.02:649][944]LogViewport: Display: Viewport MouseCaptureMode Changed, CaptureDuringMouseDown -> CapturePermanently
+[2024.01.20-17.03.02:649][944]LogViewport: Display: Player bShowMouseCursor Changed, True -> False
+[2024.01.20-17.03.04:266][202]LogViewport: Display: Viewport MouseLockMode Changed, LockOnCapture -> DoNotLock
+[2024.01.20-17.03.04:266][202]LogViewport: Display: Viewport MouseCaptureMode Changed, CapturePermanently -> CaptureDuringMouseDown
+[2024.01.20-17.03.04:266][202]LogViewport: Display: Player bShowMouseCursor Changed, False -> True
+[2024.01.20-17.03.04:594][256]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.04:807][285]LogClass_SInventoryItemWidget: Left button clicked !
+[2024.01.20-17.03.04:807][285]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.04:815][285]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.04:841][291]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GEngine is NOT NULL !
+[2024.01.20-17.03.04:841][291]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GameViewport is NOT NULL !
+[2024.01.20-17.03.04:841][291]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : I arrived here ! !
+[2024.01.20-17.03.04:841][291]LogClass_FInventoryItemDragDrop: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.04:962][305]LogClass_SProfileMenu: Warning: We've sensed a drop !
+[2024.01.20-17.03.04:962][305]LogTemp: Error: We've arrived up to here !
+[2024.01.20-17.03.04:962][305]LogClass_SiltarnCharacter: Warning: p_Item class name : BP_NEA_ExplosiveBullet_C
+[2024.01.20-17.03.04:962][305]LogClass_AInteractableActor: A new instance was created ! || Instance count : 12
+[2024.01.20-17.03.04:962][305]LogStruct_FTile: An instance was destroyed ! || Instance count : -3
+[2024.01.20-17.03.04:962][305]LogStruct_FInventoryItem: FTile.s_StructId = 3 has been freed !
+[2024.01.20-17.03.04:962][305]LogStruct_FInventoryItem: An instance was destroyed ! || Instance count : 3
+[2024.01.20-17.03.04:962][305]LogClass_SInventoryItemWidget: Warning: I was destroyed !
+[2024.01.20-17.03.04:962][305]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.04:969][305]LogClass_FInventoryItemDragDrop: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.05:659][419]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.05:917][455]LogClass_SInventoryItemWidget: Left button clicked !
+[2024.01.20-17.03.05:917][455]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.05:925][455]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.05:925][455]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GEngine is NOT NULL !
+[2024.01.20-17.03.05:925][455]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GameViewport is NOT NULL !
+[2024.01.20-17.03.05:925][455]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : I arrived here ! !
+[2024.01.20-17.03.05:925][455]LogClass_FInventoryItemDragDrop: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.06:098][478]LogClass_SProfileMenu: Warning: We've sensed a drop !
+[2024.01.20-17.03.06:098][478]LogTemp: Error: We've arrived up to here !
+[2024.01.20-17.03.06:098][478]LogClass_SiltarnCharacter: Warning: p_Item class name : BP_EA_Naulstrane_C
+[2024.01.20-17.03.06:098][478]LogClass_AInteractableActor: A new instance was created ! || Instance count : 13
+[2024.01.20-17.03.06:099][478]LogStruct_FTile: An instance was destroyed ! || Instance count : -4
+[2024.01.20-17.03.06:099][478]LogStruct_FInventoryItem: FTile.s_StructId = 5 has been freed !
+[2024.01.20-17.03.06:099][478]LogStruct_FInventoryItem: FTile.s_StructId = 6 has been freed !
+[2024.01.20-17.03.06:099][478]LogStruct_FInventoryItem: FTile.s_StructId = 13 has been freed !
+[2024.01.20-17.03.06:099][478]LogStruct_FInventoryItem: FTile.s_StructId = 14 has been freed !
+[2024.01.20-17.03.06:099][478]LogStruct_FInventoryItem: An instance was destroyed ! || Instance count : 2
+[2024.01.20-17.03.06:099][478]LogClass_SInventoryItemWidget: Warning: I was destroyed !
+[2024.01.20-17.03.06:099][478]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.06:106][478]LogClass_FInventoryItemDragDrop: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.06:366][521]LogViewport: Display: Viewport MouseLockMode Changed, DoNotLock -> LockOnCapture
+[2024.01.20-17.03.06:366][521]LogViewport: Display: Viewport MouseCaptureMode Changed, CaptureDuringMouseDown -> CapturePermanently
+[2024.01.20-17.03.06:366][521]LogViewport: Display: Player bShowMouseCursor Changed, True -> False
+[2024.01.20-17.03.10:039][ 94]LogClass_AEquipableActor: Icon path name : /Game/Materials/Icons/MI_Pistol_Nautrale.MI_Pistol_Nautrale
+[2024.01.20-17.03.10:039][ 94]LogClass_AEquipableActor: Icon's material path name : /Game/Materials/Icons/M_IconBase.M_IconBase
+[2024.01.20-17.03.10:039][ 94]LogClass_SInventoryWidget: We have found a room at FTile 0 !
+[2024.01.20-17.03.10:039][ 94]LogClass_UInteractableEntity: A new instance was created ! || Instance count : 9
+[2024.01.20-17.03.10:039][ 94]LogStruct_FInventoryItem: A new instance was created ! || Instance count : 3
+[2024.01.20-17.03.10:950][239]LogClass_SInventoryWidget: Warning: IS_RoomAvailableAtTileIndex() : FTile 0 -> Already occupied case.
+[2024.01.20-17.03.10:950][239]LogClass_SInventoryWidget: Warning: IS_RoomAvailableAtTileIndex() : FTile 1 -> Already occupied case.
+[2024.01.20-17.03.10:950][239]LogClass_SInventoryWidget: Warning: IS_RoomAvailableAtTileIndex() : FTile 2 -> Already occupied case.
+[2024.01.20-17.03.10:950][239]LogClass_SInventoryWidget: We have found a room at FTile 3 !
+[2024.01.20-17.03.10:950][239]LogClass_UInteractableEntity: A new instance was created ! || Instance count : 10
+[2024.01.20-17.03.10:950][239]LogStruct_FInventoryItem: A new instance was created ! || Instance count : 4
+[2024.01.20-17.03.11:506][327]LogViewport: Display: Viewport MouseLockMode Changed, LockOnCapture -> DoNotLock
+[2024.01.20-17.03.11:506][327]LogViewport: Display: Viewport MouseCaptureMode Changed, CapturePermanently -> CaptureDuringMouseDown
+[2024.01.20-17.03.11:506][327]LogViewport: Display: Player bShowMouseCursor Changed, False -> True
+[2024.01.20-17.03.12:160][429]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.12:197][429]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.12:197][429]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.12:465][473]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.12:661][498]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.12:669][498]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.12:762][514]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.12:955][536]LogClass_SInventoryItemWidget: Left button clicked !
+[2024.01.20-17.03.12:955][536]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.12:963][536]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.12:971][539]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GEngine is NOT NULL !
+[2024.01.20-17.03.12:971][539]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GameViewport is NOT NULL !
+[2024.01.20-17.03.12:971][539]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : I arrived here ! !
+[2024.01.20-17.03.12:971][539]LogClass_FInventoryItemDragDrop: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.13:582][624]LogTemp: Warning: Trying to match location : X=512.500 Y=80.500
+[2024.01.20-17.03.13:582][624]LogTemp: Warning: After floored to int32 : _X -> 512
+[2024.01.20-17.03.13:582][624]LogTemp: Warning: After floored to int32 : _Y -> 80
+[2024.01.20-17.03.13:582][624]LogTemp: Warning: 512 < 525 (_CrossAnchorPos + m_TileSize)
+[2024.01.20-17.03.13:582][624]LogTemp: Warning: 80 < 112 (_CrossAnchorPos + m_TileSize / 2)
+[2024.01.20-17.03.13:582][624]LogTemp: Warning: _Target Pos : 7 ; 1
+[2024.01.20-17.03.13:582][624]LogStruct_FInventoryItem: FTile.s_StructId = 0 has been freed !
+[2024.01.20-17.03.13:582][624]LogStruct_FInventoryItem: FTile.s_StructId = 1 has been freed !
+[2024.01.20-17.03.13:582][624]LogStruct_FInventoryItem: FTile.s_StructId = 8 has been freed !
+[2024.01.20-17.03.13:582][624]LogStruct_FInventoryItem: FTile.s_StructId = 9 has been freed !
+[2024.01.20-17.03.13:582][624]LogTemp: Warning: Nevermind
+[2024.01.20-17.03.13:582][624]LogTemp: FTile 6 has been occupied by the item !
+[2024.01.20-17.03.13:582][624]LogTemp: FTile 7 has been occupied by the item !
+[2024.01.20-17.03.13:582][624]LogTemp: FTile 14 has been occupied by the item !
+[2024.01.20-17.03.13:582][624]LogTemp: FTile 15 has been occupied by the item !
+[2024.01.20-17.03.13:582][624]LogStruct_FTile: An instance was destroyed ! || Instance count : -5
+[2024.01.20-17.03.13:582][624]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.13:590][624]LogClass_FInventoryItemDragDrop: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.13:593][625]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.13:680][634]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.13:687][634]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.13:728][642]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.13:992][677]LogClass_SInventoryItemWidget: Left button clicked !
+[2024.01.20-17.03.13:992][677]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.14:001][677]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.14:019][681]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GEngine is NOT NULL !
+[2024.01.20-17.03.14:019][681]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GameViewport is NOT NULL !
+[2024.01.20-17.03.14:019][681]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : I arrived here ! !
+[2024.01.20-17.03.14:019][681]LogClass_FInventoryItemDragDrop: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.14:423][737]LogTemp: Warning: RelativeLocationToTile() : _X : 561
+[2024.01.20-17.03.14:423][737]LogTemp: Warning: RelativeLocationToTile() : _Y : 178
+[2024.01.20-17.03.14:423][737]LogTemp: Warning: Aiming for FTile(7, 2)
+[2024.01.20-17.03.14:423][737]LogStruct_FInventoryItem: FTile.s_StructId = 3 has been freed !
+[2024.01.20-17.03.14:423][737]LogTemp: Warning: Nevermind
+[2024.01.20-17.03.14:423][737]LogTemp: FTile 23 has been occupied by the item !
+[2024.01.20-17.03.14:423][737]LogStruct_FTile: An instance was destroyed ! || Instance count : -6
+[2024.01.20-17.03.14:423][737]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.14:430][737]LogClass_FInventoryItemDragDrop: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.14:431][738]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.14:496][744]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.14:504][744]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.14:504][744]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.14:524][744]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.14:525][744]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.14:553][750]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.14:752][775]LogClass_SInventoryItemWidget: Left button clicked !
+[2024.01.20-17.03.14:752][775]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.14:759][775]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.14:767][778]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GEngine is NOT NULL !
+[2024.01.20-17.03.14:767][778]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GameViewport is NOT NULL !
+[2024.01.20-17.03.14:767][778]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : I arrived here ! !
+[2024.01.20-17.03.14:767][778]LogClass_FInventoryItemDragDrop: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.15:207][837]LogTemp: Warning: RelativeLocationToTile() : _X : 420
+[2024.01.20-17.03.15:207][837]LogTemp: Warning: RelativeLocationToTile() : _Y : 113
+[2024.01.20-17.03.15:207][837]LogTemp: Warning: Aiming for FTile(5, 1)
+[2024.01.20-17.03.15:207][837]LogStruct_FInventoryItem: FTile.s_StructId = 2 has been freed !
+[2024.01.20-17.03.15:207][837]LogTemp: Warning: Nevermind
+[2024.01.20-17.03.15:207][837]LogTemp: FTile 13 has been occupied by the item !
+[2024.01.20-17.03.15:207][837]LogStruct_FTile: An instance was destroyed ! || Instance count : -7
+[2024.01.20-17.03.15:207][837]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.15:215][837]LogClass_FInventoryItemDragDrop: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.15:217][838]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.03.16:162][975]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.03.16:173][975]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.03.51:259][239]LogStreaming: Display: 0.005 ms (0.002+0.002) ms for processing 27/27 objects in NotifyUnreachableObjects( Queued=0, Async=0). Removed 0/0 (157->157 tracked) packages and 0/27 (212->212 tracked) public exports.
+[2024.01.20-17.03.51:273][242]LogClass_AInteractableActor: An instance was destroyed ! || Instance count : 12
+[2024.01.20-17.03.51:273][242]LogClass_AInteractableActor: An instance was destroyed ! || Instance count : 11
+[2024.01.20-17.03.51:273][242]LogClass_AInteractableActor: An instance was destroyed ! || Instance count : 10
+[2024.01.20-17.03.51:273][242]LogClass_AInteractableActor: An instance was destroyed ! || Instance count : 9
+[2024.01.20-17.03.51:273][242]LogClass_UInteractableEntity: An instance was destroyed ! || Instance count : 9
+[2024.01.20-17.03.51:273][242]LogClass_UInteractableEntity: An instance was destroyed ! || Instance count : 8
+[2024.01.20-17.03.51:273][242]LogClass_AInteractableActor: An instance was destroyed ! || Instance count : 8
+[2024.01.20-17.03.51:273][242]LogClass_AInteractableActor: An instance was destroyed ! || Instance count : 7
+[2024.01.20-17.04.52:367][685]LogStreaming: Display: 0.001 ms for skipping 0 objects in NotifyUnreachableObjects (Queued=0, Async=0).
+[2024.01.20-17.05.53:467][332]LogStreaming: Display: 0.001 ms for skipping 0 objects in NotifyUnreachableObjects (Queued=0, Async=0).
+[2024.01.20-17.06.54:576][708]LogStreaming: Display: 0.003 ms for skipping 0 objects in NotifyUnreachableObjects (Queued=0, Async=0).
+[2024.01.20-17.07.55:678][926]LogStreaming: Display: 0.001 ms for skipping 0 objects in NotifyUnreachableObjects (Queued=0, Async=0).
+[2024.01.20-17.08.07:671][322]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.08.07:773][330]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.08.07:784][330]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.08.07:784][330]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.08.08:651][428]LogClass_SInventoryItemWidget: Left button clicked !
+[2024.01.20-17.08.08:651][428]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.08.08:661][428]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.08.08:671][431]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GEngine is NOT NULL !
+[2024.01.20-17.08.08:671][431]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GameViewport is NOT NULL !
+[2024.01.20-17.08.08:671][431]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : I arrived here ! !
+[2024.01.20-17.08.08:671][431]LogClass_FInventoryItemDragDrop: A new instance was created ! || Instance count : 1
+[2024.01.20-17.08.08:850][448]LogClass_SProfileMenu: Warning: We've sensed a drop !
+[2024.01.20-17.08.08:850][448]LogTemp: Error: We've arrived up to here !
+[2024.01.20-17.08.08:850][448]LogClass_SiltarnCharacter: Warning: p_Item class name : BP_NEA_ExplosiveBullet_C
+[2024.01.20-17.08.08:850][448]LogClass_AInteractableActor: A new instance was created ! || Instance count : 8
+[2024.01.20-17.08.08:850][448]LogStruct_FTile: An instance was destroyed ! || Instance count : -8
+[2024.01.20-17.08.08:850][448]LogStruct_FInventoryItem: FTile.s_StructId = 13 has been freed !
+[2024.01.20-17.08.08:850][448]LogStruct_FInventoryItem: An instance was destroyed ! || Instance count : 3
+[2024.01.20-17.08.08:850][448]LogClass_SInventoryItemWidget: Warning: I was destroyed !
+[2024.01.20-17.08.08:851][448]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.08.08:861][448]LogClass_FInventoryItemDragDrop: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.08.09:806][559]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.08.09:840][559]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.08.09:841][559]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.08.09:955][575]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.08.10:118][591]LogClass_SInventoryItemWidget: Left button clicked !
+[2024.01.20-17.08.10:118][591]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.08.10:127][591]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.08.10:148][595]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GEngine is NOT NULL !
+[2024.01.20-17.08.10:148][595]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : GameViewport is NOT NULL !
+[2024.01.20-17.08.10:148][595]LogClass_SInventoryItemWidget: Warning: GET_ScreenToViewportRatio() : I arrived here ! !
+[2024.01.20-17.08.10:148][595]LogClass_FInventoryItemDragDrop: A new instance was created ! || Instance count : 1
+[2024.01.20-17.08.10:288][609]LogClass_SProfileMenu: Warning: We've sensed a drop !
+[2024.01.20-17.08.10:288][609]LogTemp: Error: We've arrived up to here !
+[2024.01.20-17.08.10:288][609]LogClass_SiltarnCharacter: Warning: p_Item class name : BP_EA_Naulstrane_C
+[2024.01.20-17.08.10:288][609]LogClass_AInteractableActor: A new instance was created ! || Instance count : 9
+[2024.01.20-17.08.10:288][609]LogStruct_FTile: An instance was destroyed ! || Instance count : -9
+[2024.01.20-17.08.10:288][609]LogStruct_FInventoryItem: FTile.s_StructId = 6 has been freed !
+[2024.01.20-17.08.10:288][609]LogStruct_FInventoryItem: FTile.s_StructId = 7 has been freed !
+[2024.01.20-17.08.10:288][609]LogStruct_FInventoryItem: FTile.s_StructId = 14 has been freed !
+[2024.01.20-17.08.10:288][609]LogStruct_FInventoryItem: FTile.s_StructId = 15 has been freed !
+[2024.01.20-17.08.10:288][609]LogStruct_FInventoryItem: An instance was destroyed ! || Instance count : 2
+[2024.01.20-17.08.10:288][609]LogClass_SInventoryItemWidget: Warning: I was destroyed !
+[2024.01.20-17.08.10:288][609]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.08.10:296][609]LogClass_FInventoryItemDragDrop: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.08.11:634][779]LogClass_FItemTooltip: A new instance was created ! || Instance count : 1
+[2024.01.20-17.08.12:454][871]LogSlate: Request Window '' being destroyed
+[2024.01.20-17.08.12:465][871]LogClass_FItemTooltip: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.08.13:328][976]LogViewport: Display: Viewport MouseLockMode Changed, DoNotLock -> LockInFullscreen
+[2024.01.20-17.08.13:328][976]LogViewport: Display: Viewport MouseCaptureMode Changed, CaptureDuringMouseDown -> NoCapture
+[2024.01.20-17.08.14:301][ 91]Closing by request
+[2024.01.20-17.08.14:301][ 91]LogWindows: FPlatformMisc::RequestExit(0)
+[2024.01.20-17.08.14:301][ 91]LogWindows: FPlatformMisc::RequestExitWithStatus(0, 0)
+[2024.01.20-17.08.14:301][ 91]LogCore: Engine exit requested (reason: Win RequestExit)
+[2024.01.20-17.08.14:308][ 92]LogCore: Engine exit requested (reason: EngineExit() was called; note: exit was already requested)
+[2024.01.20-17.08.14:308][ 92]LogInit: Display: PreExit Game.
+[2024.01.20-17.08.14:312][ 92]LogWorld: BeginTearingDown for /Game/Levels/DefaultLevel
+[2024.01.20-17.08.14:312][ 92]LogWorld: UWorld::CleanupWorld for DefaultLevel, bSessionEnded=true, bCleanupResources=true
+[2024.01.20-17.08.14:317][ 92]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2024.01.20-17.08.14:870][ 92]LogAudio: Display: Beginning Audio Device Manager Shutdown (Module: AudioMixerXAudio2)...
+[2024.01.20-17.08.14:870][ 92]LogAudio: Display: Destroying 1 Remaining Audio Device(s)...
+[2024.01.20-17.08.14:870][ 92]LogAudio: Display: Audio Device unregistered from world 'DefaultLevel'.
+[2024.01.20-17.08.14:894][ 92]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=1
+[2024.01.20-17.08.14:894][ 92]LogAudioMixer: FMixerPlatformXAudio2::StopAudioStream() called. InstanceID=1
+[2024.01.20-17.08.14:900][ 92]LogAudio: Display: Audio Device Manager Shutdown
+[2024.01.20-17.08.14:900][ 92]LogSlate: Request Window 'Siltarn (64-bit Development PCD3D_SM5) ' being destroyed
+[2024.01.20-17.08.14:913][ 92]LogSlate: Window 'Siltarn (64-bit Development PCD3D_SM5) ' being destroyed
+[2024.01.20-17.08.14:914][ 92]LogWindowsTextInputMethodSystem: Activated input method: 英语(美国) - (Keyboard).
+[2024.01.20-17.08.14:937][ 92]LogSlate: Slate User Destroyed.  User Index 0, Is Virtual User: 0
+[2024.01.20-17.08.14:937][ 92]LogExit: Preparing to exit.
+[2024.01.20-17.08.14:937][ 92]LogMoviePlayer: Shutting down movie player
+[2024.01.20-17.08.14:947][ 92]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2024.01.20-17.08.14:961][ 92]LogDemo: Cleaned up 0 splitscreen connections with owner deletion
+[2024.01.20-17.08.14:963][ 92]LogExit: Game engine shut down
+[2024.01.20-17.08.14:970][ 92]LogClass_DebugActor: Destructor called !
+[2024.01.20-17.08.14:970][ 92]LogClass_DebugActor: Instance count : 0 !
+[2024.01.20-17.08.14:970][ 92]LogClass_AInteractableActor: An instance was destroyed ! || Instance count : 8
+[2024.01.20-17.08.14:970][ 92]LogClass_AInteractableActor: An instance was destroyed ! || Instance count : 7
+[2024.01.20-17.08.14:970][ 92]LogClass_AInteractableActor: An instance was destroyed ! || Instance count : 6
+[2024.01.20-17.08.14:970][ 92]LogClass_UInteractableEntity: An instance was destroyed ! || Instance count : 7
+[2024.01.20-17.08.14:970][ 92]LogClass_UInteractableEntity: An instance was destroyed ! || Instance count : 6
+[2024.01.20-17.08.14:970][ 92]LogClass_UInteractableEntity: An instance was destroyed ! || Instance count : 5
+[2024.01.20-17.08.14:970][ 92]LogClass_UInventory: An instance was destroyed ! || Instance count : 1
+[2024.01.20-17.08.14:970][ 92]LogClass_AInteractableActor: An instance was destroyed ! || Instance count : 5
+[2024.01.20-17.08.14:970][ 92]LogClass_UInteractableEntity: An instance was destroyed ! || Instance count : 4
+[2024.01.20-17.08.14:970][ 92]LogClass_Pistol: Destructor called !
+[2024.01.20-17.08.14:971][ 92]LogClass_Rifle: Destructor called !
+[2024.01.20-17.08.14:971][ 92]LogClass_Rifle: Number of instances : 0
+[2024.01.20-17.08.14:971][ 92]LogClass_AInteractableActor: An instance was destroyed ! || Instance count : 4
+[2024.01.20-17.08.14:973][ 92]LogClass_AInteractableActor: An instance was destroyed ! || Instance count : 3
+[2024.01.20-17.08.14:974][ 92]LogClass_Pistol: Destructor called !
+[2024.01.20-17.08.14:974][ 92]LogClass_AInteractableActor: An instance was destroyed ! || Instance count : 2
+[2024.01.20-17.08.14:974][ 92]LogClass_UInventory: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.08.14:974][ 92]LogStruct_FLine: An instance was destroyed ! || Instance count : -1
+[2024.01.20-17.08.14:974][ 92]LogStruct_FLine: An instance was destroyed ! || Instance count : -2
+[2024.01.20-17.08.14:974][ 92]LogStruct_FLine: An instance was destroyed ! || Instance count : -3
+[2024.01.20-17.08.14:974][ 92]LogStruct_FLine: An instance was destroyed ! || Instance count : -4
+[2024.01.20-17.08.14:974][ 92]LogStruct_FLine: An instance was destroyed ! || Instance count : -5
+[2024.01.20-17.08.14:974][ 92]LogStruct_FLine: An instance was destroyed ! || Instance count : -6
+[2024.01.20-17.08.14:974][ 92]LogStruct_FLine: An instance was destroyed ! || Instance count : -7
+[2024.01.20-17.08.14:974][ 92]LogStruct_FLine: An instance was destroyed ! || Instance count : -8
+[2024.01.20-17.08.14:974][ 92]LogStruct_FLine: An instance was destroyed ! || Instance count : -9
+[2024.01.20-17.08.14:974][ 92]LogStruct_FLine: An instance was destroyed ! || Instance count : -10
+[2024.01.20-17.08.14:974][ 92]LogStruct_FLine: An instance was destroyed ! || Instance count : -11
+[2024.01.20-17.08.14:974][ 92]LogStruct_FLine: An instance was destroyed ! || Instance count : -12
+[2024.01.20-17.08.14:974][ 92]LogStruct_FLine: An instance was destroyed ! || Instance count : -13
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -10
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -11
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -12
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -13
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -14
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -15
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -16
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -17
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -18
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -19
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -20
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -21
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -22
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -23
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -24
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -25
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -26
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -27
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -28
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -29
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -30
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -31
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -32
+[2024.01.20-17.08.14:974][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -33
+[2024.01.20-17.08.14:974][ 92]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : -1
+[2024.01.20-17.08.14:974][ 92]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : -2
+[2024.01.20-17.08.14:974][ 92]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : -3
+[2024.01.20-17.08.14:974][ 92]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : -4
+[2024.01.20-17.08.14:974][ 92]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : -5
+[2024.01.20-17.08.14:974][ 92]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : -6
+[2024.01.20-17.08.14:975][ 92]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : -7
+[2024.01.20-17.08.14:975][ 92]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : -8
+[2024.01.20-17.08.14:975][ 92]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : -9
+[2024.01.20-17.08.14:975][ 92]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : -10
+[2024.01.20-17.08.14:975][ 92]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : -11
+[2024.01.20-17.08.14:975][ 92]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : -12
+[2024.01.20-17.08.14:975][ 92]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : -13
+[2024.01.20-17.08.14:975][ 92]LogStruct_FCrossAnchor: An instance was destroyed ! || Instance count : -14
+[2024.01.20-17.08.14:975][ 92]LogStruct_FInventoryItem: An instance was destroyed ! || Instance count : 1
+[2024.01.20-17.08.14:975][ 92]LogStruct_FInventoryItem: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.08.14:975][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -34
+[2024.01.20-17.08.14:975][ 92]LogStruct_FTile: An instance was destroyed ! || Instance count : -35
+[2024.01.20-17.08.14:975][ 92]LogClass_SInventoryWidget: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.08.14:975][ 92]LogClass_SInventoryItemWidget: Warning: I was destroyed !
+[2024.01.20-17.08.14:975][ 92]LogClass_SInventoryItemWidget: Warning: I was destroyed !
+[2024.01.20-17.08.14:975][ 92]LogClass_Pistol: Destructor called !
+[2024.01.20-17.08.14:975][ 92]LogClass_UInteractableEntity: An instance was destroyed ! || Instance count : 3
+[2024.01.20-17.08.14:975][ 92]LogClass_UInteractableEntity: An instance was destroyed ! || Instance count : 2
+[2024.01.20-17.08.14:975][ 92]LogClass_AInteractableActor: An instance was destroyed ! || Instance count : 1
+[2024.01.20-17.08.14:975][ 92]LogClass_AInteractableActor: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.08.14:975][ 92]LogClass_UInteractableEntity: An instance was destroyed ! || Instance count : 1
+[2024.01.20-17.08.14:975][ 92]LogClass_UInteractableEntity: An instance was destroyed ! || Instance count : 0
+[2024.01.20-17.08.14:998][ 92]LogExit: Object subsystem successfully closed.
+[2024.01.20-17.08.15:003][ 92]LogModuleManager: Shutting down and abandoning module AutomationController (304)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module AutomationWorker (302)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module Voice (300)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module AIModule (298)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module GameplayDebugger (297)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module NavigationSystem (295)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module WmfMediaFactory (292)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module WebMMediaFactory (290)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module WebMMedia (288)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module OpenExrWrapper (286)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module ImgMediaFactory (284)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module AvfMediaFactory (282)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module CharacterAI (280)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module SessionServices (278)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module LiveCoding (276)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module MovieSceneTracks (274)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module MovieScene (272)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module StreamingPauseRendering (270)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module AudioMixerXAudio2 (268)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module AudioMixer (267)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module AudioMixerCore (266)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module TypedElementRuntime (262)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module TypedElementFramework (260)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module ImageWriteQueue (258)
+[2024.01.20-17.08.15:005][ 92]LogModuleManager: Shutting down and abandoning module ProfilerService (256)
+[2024.01.20-17.08.15:135][ 92]LogModuleManager: Shutting down and abandoning module TaskGraph (254)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module Synthesis (252)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module ResonanceAudio (250)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module ProceduralMeshComponent (248)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module MobilePatchingUtils (246)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module GooglePAD (244)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module DynamicMesh (242)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module GeometryAlgorithms (240)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module GeometryCacheTracks (238)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module GeometryCache (236)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module CustomMeshComponent (234)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module CableComponent (232)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module AudioCapture (230)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module AudioCaptureRtAudio (229)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module AssetTags (226)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module ArchVisCharacter (224)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module AppleImageUtils (222)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module AndroidPermission (220)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module ActorLayerUtilities (218)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module TemplateSequence (214)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module SequencerScripting (212)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module MediaCompositing (210)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module ImgMedia (208)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module OpenImageDenoise (206)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module GeometryCollectionTracks (204)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module ChaosNiagara (202)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module BackChannel (200)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module AutomationUtils (198)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module UObjectPlugin (196)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module OodleNetworkHandlerComponent (194)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module ControlRigSpline (192)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module Siltarn (190)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module SoundFields (188)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module SignificanceManager (186)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module RuntimePhysXCooking (184)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module LocationServicesBPLibrary (182)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module AudioSynesthesia (180)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module AudioAnalyzer (179)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module AudioSynesthesiaCore (176)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module ActorSequence (174)
+[2024.01.20-17.08.15:141][ 92]LogModuleManager: Shutting down and abandoning module UdpMessaging (172)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module TcpMessaging (170)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module ImgMediaEngine (168)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module NiagaraAnimNotifies (166)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module Niagara (164)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module SignalProcessing (163)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module NiagaraCore (160)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module PBIK (158)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module FullBodyIK (156)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module FacialAnimation (154)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module AnimationSharing (152)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module GameplayCameras (150)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module IKRig (148)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module ControlRig (146)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module LevelSequence (145)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module Paper2D (142)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module WindowsMoviePlayer (140)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module WebMMoviePlayer (138)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module AndroidFileServer (136)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module NetworkReplayStreaming (134)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module PacketHandler (132)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module ClothingSystemRuntimeNv (130)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module MediaAssets (128)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module Overlay (126)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module FunctionalTesting (124)
+[2024.01.20-17.08.15:142][ 92]LogModuleManager: Shutting down and abandoning module MessageLog (122)
+[2024.01.20-17.08.15:143][ 92]LogModuleManager: Shutting down and abandoning module UMG (120)
+[2024.01.20-17.08.15:143][ 92]LogModuleManager: Shutting down and abandoning module SlateReflector (118)
+[2024.01.20-17.08.15:143][ 92]LogModuleManager: Shutting down and abandoning module Slate (116)
+[2024.01.20-17.08.15:143][ 92]LogModuleManager: Shutting down and abandoning module SlateCore (114)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module MRMesh (112)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module Messaging (110)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module HeadMountedDisplay (108)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module Networking (106)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module Core (104)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module ImageWrapper (100)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module InputCore (98)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module Settings (96)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module ChaosSolverEngine (94)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module FieldSystemEngine (93)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module Chaos (90)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module GeometryCore (89)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module WindowsPlatformFeatures (86)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module GameplayMediaEncoder (85)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module AVEncoder (84)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module D3D12RHI (80)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module WindowsDeviceProfileSelector (78)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module ExampleDeviceProfileSelector (76)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module ChunkDownloader (74)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module LauncherChunkInstaller (72)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module OnlineSubsystemUtils (70)
+[2024.01.20-17.08.15:145][ 92]LogModuleManager: Shutting down and abandoning module OnlineSubsystem (68)
+[2024.01.20-17.08.15:147][ 92]LogModuleManager: Shutting down and abandoning module HTTP (63)
+[2024.01.20-17.08.15:147][ 92]LogHttp: Warning: Cleaning up 0 outstanding Http requests.
+[2024.01.20-17.08.15:154][ 92]LogModuleManager: Shutting down and abandoning module SSL (62)
+[2024.01.20-17.08.15:156][ 92]LogModuleManager: Shutting down and abandoning module OnlineServicesCommon (58)
+[2024.01.20-17.08.15:156][ 92]LogModuleManager: Shutting down and abandoning module OnlineServicesInterface (56)
+[2024.01.20-17.08.15:156][ 92]LogModuleManager: Shutting down and abandoning module WmfMedia (54)
+[2024.01.20-17.08.15:156][ 92]LogModuleManager: Shutting down and abandoning module Media (53)
+[2024.01.20-17.08.15:157][ 92]LogModuleManager: Shutting down and abandoning module ExrReaderGpu (50)
+[2024.01.20-17.08.15:157][ 92]LogModuleManager: Shutting down and abandoning module NiagaraVertexFactories (48)
+[2024.01.20-17.08.15:157][ 92]LogModuleManager: Shutting down and abandoning module NiagaraShader (46)
+[2024.01.20-17.08.15:157][ 92]LogModuleManager: Shutting down and abandoning module ChaosCloth (44)
+[2024.01.20-17.08.15:157][ 92]LogModuleManager: Shutting down and abandoning module VariantManagerContent (42)
+[2024.01.20-17.08.15:157][ 92]LogModuleManager: Shutting down and abandoning module DatasmithContent (40)
+[2024.01.20-17.08.15:157][ 92]LogModuleManager: Shutting down and abandoning module PixWinPlugin (38)
+[2024.01.20-17.08.15:157][ 92]LogModuleManager: Shutting down and abandoning module AISupportModule (36)
+[2024.01.20-17.08.15:157][ 92]LogModuleManager: Shutting down and abandoning module PythonScriptPluginPreload (34)
+[2024.01.20-17.08.15:157][ 92]LogModuleManager: Shutting down and abandoning module PlatformCryptoOpenSSL (32)
+[2024.01.20-17.08.15:157][ 92]LogModuleManager: Shutting down and abandoning module PlatformCryptoTypes (30)
+[2024.01.20-17.08.15:157][ 92]LogModuleManager: Shutting down and abandoning module PlatformCrypto (28)
+[2024.01.20-17.08.15:157][ 92]LogModuleManager: Shutting down and abandoning module RenderCore (26)
+[2024.01.20-17.08.15:157][ 92]LogModuleManager: Shutting down and abandoning module Landscape (24)
+[2024.01.20-17.08.15:157][ 92]LogModuleManager: Shutting down and abandoning module SlateRHIRenderer (22)
+[2024.01.20-17.08.15:158][ 92]LogModuleManager: Shutting down and abandoning module AnimGraphRuntime (20)
+[2024.01.20-17.08.15:158][ 92]LogModuleManager: Shutting down and abandoning module Renderer (18)
+[2024.01.20-17.08.15:158][ 92]LogModuleManager: Shutting down and abandoning module Engine (16)
+[2024.01.20-17.08.15:158][ 92]LogModuleManager: Shutting down and abandoning module CoreUObject (14)
+[2024.01.20-17.08.15:158][ 92]LogModuleManager: Shutting down and abandoning module SandboxFile (12)
+[2024.01.20-17.08.15:158][ 92]LogModuleManager: Shutting down and abandoning module PakFile (10)
+[2024.01.20-17.08.15:159][ 92]LogModuleManager: Shutting down and abandoning module RSA (9)
+[2024.01.20-17.08.15:159][ 92]LogModuleManager: Shutting down and abandoning module NetworkFile (6)
+[2024.01.20-17.08.15:159][ 92]LogModuleManager: Shutting down and abandoning module StreamingFile (4)
+[2024.01.20-17.08.15:159][ 92]LogModuleManager: Shutting down and abandoning module StorageServerClient (2)
+[2024.01.20-17.08.15:183][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: 71 items to release
+[2024.01.20-17.08.15:183][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "ParticleStatePosition_0", 1024 x 1024 x 1, Mips: 1, Format: 0x2, Flags: 0x1
+[2024.01.20-17.08.15:183][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "ParticleStateVelocity_0", 1024 x 1024 x 1, Mips: 1, Format: 0xA, Flags: 0x1
+[2024.01.20-17.08.15:185][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "ParticleStatePosition_1", 1024 x 1024 x 1, Mips: 1, Format: 0x2, Flags: 0x1
+[2024.01.20-17.08.15:185][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "ParticleStateVelocity_1", 1024 x 1024 x 1, Mips: 1, Format: 0xA, Flags: 0x1
+[2024.01.20-17.08.15:185][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "ParticleAttributes", 1024 x 1024 x 1, Mips: 1, Format: 0x5A, Flags: 0x1
+[2024.01.20-17.08.15:186][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "ParticleAttributes", 1024 x 1024 x 1, Mips: 1, Format: 0x5A, Flags: 0x1
+[2024.01.20-17.08.15:186][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "BackBuffer0", 1920 x 1080 x 1, Mips: 1, Format: 0x18, Flags: 0x1
+[2024.01.20-17.08.15:186][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "BackBuffer1", 1920 x 1080 x 1, Mips: 1, Format: 0x18, Flags: 0x1
+[2024.01.20-17.08.15:186][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "BackBuffer2", 1920 x 1080 x 1, Mips: 1, Format: 0x18, Flags: 0x1
+[2024.01.20-17.08.15:223][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "VolumetricLightmap", 30 x 5 x 5, Mips: 1, Format: 0x1A, Flags: 0x4
+[2024.01.20-17.08.15:224][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "VolumetricLightmap", 30 x 5 x 5, Mips: 1, Format: 0x1B, Flags: 0x4
+[2024.01.20-17.08.15:224][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "VolumetricLightmap", 30 x 5 x 5, Mips: 1, Format: 0x1B, Flags: 0x4
+[2024.01.20-17.08.15:224][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "VolumetricLightmap", 30 x 5 x 5, Mips: 1, Format: 0x1B, Flags: 0x4
+[2024.01.20-17.08.15:224][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "VolumetricLightmap", 30 x 5 x 5, Mips: 1, Format: 0x1B, Flags: 0x4
+[2024.01.20-17.08.15:225][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "VolumetricLightmap", 30 x 5 x 5, Mips: 1, Format: 0x1B, Flags: 0x4
+[2024.01.20-17.08.15:225][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "VolumetricLightmap", 30 x 5 x 5, Mips: 1, Format: 0x1B, Flags: 0x4
+[2024.01.20-17.08.15:225][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "VolumetricLightmap", 30 x 5 x 5, Mips: 1, Format: 0x3D, Flags: 0x4
+[2024.01.20-17.08.15:226][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "Scene view state exposure readback", 16 x 1 x 1, Mips: 1, Format: 0x0, Flags: 0x0
+[2024.01.20-17.08.15:226][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "Scene view state exposure readback", 16 x 1 x 1, Mips: 1, Format: 0x0, Flags: 0x0
+[2024.01.20-17.08.15:226][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "Scene view state exposure readback", 16 x 1 x 1, Mips: 1, Format: 0x0, Flags: 0x0
+[2024.01.20-17.08.15:227][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "Scene view state exposure readback", 16 x 1 x 1, Mips: 1, Format: 0x0, Flags: 0x0
+[2024.01.20-17.08.15:227][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "VolumetricLightmap", 16 x 16 x 16, Mips: 1, Format: 0x1E, Flags: 0x4
+[2024.01.20-17.08.15:227][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "PrimitiveSceneDataTexture", 40 x 1 x 1, Mips: 1, Format: 0x2, Flags: 0x4
+[2024.01.20-17.08.15:227][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "PrimitiveSceneDataTexture", 40 x 1 x 1, Mips: 1, Format: 0x2, Flags: 0x4
+[2024.01.20-17.08.15:228][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "ParticleCurveTexture", 512 x 512 x 1, Mips: 1, Format: 0x5A, Flags: 0x1
+[2024.01.20-17.08.15:228][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "TSR.History.LowFrequencies", 1920 x 1080 x 1, Mips: 1, Format: 0x1A, Flags: 0x4
+[2024.01.20-17.08.15:229][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "TSR.History.HighFrequencies", 1920 x 1080 x 1, Mips: 1, Format: 0x1A, Flags: 0x4
+[2024.01.20-17.08.15:229][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "TSR.History.Metadata", 1920 x 1080 x 1, Mips: 1, Format: 0x31, Flags: 0x4
+[2024.01.20-17.08.15:229][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "TSR.History.SubpixelInfo", 1920 x 1080 x 1, Mips: 1, Format: 0x39, Flags: 0x4
+[2024.01.20-17.08.15:230][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "TSR.History.Translucency", 1920 x 1080 x 1, Mips: 1, Format: 0x1A, Flags: 0x4
+[2024.01.20-17.08.15:231][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "TSR.History.TranslucencyAlpha", 1920 x 1080 x 1, Mips: 1, Format: 0x3D, Flags: 0x4
+[2024.01.20-17.08.15:231][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "SkyAtmosphere.RealTimeSkyCapViewLut", 192 x 104 x 1, Mips: 1, Format: 0x1A, Flags: 0x4
+[2024.01.20-17.08.15:232][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "SkyAtmosphere.RealTimeSkyCapCamera360APLut", 32 x 32 x 16, Mips: 1, Format: 0xA, Flags: 0x4
+[2024.01.20-17.08.15:233][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "LightShaft.TemporalAA", 960 x 540 x 1, Mips: 1, Format: 0xA, Flags: 0x4
+[2024.01.20-17.08.15:233][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "Shadow.Virtual.PhysicalPagePool", 16384 x 4096 x 1, Mips: 1, Format: 0x2A, Flags: 0x4
+[2024.01.20-17.08.15:243][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "SkyAtmosphere.TransmittanceLut", 256 x 64 x 1, Mips: 1, Format: 0x1A, Flags: 0x4
+[2024.01.20-17.08.15:244][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "SkyAtmosphere.MultiScatteredLuminanceLut", 32 x 32 x 1, Mips: 1, Format: 0x1A, Flags: 0x4
+[2024.01.20-17.08.15:244][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "SkyAtmosphere.DistantSkyLightLut", 1 x 1 x 1, Mips: 1, Format: 0x1A, Flags: 0x4
+[2024.01.20-17.08.15:244][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "SkyAtmosphere.SkyViewLut", 192 x 104 x 1, Mips: 1, Format: 0x1A, Flags: 0x4
+[2024.01.20-17.08.15:245][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "SkyAtmosphere.CameraAPVolume0", 32 x 32 x 16, Mips: 1, Format: 0xA, Flags: 0x4
+[2024.01.20-17.08.15:245][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "SkyAtmosphere.RealTimeSkyCapViewLut", 192 x 104 x 1, Mips: 1, Format: 0x1A, Flags: 0x4
+[2024.01.20-17.08.15:246][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "SkyAtmosphere.RealTimeSkyCapCamera360APLut", 32 x 32 x 16, Mips: 1, Format: 0xA, Flags: 0x4
+[2024.01.20-17.08.15:246][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "SkyLight.ConvolvedSkyRenderTarget0", 128 x 128 x 6, Mips: 8, Format: 0x1A, Flags: 0x5
+[2024.01.20-17.08.15:246][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "SkyLight.CapturedSkyRenderTarget", 128 x 128 x 6, Mips: 8, Format: 0x1A, Flags: 0x5
+[2024.01.20-17.08.15:247][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "SkyLight.ConvolvedSkyRenderTarget1", 128 x 128 x 6, Mips: 8, Format: 0x1A, Flags: 0x5
+[2024.01.20-17.08.15:247][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "VolumetricRenderTarget.Tracing", 480 x 270 x 1, Mips: 1, Format: 0xA, Flags: 0x5
+[2024.01.20-17.08.15:247][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "VolumetricRenderTarget.TracingDepth", 480 x 270 x 1, Mips: 1, Format: 0x22, Flags: 0x5
+[2024.01.20-17.08.15:248][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "VolumetricRenderTarget.Reconstruct", 960 x 540 x 1, Mips: 1, Format: 0xA, Flags: 0x1
+[2024.01.20-17.08.15:248][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "VolumetricRenderTarget.ReconstructDepth", 960 x 540 x 1, Mips: 1, Format: 0x22, Flags: 0x1
+[2024.01.20-17.08.15:248][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "EyeAdaptation", 1 x 1 x 1, Mips: 1, Format: 0x2, Flags: 0x5
+[2024.01.20-17.08.15:249][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "CombineLUTs", 32 x 32 x 32, Mips: 1, Format: 0x18, Flags: 0x1
+[2024.01.20-17.08.15:249][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "TSR.History.LowFrequencies", 1920 x 1080 x 1, Mips: 1, Format: 0x1A, Flags: 0x4
+[2024.01.20-17.08.15:249][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "VolumetricRenderTarget.Reconstruct", 960 x 540 x 1, Mips: 1, Format: 0xA, Flags: 0x1
+[2024.01.20-17.08.15:249][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "VolumetricRenderTarget.ReconstructDepth", 960 x 540 x 1, Mips: 1, Format: 0x22, Flags: 0x1
+[2024.01.20-17.08.15:249][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "EyeAdaptation", 1 x 1 x 1, Mips: 1, Format: 0x2, Flags: 0x5
+[2024.01.20-17.08.15:250][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "TSR.History.HighFrequencies", 1920 x 1080 x 1, Mips: 1, Format: 0x1A, Flags: 0x4
+[2024.01.20-17.08.15:250][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "TSR.History.Metadata", 1920 x 1080 x 1, Mips: 1, Format: 0x31, Flags: 0x4
+[2024.01.20-17.08.15:250][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "TSR.History.SubpixelInfo", 1920 x 1080 x 1, Mips: 1, Format: 0x39, Flags: 0x4
+[2024.01.20-17.08.15:250][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "TSR.History.Translucency", 1920 x 1080 x 1, Mips: 1, Format: 0x1A, Flags: 0x4
+[2024.01.20-17.08.15:251][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "TSR.History.TranslucencyAlpha", 1920 x 1080 x 1, Mips: 1, Format: 0x3D, Flags: 0x4
+[2024.01.20-17.08.15:251][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "TSR.Output", 1920 x 1080 x 1, Mips: 2, Format: 0x1A, Flags: 0x4
+[2024.01.20-17.08.15:251][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "LightShaft.TemporalAA", 960 x 540 x 1, Mips: 1, Format: 0xA, Flags: 0x4
+[2024.01.20-17.08.15:251][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "Shadow.Virtual.ProcessGPUInstanceInvalidationsIndirectArgs", 65536 x 1 x 1, Mips: 1, Format: 0x0, Flags: 0x4
+[2024.01.20-17.08.15:251][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "Shadow.Virtual.DrawIndirectArgsBuffer", 65536 x 1 x 1, Mips: 1, Format: 0x0, Flags: 0x4
+[2024.01.20-17.08.15:251][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "ShaderDraw.IndirectBuffer", 65536 x 1 x 1, Mips: 1, Format: 0x0, Flags: 0x4
+[2024.01.20-17.08.15:251][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "InstanceCulling.DrawIndirectArgsBuffer", 65536 x 1 x 1, Mips: 1, Format: 0x0, Flags: 0x4
+[2024.01.20-17.08.15:252][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "MotionBlur.FilterDispatchParameters", 65532 x 1 x 1, Mips: 1, Format: 0x0, Flags: 0x4
+[2024.01.20-17.08.15:252][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "StagedRead", 262144 x 1 x 1, Mips: 1, Format: 0x0, Flags: 0x0
+[2024.01.20-17.08.15:253][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "StagedRead", 262144 x 1 x 1, Mips: 1, Format: 0x0, Flags: 0x0
+[2024.01.20-17.08.15:253][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "StagedRead", 262144 x 1 x 1, Mips: 1, Format: 0x0, Flags: 0x0
+[2024.01.20-17.08.15:253][ 92]LogD3D12RHI: Display: D3D12 ReleaseResources: "HairLUT0", 1 x 1 x 1, Mips: 1, Format: 0x5A, Flags: 0x1
+[2024.01.20-17.08.15:302][ 92]LogD3D12RHI: ~FD3D12DynamicRHI
+[2024.01.20-17.08.15:303][ 92]LogExit: Exiting.
+[2024.01.20-17.08.15:312][ 92]Log file closed, 01/20/24 18:08:15
