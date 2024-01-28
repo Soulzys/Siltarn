@@ -21,7 +21,6 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 	void NEW_SightTransform(const FTransform& p_NewRelativeToHand);
-	void ACTIVATE_Aiming(bool p_bIsAiming);
 
 protected:
 

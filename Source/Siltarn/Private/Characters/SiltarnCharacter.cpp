@@ -12,21 +12,24 @@
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/MovementComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 
-DEFINE_LOG_CATEGORY(LogClass_SiltarnCharacter);
+DEFINE_LOG_CATEGORY(LogClass_ASiltarnCharacter);
 
 ASiltarnCharacter::ASiltarnCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	bReplicates = true;
 
 	m_bIsAiming              = false                 ;
 	m_bActionAimingPressed   = false                 ;
 	m_AimState               = EAimState::NOT_AIMING ;
-	m_AimingMovementDuration = 0.1f                  ; 
+	m_AimingMovementDuration = 0.1f                  ;
 	m_TimeElapsed            = 0.0f                  ;
 	m_TraceDistance          = 1200.0f               ;
 
-	m_DefaultCameraRelativeLocation = FVector(15.5f, 0.0f, 5.15f)  ;
+	m_DefaultCameraRelativeLocation = FVector(15.5f, 0.0f, 5.15f)  ; // Luciole 3 - 23/01/2024 || Should be moved into proper variables
 	m_AimingCameraRelativeLocation  = FVector(15.5f, 3.65f, 5.15f) ;
 
 	//
@@ -90,6 +93,13 @@ ASiltarnCharacter::ASiltarnCharacter()
 	m_DebugFrontSideCamera->SetActive(false);
 }
 
+void ASiltarnCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const 
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(ASiltarnCharacter, m_bIsAiming);
+}
+
 void ASiltarnCharacter::BeginPlay()
 {
 	Super::BeginPlay();
@@ -102,9 +112,6 @@ void ASiltarnCharacter::INIT_References()
 {
 	verifyf((m_AnimInstance = Cast<USiltarnCharacterAnimInstance>(m_CharacterMesh->GetAnimInstance())) != nullptr,
 		TEXT("ASiltarnCharacter::INIT_References() : m_AnimInstance wasn't properly initialized !"));
-
-	verifyf((m_PlayerController = Cast<ASiltarnPlayerController>(Controller)) != nullptr, 
-		TEXT("ASiltarnCharacter::INIT_References() : m_PlayerController wasn't properly initialized !"));
 }
 
 void ASiltarnCharacter::INIT_SpawnWeaponAndAttachToCharacter()
@@ -236,23 +243,43 @@ void ASiltarnCharacter::LookUp(const float p_Value)
 }
 
 void ASiltarnCharacter::ACTION_Aiming_PRESSED()
-{
+{	
 	if (m_AnimInstance)
 	{
-		if (m_bIsAiming == true)
+		if (m_bIsAiming == true) // Replicate m_bIsAiming
 		{
-			m_AnimInstance->ACTIVATE_Aiming(false);
 			m_bIsAiming = false;
 			m_bActionAimingPressed = true;
 			m_AimState = EAimState::NOT_AIMING;
+
+			if (!HasAuthority())
+			{
+				RPC_Server_Aim(true);
+			}
 		}
 		else
 		{
-			m_AnimInstance->ACTIVATE_Aiming(true);
 			m_bIsAiming = true;
 			m_bActionAimingPressed = true;
 			m_AimState = EAimState::AIMING;
+
+			if (!HasAuthority())
+			{
+				RPC_Server_Aim(false);
+			}
 		}
+	}
+}
+
+void ASiltarnCharacter::RPC_Server_Aim_Implementation(bool p_bIsAiming)
+{
+	if (p_bIsAiming == true)
+	{
+		m_bIsAiming = false;
+	}
+	else
+	{
+		m_bIsAiming = true;
 	}
 }
 
@@ -333,12 +360,14 @@ void ASiltarnCharacter::ACTION_DebugCameraFront_PRESSED()
 
 void ASiltarnCharacter::ACTION_Interact_PRESSED()
 {
-	checkf(GetController() != nullptr, TEXT("ASiltarnCharacter::ACTION_Interact_PRESSED() : GetController() returns NULL !"));
-	checkf(GetWorld()      != nullptr, TEXT("ASiltarnCharacter::ACTION_Interact_PRESSED() : GetWorld() returns NULL !"     ));
+	if (CheckAndAssignPlayerController() == false)
+	{
+		return;
+	}
 
-	FVector _Loc;
-	FRotator _Rot;
-	FHitResult _HitResult;
+	FVector _Loc          ;
+	FRotator _Rot         ;
+	FHitResult _HitResult ;
 
 	GetController()->GetPlayerViewPoint(_Loc, _Rot);
 
@@ -348,8 +377,6 @@ void ASiltarnCharacter::ACTION_Interact_PRESSED()
 	FCollisionQueryParams _TraceParams;
 
 	bool _bHit = GetWorld()->LineTraceSingleByChannel(_HitResult, _Start, _End, ECC_Visibility, _TraceParams);
-
-	//DrawDebugLine(GetWorld(), _Start, _End, FColor::Orange, false, 2.0f);
 
 	if (_bHit)
 	{
@@ -434,14 +461,16 @@ void ASiltarnCharacter::SWITCH_Camera(float p_DeltaTime)
 
 void ASiltarnCharacter::TRACE_LineForward()
 {
-	checkf(GetController() != nullptr, TEXT("ASiltarnCharacter::TRACE_LineForward() : GetController() returns NULL !"));
-	checkf(GetWorld()      != nullptr, TEXT("ASiltarnCharacter::TRACE_LineForward() : GetWorld() returns NULL !"     ));
+	if (CheckAndAssignPlayerController() == false)
+	{
+		return;
+	}
 
-	FVector _Loc;
-	FRotator _Rot;
-	FHitResult _Hit;
+	FVector    _Loc ;
+	FRotator   _Rot ;
+	FHitResult _Hit ;
 
-	GetController()->GetPlayerViewPoint(_Loc, _Rot);
+	m_PlayerController->GetPlayerViewPoint(_Loc, _Rot);
 
 	FVector _Start = _Loc;
 	FVector _End = _Start + (_Rot.Vector() * m_TraceDistance); // Rot.Vector() is the forward vector
@@ -450,12 +479,8 @@ void ASiltarnCharacter::TRACE_LineForward()
 
 	bool _bHit = GetWorld()->LineTraceSingleByChannel(_Hit, _Start, _End, ECC_Visibility, _TraceParams);
 
-	//DrawDebugLine(GetWorld(), _Start, _End, FColor::Orange, false, 0.01f);
-
 	if (_bHit)
 	{
-		//DrawDebugBox(GetWorld(), _Hit.ImpactPoint, FVector(5.0f), FColor::Emerald, false, 0.01f);
-
 		AActor* _Interactable = _Hit.GetActor();
 
 		if (_Interactable == nullptr)
@@ -508,13 +533,7 @@ void ASiltarnCharacter::DROP_Item(UPickupEntity* p_Item)
 	const USkeletalMeshSocket* _DropItemSocket = m_CharacterMesh->GetSocketByName("DropItemSocket");
 	check(_DropItemSocket != nullptr);
 
-	UE_LOG(LogTemp, Error, TEXT("We've arrived up to here !"));
-
 	const FTransform _SocketTransform = _DropItemSocket->GetSocketTransform(m_CharacterMesh);
-
-	//EPickupEntityType _ItemEntityType = p_Item->GET_ItemType();
-
-	//if ()
 
 	const FVector _Loc(_SocketTransform.GetLocation());
 	const FRotator _Rot(_SocketTransform.GetRotation().Rotator());
@@ -523,21 +542,55 @@ void ASiltarnCharacter::DROP_Item(UPickupEntity* p_Item)
 	check(p_Item->GET_ActorClass() != nullptr);
 	check(p_Item->GET_ActorClass()->GetName().IsEmpty() == false);
 
-	UE_LOG(LogClass_SiltarnCharacter, Warning, TEXT("p_Item class name : %s"), *p_Item->GET_ActorClass()->GetName());
+	UE_LOG(LogClass_ASiltarnCharacter, Warning, TEXT("p_Item class name : %s"), *p_Item->GET_ActorClass()->GetName());
 
-
-
-	//APickupActor* _Actor = GetWorld()->SpawnActor<APickupActor>(p_Item->GET_ActorClass(), _SocketTransform.GetLocation(), _SocketTransform.GetRotation().Rotator());
-
-
-
-
-	GetWorld()->SpawnActor(p_Item->GET_ActorClass(), &_Loc, &_Rot);
-
+	if (HasAuthority())
+	{
+		GetWorld()->SpawnActor(p_Item->GET_ActorClass(), &_Loc, &_Rot);
+	}
+	else
+	{
+		RPC_Server_SpawnDroppedItemInTheWorld(p_Item->GET_ActorClass(), _Loc, _Rot);
+	}
 
 	/*
 		Luciole || Need to eventually normalize the mass of all pickup items and set the impulse to a constant.
 		No matter the size of the object, they all should be dropped following the same curve.
 	*/
 	//_Actor->ADD_Impulse(_Actor->GetActorForwardVector() * 250000.0f);
+}
+
+void ASiltarnCharacter::RPC_Server_SpawnDroppedItemInTheWorld_Implementation(UClass* p_ActorClass, const FVector p_Location, const FRotator p_Rotation)
+{
+	GetWorld()->SpawnActor(p_ActorClass, &p_Location, &p_Rotation);
+}
+
+bool ASiltarnCharacter::CheckAndAssignPlayerController()
+{
+	if (m_PlayerController != nullptr)
+	{
+		return true;
+	}
+
+
+	UWorld* _World = GetWorld();
+
+	if (_World)
+	{
+		UGameInstance* _GameInstance = UGameplayStatics::GetGameInstance(GetWorld());
+
+		if (_GameInstance)
+		{
+			m_PlayerController = Cast<ASiltarnPlayerController>(_GameInstance->GetFirstLocalPlayerController(_World));
+
+			if (m_PlayerController)
+			{
+				return true;
+			}
+		}
+	}
+
+	UE_LOG(LogClass_ASiltarnCharacter, Warning, TEXT("CheckAndAssignPlayerController() : Could not initialize m_PlayerController. Returning false."));
+
+	return false;
 }

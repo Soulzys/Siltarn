@@ -9,8 +9,8 @@ DECLARE_LOG_CATEGORY_EXTERN(LogClass_SiltarnPlayerController, Log, All);
 class AGameplayHUD;
 class UInventory;
 class UInteractableEntity;
+class UPickupEntity;
 
-struct FPickupItemData;
 
 UCLASS()
 class SILTARN_API ASiltarnPlayerController : public APlayerController
@@ -30,8 +30,15 @@ public:
 	//
 	bool DOES_InventoryHasRoomForItem(const FIntPoint& p_ItemSize);
 	FORCEINLINE UInventory* GET_Inventory() const { return m_Inventory; }
-	void ADD_ItemToInventory(UPickupEntity* p_Item);
+	void ADD_ItemToInventory(UPickupEntity* p_Item, AActor* p_Pickup);
 	void DISPLAY_InteractableEntityTag(const FString& p_ItemName);
+
+
+	/*
+		RPCs
+	*/
+	UFUNCTION(Server, Reliable)
+	void RPC_Server_DestroyPickedupActor(AActor* p_Pickup);
 
 
 protected:

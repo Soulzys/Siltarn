@@ -12,6 +12,7 @@ AInteractableActor::AInteractableActor()
 	// Var initialization
 	//
 	PrimaryActorTick.bCanEverTick = false;
+	this->bReplicates = true;
 
 	m_Name            = "None"          ;
 	m_bIsInteractible = true            ;

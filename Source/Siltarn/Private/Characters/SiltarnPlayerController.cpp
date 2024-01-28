@@ -117,7 +117,7 @@ bool ASiltarnPlayerController::DOES_InventoryHasRoomForItem(const FIntPoint& p_I
 	return false;
 }
 
-void ASiltarnPlayerController::ADD_ItemToInventory(UPickupEntity* p_Item)
+void ASiltarnPlayerController::ADD_ItemToInventory(UPickupEntity* p_Item, AActor* p_Pickup)
 {
 	if (m_Inventory && m_GameplayHUD)
 	{
@@ -126,7 +126,24 @@ void ASiltarnPlayerController::ADD_ItemToInventory(UPickupEntity* p_Item)
 		if (_bWasAddingItemSuccessful)
 		{
 			m_Inventory->ADD_Item(p_Item);
-		}		
+
+			if (HasAuthority()) // If server
+			{
+				p_Pickup->Destroy();
+			}
+			else // if client
+			{
+				RPC_Server_DestroyPickedupActor(p_Pickup); // Asks the server to destroy the actor, which notifies all the Clients that the AActor was destroyed
+			}
+		}
+	}
+}
+
+void ASiltarnPlayerController::RPC_Server_DestroyPickedupActor_Implementation(AActor* p_Pickup)
+{
+	if (p_Pickup)
+	{
+		p_Pickup->Destroy();
 	}
 }
 

@@ -36,9 +36,9 @@ void ANonEquipableActor::INTERFACE_Interact(ASiltarnPlayerController* p_SiltarnC
 		{
 			UNonEquipableEntity* _NewEntity = NewObject<UNonEquipableEntity>();
 			_NewEntity->Initialize_Entity(this);
-			p_SiltarnController->ADD_ItemToInventory(_NewEntity);
+			p_SiltarnController->ADD_ItemToInventory(_NewEntity, this);
 
-			Destroy();
+			//Destroy();
 		}
 	}
 }

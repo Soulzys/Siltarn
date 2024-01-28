@@ -26,9 +26,9 @@ void APickupActor::INTERFACE_Interact(ASiltarnPlayerController* p_SiltarnControl
 		{
 			UPickupEntity* _NewEntity = NewObject<UPickupEntity>();
 			_NewEntity->Initialize_Entity(this);
-			p_SiltarnController->ADD_ItemToInventory(_NewEntity);
+			p_SiltarnController->ADD_ItemToInventory(_NewEntity, this);
 
-			Destroy();
+			//Destroy();
 		}
 	}	
 }

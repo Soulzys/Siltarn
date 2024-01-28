@@ -4,7 +4,7 @@
 #include "GameFramework/Character.h"
 #include "SiltarnCharacter.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogClass_SiltarnCharacter, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogClass_ASiltarnCharacter, Log, All);
 
 class USkeletalMeshComponent        ;
 class UCameraComponent              ;
@@ -37,6 +37,7 @@ public:
 	ASiltarnCharacter();
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	void DROP_Item(UPickupEntity* p_Item);
 
@@ -44,6 +45,7 @@ public:
 	//FORCEINLINE ARifle*                 GET_Weapon()                 const { return m_Weapon;                 }
 	FORCEINLINE APistol*                GET_Pistol()                 const { return m_Pistol;                 }
 	FORCEINLINE float                   GET_AimingMovementDuration() const { return m_AimingMovementDuration; } // Used in AnimBP for "Blend Poses by bool"
+	FORCEINLINE bool                    GET_bIsAiming()              const { return m_bIsAiming; }
 
 	FVector GET_DefaultCameraLocation() const;
 
@@ -75,7 +77,19 @@ private:
 
 	void SWITCH_Camera(float p_DeltaTime);
 	void TRACE_LineForward();
-	
+
+	// If m_PlayerController was null and couldn't be assigned, return false. Otherwise, if m_PlayerController is usable, returns true. 
+	bool CheckAndAssignPlayerController();
+
+	/*
+		RPCs
+	*/
+	UFUNCTION(Server, Reliable)
+	void RPC_Server_SpawnDroppedItemInTheWorld(UClass* p_ActorClass, const FVector p_Location, const FRotator p_Rotation);
+
+	UFUNCTION(Server, Reliable)
+	void RPC_Server_Aim(bool p_bIsAiming);
+
 
 protected:
 
@@ -130,7 +144,9 @@ protected:
 
 	USiltarnCharacterAnimInstance* m_AnimInstance = nullptr;
 
+	UPROPERTY(Replicated)
 	bool m_bIsAiming;
+
 	bool m_bActionAimingPressed;
 
 private:
@@ -141,8 +157,6 @@ private:
 	float m_AimingMovementDuration;
 
 	float m_TimeElapsed;
-
-	bool m_bIsTesting = false;
 
 	ADebugActor* m_DebugActor = nullptr;
 
@@ -156,5 +170,4 @@ private:
 	IInteractInterface* m_FocusedInteractActor = nullptr;
 
 	ASiltarnPlayerController* m_PlayerController = nullptr;
-
 };
