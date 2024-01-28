@@ -31,6 +31,11 @@ void USiltarnCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
 	SETUPDATE_PitchPerBone();
+
+	if (m_SiltarnCharacter)
+	{
+		m_bIsAiming = m_SiltarnCharacter->GET_bIsAiming();
+	}
 }
 
 void USiltarnCharacterAnimInstance::SETUPDATE_PitchPerBone()
@@ -67,9 +72,4 @@ void USiltarnCharacterAnimInstance::GET_CameraPosition()
 {
 	m_CamSocketLocation = GetOwningComponent()->GetSocketTransform(FName("AimingCamera"), ERelativeTransformSpace::RTS_ParentBoneSpace).GetLocation()           ;
 	m_CamSocketRotation = GetOwningComponent()->GetSocketTransform(FName("AimingCamera"), ERelativeTransformSpace::RTS_ParentBoneSpace).GetRotation().Rotator() ;
-}
-
-void USiltarnCharacterAnimInstance::ACTIVATE_Aiming(bool p_bIsAiming)
-{
-	m_bIsAiming = p_bIsAiming;
 }

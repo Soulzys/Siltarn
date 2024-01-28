@@ -31,9 +31,6 @@ void AEquipableActor::INTERFACE_Interact(ASiltarnPlayerController* p_SiltarnCont
 {
 	checkf(p_SiltarnController != nullptr, TEXT("AEquipableActor::INTERFACE_Interact() : p_SiltarnController is NULL !"));
 
-	UE_LOG(LogClass_AEquipableActor, Log, TEXT("Icon path name : %s"), *m_Icon->GetPathName());
-	UE_LOG(LogClass_AEquipableActor, Log, TEXT("Icon's material path name : %s"), *m_Icon->GetMaterial()->GetPathName());
-
 	if (m_bIsInteractible)
 	{
 		bool _bEnoughRoomForItem = p_SiltarnController->DOES_InventoryHasRoomForItem(m_InventorySpace);
@@ -42,9 +39,9 @@ void AEquipableActor::INTERFACE_Interact(ASiltarnPlayerController* p_SiltarnCont
 		{
 			UEquipableEntity* _NewEntity = NewObject<UEquipableEntity>();
 			_NewEntity->Initialize_Entity(this);
-			p_SiltarnController->ADD_ItemToInventory(_NewEntity);
+			p_SiltarnController->ADD_ItemToInventory(_NewEntity, this);
 
-			Destroy();
+			//Destroy();
 		}		
 	}
 }
