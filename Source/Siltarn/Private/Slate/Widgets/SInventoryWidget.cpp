@@ -295,7 +295,6 @@ void SInventoryWidget::Construct(const FArguments& p_InArgs)
 		[
 			SAssignNew(m_Canvas, SCanvas)
 		]
-
 	];
 
 	BUILD_Tiles();

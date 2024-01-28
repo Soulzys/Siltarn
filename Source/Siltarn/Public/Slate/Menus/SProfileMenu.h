@@ -9,7 +9,8 @@ DECLARE_LOG_CATEGORY_EXTERN(LogClass_SProfileMenu, Log, All);
 class AGameplayHUD            ;
 class SInventoryWidget        ;
 class SCharacterProfileWidget ;
-class UPickupEntity;
+class UPickupEntity           ;
+class SCharacterProfileWidget ;
 
 class SILTARN_API SProfileMenu : public SCompoundWidget
 {
@@ -51,6 +52,7 @@ private:
 	TWeakObjectPtr<AGameplayHUD> m_HUDOwner = nullptr;
 
 	TSharedPtr<SInventoryWidget> m_InventoryWidget = nullptr;
+	TSharedPtr<SCharacterProfileWidget> m_CharacterProfileWidget = nullptr;
 
 
 	const FSiltarnGeneralStyleContainerStruct m_GeneralStyle = FSiltarnStyleController::GET_SiltarnGeneralStyleContainerStruct();

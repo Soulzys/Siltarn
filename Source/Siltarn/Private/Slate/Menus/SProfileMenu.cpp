@@ -54,14 +54,19 @@ void SProfileMenu::Construct(const FArguments& p_InArgs)
 					[
 						SNew(SBox)
 						.WidthOverride(m_NumberOfColumns * m_TileSize)
-						.HeightOverride(500.0f)
+						.HeightOverride(650.0f) // Luciole 28/01/2024 | Need to turn this into a variable. Do not forget to change a_CanvasSize below
 						[
-							SNew(SBorder)
+							/*SNew(SBorder)
 							.BorderImage(FCoreStyle::Get().GetBrush("NoBrush"))
 							//.BorderImage(&m_GeneralStyle.m_DebuggingBlue_SlateBrush)
-							.Padding(0)
+							.Padding(0)*/
+
+							SAssignNew(m_CharacterProfileWidget, SCharacterProfileWidget)
+							.a_CanvasSize(FVector2D(m_NumberOfColumns * m_TileSize, 650.0f))
+							.a_ItemSlotSize(FVector2D(75.0f)) // Luciole 28/01/2024 | Need to turn this into a variable, perhaps set in the HUD ? 
+							.a_TileSize((float)m_TileSize)
 						]
-					]
+					]					
 				]
 					
 				// Inventory
@@ -100,49 +105,6 @@ void SProfileMenu::Construct(const FArguments& p_InArgs)
 				.Padding(0)
 			]			
 		]
-		
-
-		/*SNew(SCanvas)
-		
-		+ SCanvas::Slot()
-		.HAlign(HAlign_Right)
-		.VAlign(VAlign_Center)
-		[
-			SNew(SBorder)
-			.HAlign(HAlign_Right)
-			.VAlign(VAlign_Center)
-			.Padding(0)
-			[
-				SNew(SBox)
-				.WidthOverride (m_NumberOfColumns * m_TileSize)
-				.HeightOverride(m_NumberOfRows    * m_TileSize)
-				[
-					SAssignNew(m_InventoryWidget, SInventoryWidget)
-					.a_NumberOfColumns(m_NumberOfColumns)
-					.a_NumberOfRows   (m_NumberOfRows   )
-					.a_TileSize       (m_TileSize       )
-					.a_HUDOwner       (m_HUDOwner       )
-				]
-			]
-		]*/
-		
-
-		/*SNew(SBorder)
-		.HAlign(HAlign_Right)
-		.VAlign(VAlign_Center)
-		.Padding(0)
-		[
-			SNew(SBox)
-			.WidthOverride (m_NumberOfColumns * m_TileSize)
-			.HeightOverride(m_NumberOfRows    * m_TileSize)
-			[
-				SAssignNew(m_InventoryWidget, SInventoryWidget)
-				.a_NumberOfColumns(m_NumberOfColumns)
-				.a_NumberOfRows   (m_NumberOfRows   )
-				.a_TileSize       (m_TileSize       )
-				.a_HUDOwner       (m_HUDOwner       )
-			]
-		]	*/	
 	];
 }
 
