@@ -1,16 +1,17 @@
 #include "Slate/Widgets/SInventoryWidget.h"
 #include "Siltarn/Public/Slate/Widgets/SInventoryItemWidget.h"
 #include "Siltarn/Public/Slate/Widgets/SDebugWidget.h"
-#include "Siltarn/Public/HUDs/GameplayHUD.h"
-#include "Siltarn/Public/Interactables/PickupEntity.h"
+#include "Siltarn/Public/Slate/Menus/SProfileMenu.h"
 #include "Siltarn/Public/Slate/Styles/SiltarnGeneralStyleContainer.h"
 #include "Siltarn/Public/Slate/Styles/SiltarnStyleController.h"
+#include "Siltarn/Public/HUDs/GameplayHUD.h"
+#include "Siltarn/Public/Interactables/PickupEntity.h"
 
-DEFINE_LOG_CATEGORY(LogClass_SInventoryWidget);
-DEFINE_LOG_CATEGORY(LogStruct_FLine);
-DEFINE_LOG_CATEGORY(LogStruct_FTile);
-DEFINE_LOG_CATEGORY(LogStruct_FInventoryItem)
-DEFINE_LOG_CATEGORY(LogStruct_FCrossAnchor)
+DEFINE_LOG_CATEGORY(LogClass_SInventoryWidget );
+DEFINE_LOG_CATEGORY(LogStruct_FLine           );
+DEFINE_LOG_CATEGORY(LogStruct_FTile           );
+DEFINE_LOG_CATEGORY(LogStruct_FInventoryItem  );
+DEFINE_LOG_CATEGORY(LogStruct_FCrossAnchor    );
 
 
 /*****************************************************************************************
@@ -273,6 +274,7 @@ void SInventoryWidget::Construct(const FArguments& p_InArgs)
 	m_NumberOfRows    = p_InArgs._a_NumberOfRows   .Get();
 	m_TileSize        = p_InArgs._a_TileSize       .Get();
 	m_HUDOwner        = p_InArgs._a_HUDOwner             ;
+	m_ParentWidget    = p_InArgs._a_ParentWidget.Get()   ;
 
 	//
 
@@ -414,6 +416,7 @@ void SInventoryWidget::CONSTRUCT_CanvasItemSlot(UPickupEntity* p_Item, FTile* p_
 		.a_Tile    (p_ControlTilePtr)
 		.a_ItemData(p_Item          )
 		.a_ItemSize(_ItemSize       )
+		.a_ParentWidget(this)
 	]
 	.Expose(_Slot);
 
@@ -935,6 +938,23 @@ void SInventoryWidget::CLEAN_Everything()
 	}
 
 	m_InventoryItemsMap .Empty();
+}
+
+void SInventoryWidget::MOVE_ItemToCharacterProfileWidget(SInventoryItemWidget* p_ItemWidget)
+{
+	if (m_ParentWidget && p_ItemWidget)
+	{
+		bool _bWasMoved = m_ParentWidget->MOVE_ItemToCharacterProfileMenu(p_ItemWidget);
+
+		if (_bWasMoved)
+		{
+			// Remove widget slot, therefore deleting the SInventoryItemWidget
+		}
+		else
+		{
+			// Do nothing I suppose ? 
+		}
+	}
 }
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION

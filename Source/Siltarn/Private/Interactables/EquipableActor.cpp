@@ -6,7 +6,7 @@ DEFINE_LOG_CATEGORY(LogClass_AEquipableActor);
 
 AEquipableActor::AEquipableActor()
 {
-	
+	m_bIsEquipable = true;
 }
 
 AEquipableActor::~AEquipableActor()

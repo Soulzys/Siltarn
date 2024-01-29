@@ -7,9 +7,10 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogClass_UPickupEntity, Log, All);
 
-class UMaterialInstance;
-class AInteractableActor;
-class APickupActor;
+class UMaterialInstance  ;
+class AInteractableActor ;
+class APickupActor       ;
+
 
 UENUM()
 enum class EItemAnchorType : uint8
@@ -52,6 +53,7 @@ public:
 	FORCEINLINE int32                     GET_ItemId()         const { return m_ItemId         ; }
 	FORCEINLINE int32                     GET_ResellValue()    const { return m_ResellValue    ; }
 	FORCEINLINE const FString&            GET_Description()    const { return m_Description    ; }
+	FORCEINLINE bool                      IS_Equipable()       const { return m_bIsEquipable   ; }
 
 	void SET_ItemId       (uint32 p_NewId); // This function should only be called once, in UInventory in CREATE_NewItemId()
 	void SET_ControlTileId(uint32 p_NewId);
@@ -73,6 +75,8 @@ protected:
 	            int32                     m_ResellValue          ;
 	            FString                   m_Description          ;
 	            EPickupActorRaretyType    m_Rarety               ;
+				bool                      m_bIsEquipable         ;
+				
 
 	FLinearColor m_RaretyTypesColors[5] =
 	{ 
@@ -82,6 +86,9 @@ protected:
 		FLinearColor(0.566864f , 0.0f      , 0.697917f , 1.0f) , // Purple --> Epic
 		FLinearColor(0.947917f , 0.221753f , 0.0f      , 1.0f)   // Orange --> Legendary
 	};
+
+
+	
 
 	// *** Item data that are endogenous to UPickupEntity
 	//

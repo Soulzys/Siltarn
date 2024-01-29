@@ -9,6 +9,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogClass_SiltarnPlayerController, Log, All);
 class AGameplayHUD;
 class UInventory;
 class UInteractableEntity;
+class UPickupEntity;
 
 struct FPickupItemData;
 

@@ -26,6 +26,7 @@ public:
 	FORCEINLINE FString                         GET_Description()    const { return m_Description    ; }
 	FORCEINLINE TSubclassOf<AInteractableActor> GET_ItemClass()      const { return m_ItemClass      ; }
 	FORCEINLINE EPickupActorRaretyType          GET_Rarety()         const { return m_Rarety         ; }
+	FORCEINLINE bool                            GET_IsEquipable()    const { return m_bIsEquipable   ; }
 
 protected:
 
@@ -40,4 +41,5 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Actor data", meta = (DisplayName = "Blueprint Class"         )) TSubclassOf<AInteractableActor> m_ItemClass = nullptr ;
 	UPROPERTY(EditAnywhere, Category = "Actor data", meta = (DisplayName = "Rarety"                  )) EPickupActorRaretyType          m_Rarety              ;	
 	UPROPERTY(EditAnywhere, Category = "Actor data", meta = (DisplayName = "Is placed in level"      )) bool                            m_bIsPlacedInLevel    ;
+	UPROPERTY(EditAnywhere, Category = "Actor data", meta = (DisplayName = "Is equipable"            )) bool                            m_bIsEquipable        ;
 };

@@ -7,6 +7,7 @@ DEFINE_LOG_CATEGORY(LogClass_APickupActor);
 APickupActor::APickupActor()
 {
 	m_bIsPlacedInLevel = false;
+	m_bIsEquipable = false;
 }
 
 APickupActor::~APickupActor()

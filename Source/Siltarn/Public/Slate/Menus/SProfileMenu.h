@@ -9,6 +9,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogClass_SProfileMenu, Log, All);
 class AGameplayHUD            ;
 class SInventoryWidget        ;
 class SCharacterProfileWidget ;
+class SInventoryItemWidget    ;
 class UPickupEntity           ;
 class SCharacterProfileWidget ;
 
@@ -40,6 +41,8 @@ public:
 
 	bool DOES_InventoryHasRoomForItem(const FIntPoint& p_ItemSize);
 	bool ADD_ItemToInventory(UPickupEntity* p_Item);
+	bool MOVE_ItemToCharacterProfileMenu(SInventoryItemWidget* p_ItemWidget);
+
 
 private:
 

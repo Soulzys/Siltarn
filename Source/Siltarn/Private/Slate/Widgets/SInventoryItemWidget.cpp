@@ -2,6 +2,7 @@
 #include "Siltarn/Public/Interactables/PickupEntity.h"
 #include "Siltarn/Public/Interactables/EquipableEntity.h"
 #include "Siltarn/Public/Interactables/NonEquipableEntity.h"
+#include "Siltarn/Public/Slate/Widgets/SInventoryWidget.h"
 #include "Styling/CoreStyle.h"
 
 DEFINE_LOG_CATEGORY(LogClass_SInventoryItemWidget  );
@@ -10,6 +11,11 @@ DEFINE_LOG_CATEGORY(LogClass_FItemTooltip          );
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
+SInventoryItemWidget::SInventoryItemWidget()
+{
+	m_bIsInInventory = true;
+}
+
 SInventoryItemWidget::~SInventoryItemWidget()
 {
 	UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("I was destroyed !"));
@@ -17,12 +23,15 @@ SInventoryItemWidget::~SInventoryItemWidget()
 
 void SInventoryItemWidget::Construct(const FArguments& p_InArgs)
 {
-	m_Tile     = p_InArgs._a_Tile; // Luciole ! We are not using m_Tile anymore. However, the game crashed when dealing with two items in the inventory. Need to investigate. Once it is done, remove m_Tile from here.
-	m_ItemSize = p_InArgs._a_ItemSize;
-	m_ItemData = p_InArgs._a_ItemData;
+	m_Tile         = p_InArgs._a_Tile; // Luciole ! We are not using m_Tile anymore. However, the game crashed when dealing with two items in the inventory. Need to investigate. Once it is done, remove m_Tile from here.
+	m_ItemSize     = p_InArgs._a_ItemSize;
+	m_ItemData     = p_InArgs._a_ItemData;
+	m_ParentWidget = p_InArgs._a_ParentWidget;
 
-
-	m_ItemIcon.SetResourceObject(m_ItemData->GET_Icon());
+	if (m_ItemData)
+	{
+		m_ItemIcon.SetResourceObject(m_ItemData->GET_Icon());
+	}
 
 	m_ItemBackgroundColor.R = 1.0f;
 	m_ItemBackgroundColor.G = 1.0f;
@@ -97,10 +106,9 @@ void SInventoryItemWidget::OnMouseLeave(const FPointerEvent& MouseEvent)
 
 FReply SInventoryItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
+	// Left click -> drag 
 	if (MouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
 	{
-		UE_LOG(LogClass_SInventoryItemWidget, Log, TEXT("Left button clicked !"));
-
 		if (m_ItemTooltip.IsValid())
 		{
 			m_ItemTooltip->DESTROY_Tooltip();
@@ -108,6 +116,31 @@ FReply SInventoryItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, cons
 		}
 		
 		return FReply::Handled().DetectDrag(SharedThis(this), EKeys::LeftMouseButton).CaptureMouse(SharedThis(this));
+	}
+
+	// Right click -> place in character profile widget
+	if (MouseEvent.GetEffectingButton() == EKeys::RightMouseButton)
+	{
+		if (m_bIsInInventory)
+		{
+			if (m_ItemData->IS_Equipable())
+			{
+				if (m_ItemTooltip.IsValid())
+				{
+					m_ItemTooltip->DESTROY_Tooltip();
+					m_ItemTooltip.Reset();
+				}
+
+				if (m_ParentWidget)
+				{
+					m_ParentWidget->MOVE_ItemToCharacterProfileWidget(this);
+				}
+
+				return DeleteItemWidget();
+			}
+
+			return FReply::Handled();
+		}		
 	}
 
 	return FReply::Unhandled();
@@ -194,6 +227,21 @@ float SInventoryItemWidget::GET_ScreenToViewportRatio() const
 void SInventoryItemWidget::UPDATE_Tile(FTile& p_NewTile)
 {
 	m_Tile = &p_NewTile;
+}
+
+FReply SInventoryItemWidget::DeleteItemWidget()
+{
+
+
+	return FReply::Handled();
+}
+
+void SInventoryItemWidget::UPDATE_Widget(SInventoryItemWidget* p_ItemWidget)
+{
+	m_IconImage = p_ItemWidget->m_IconImage ;
+	m_ItemData  = p_ItemWidget->m_ItemData  ;
+
+	m_ItemIcon.SetResourceObject(m_ItemData->GET_Icon());
 }
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION

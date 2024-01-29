@@ -34,18 +34,22 @@ class SILTARN_API SInventoryItemWidget : public SCompoundWidget
 
 public:
 
-	SLATE_BEGIN_ARGS(SInventoryItemWidget) 
-	{}
+	SLATE_BEGIN_ARGS(SInventoryItemWidget) : _a_ItemData    (nullptr)         , 
+											 _a_Tile        (nullptr)         , 
+											 _a_ItemSize    (FVector2D(0.0f)) , 
+											 _a_ParentWidget(nullptr)
+											 {}
 
-	SLATE_ARGUMENT(UPickupEntity* , a_ItemData )
-	SLATE_ARGUMENT(FTile*         , a_Tile     )
-
-	SLATE_ARGUMENT(FVector2D, a_ItemSize)
+	SLATE_ARGUMENT(UPickupEntity*   , a_ItemData     )
+	SLATE_ARGUMENT(FTile*           , a_Tile         )
+	SLATE_ARGUMENT(FVector2D        , a_ItemSize     )
+	SLATE_ARGUMENT(SInventoryWidget*, a_ParentWidget )
 
 	SLATE_END_ARGS()
 
 public:
 
+	SInventoryItemWidget();
 	~SInventoryItemWidget();
 
 	virtual void   OnMouseEnter         (const FGeometry& MyGeometry, const FPointerEvent& MouseEvent) override;
@@ -57,6 +61,13 @@ public:
 	void Construct(const FArguments& p_InArgs);
 	void UPDATE_Tile(FTile& p_NewTile);
 
+	void UPDATE_Widget(SInventoryItemWidget* p_ItemWidget);
+
+	// Custom FReply
+	FReply DeleteItemWidget();
+
+	FORCEINLINE UPickupEntity* GET_ItemData() const { return m_ItemData; }
+
 private:
 
 	float GET_ScreenToViewportRatio() const;
@@ -67,22 +78,18 @@ private:
 	FLinearColor m_ItemBackgroundColor;
 	FVector2D    m_ItemSize;
 
-	// Widgets
-	//
 	TSharedPtr<SBorder> m_BackgroundBorder = nullptr;
-
-private:
-
 	FTile*                   m_Tile        = nullptr;
 	TSharedPtr<SImage>       m_IconImage   = nullptr;
 	TSharedPtr<FItemTooltip> m_ItemTooltip = nullptr;
 	UPickupEntity*           m_ItemData    = nullptr;
+	SInventoryWidget* m_ParentWidget;
+
+	bool m_bIsInInventory;
 
 	
 	const FSiltarnGeneralStyleContainerStruct m_GeneralStyle = FSiltarnStyleController::GET_SiltarnGeneralStyleContainerStruct();
 };
-
-
 
 
 

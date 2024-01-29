@@ -86,6 +86,7 @@ void SProfileMenu::Construct(const FArguments& p_InArgs)
 							.a_NumberOfRows   (m_NumberOfRows   )
 							.a_TileSize       (m_TileSize       )
 							.a_HUDOwner       (m_HUDOwner       )
+							.a_ParentWidget   (this             )
 						]
 					]
 				]
@@ -139,6 +140,17 @@ bool SProfileMenu::ADD_ItemToInventory(UPickupEntity* p_Item)
 	if (p_Item)
 	{
 		return m_InventoryWidget->ADD_Item(p_Item);
+	}
+
+	return false;
+}
+
+bool SProfileMenu::MOVE_ItemToCharacterProfileMenu(SInventoryItemWidget* p_ItemWidget)
+{
+	if (m_CharacterProfileWidget && p_ItemWidget)
+	{
+		m_CharacterProfileWidget->PLACE_ItemInSlot(p_ItemWidget);
+		return true;
 	}
 
 	return false;

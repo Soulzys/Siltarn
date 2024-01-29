@@ -13,7 +13,8 @@ class SCanvas              ;
 class SBorder              ;
 class SInventoryItemWidget ;
 class SDebugWidget         ;
-class UPickupEntity;
+class SProfileMenu         ;
+class UPickupEntity        ;
 
 /*
 	The sole purpose of this struct is to draw the horizontal and vertical lines of the inventory widget in Paint()
@@ -184,9 +185,10 @@ public:
 	
 	SLATE_BEGIN_ARGS(SInventoryWidget) {}
 
-	SLATE_ATTRIBUTE(int32, a_NumberOfColumns)
-	SLATE_ATTRIBUTE(int32, a_NumberOfRows)
-	SLATE_ATTRIBUTE(int32, a_TileSize)
+	SLATE_ATTRIBUTE(int32        , a_NumberOfColumns)
+	SLATE_ATTRIBUTE(int32        , a_NumberOfRows   )
+	SLATE_ATTRIBUTE(int32        , a_TileSize       )
+	SLATE_ATTRIBUTE(SProfileMenu*, a_ParentWidget   )
 
 	SLATE_ARGUMENT(TWeakObjectPtr<AGameplayHUD>, a_HUDOwner)
 
@@ -205,6 +207,7 @@ public:
 	bool TRY_AddingItemToInventory(const FIntPoint& p_ItemSize);
 	bool ADD_Item(UPickupEntity* p_Item);
 	void REMOVE_Item(FTile* p_ItemControlTile);
+	void MOVE_ItemToCharacterProfileWidget(SInventoryItemWidget* p_ItemWidget);
 
 	void DEBUG_DisplayTilesStatusThroughUELogs();
 
@@ -297,6 +300,7 @@ private:
 	TSharedPtr<SCanvas> m_Canvas = nullptr;
 	TSharedPtr<SBorder> m_BorderTest = nullptr;		
 	FLinearColor m_InventoryBackgroundColor;
+	SProfileMenu* m_ParentWidget = nullptr;
 
 
 
