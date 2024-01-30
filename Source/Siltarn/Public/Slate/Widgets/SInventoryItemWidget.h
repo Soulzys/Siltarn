@@ -57,6 +57,8 @@ public:
 	virtual FReply OnMouseButtonDown    (const FGeometry& MyGeometry, const FPointerEvent& MouseEvent) override;
 	virtual FReply OnDragDetected       (const FGeometry& MyGeometry, const FPointerEvent& MouseEvent) override;
 	virtual bool   SupportsKeyboardFocus() const override { return true; }
+	virtual FReply OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent) override;
+	virtual FReply OnKeyUp(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent) override;
 
 	void Construct(const FArguments& p_InArgs);
 	void UPDATE_Tile(FTile& p_NewTile);
@@ -86,6 +88,7 @@ private:
 	SInventoryWidget* m_ParentWidget;
 
 	bool m_bIsInInventory;
+	bool m_bIsShiftKeyDown;
 
 	
 	const FSiltarnGeneralStyleContainerStruct m_GeneralStyle = FSiltarnStyleController::GET_SiltarnGeneralStyleContainerStruct();

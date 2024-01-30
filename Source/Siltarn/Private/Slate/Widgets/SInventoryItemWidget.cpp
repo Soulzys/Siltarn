@@ -14,6 +14,7 @@ BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 SInventoryItemWidget::SInventoryItemWidget()
 {
 	m_bIsInInventory = true;
+	m_bIsShiftKeyDown = false;
 }
 
 SInventoryItemWidget::~SInventoryItemWidget()
@@ -82,6 +83,10 @@ void SInventoryItemWidget::OnMouseEnter(const FGeometry& MyGeometry, const FPoin
 	{
 		m_ItemTooltip->MOVE_Window(MyGeometry.GetAbsolutePositionAtCoordinates(FVector2D(0)));
 	}
+
+
+	// Allows the player to receive keyboard inputs as soon the mouse enters the widget
+	FSlateApplication::Get().SetUserFocus(0, SharedThis(this), EFocusCause::SetDirectly);
 }
 
 void SInventoryItemWidget::OnMouseLeave(const FPointerEvent& MouseEvent)
@@ -102,6 +107,9 @@ void SInventoryItemWidget::OnMouseLeave(const FPointerEvent& MouseEvent)
 		m_ItemTooltip->DESTROY_Tooltip();
 		m_ItemTooltip.Reset(); // If we do not add this line, the FItemTooltip that is created when the item is hovered for the first time is never deleted 
 	}
+
+	// Unfocuses this widget. I have no idea what default widget is focused after. In fact, is this actually supposed to be done this way ? I have no idea. 
+	FSlateApplication::Get().ClearUserFocus(0);
 }
 
 FReply SInventoryItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
@@ -121,29 +129,69 @@ FReply SInventoryItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, cons
 	// Right click -> place in character profile widget
 	if (MouseEvent.GetEffectingButton() == EKeys::RightMouseButton)
 	{
-		if (m_bIsInInventory)
+		/*
+			Luciole 31/01/2024 | Combining SHIFT + Right mouse button works. The issue now is that the game inputs are also consumed.
+			This, for some reason that are probably related to widgets' focus, causes the player to activate the ADS feature.
+			A quick fix would be to set the game mode to "UI only" when we open the inventory, but do we actually want that ? 
+			Also, why, prior implementing the Keyboard + Mouse clicks, the MouseEvent.GetEffectingButton() == EKeys::RightMouseButton did not trigger
+			the ADS ? We need to investigate on that. 
+		*/
+		if (m_bIsShiftKeyDown)
 		{
-			if (m_ItemData->IS_Equipable())
+			UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("SHIFT + left mouse button works !"));
+		}
+		else
+		{
+			if (m_bIsInInventory)
 			{
-				if (m_ItemTooltip.IsValid())
+				if (m_ItemData->IS_Equipable())
 				{
-					m_ItemTooltip->DESTROY_Tooltip();
-					m_ItemTooltip.Reset();
+					if (m_ItemTooltip.IsValid())
+					{
+						m_ItemTooltip->DESTROY_Tooltip();
+						m_ItemTooltip.Reset();
+					}
+
+					if (m_ParentWidget)
+					{
+						m_ParentWidget->MOVE_ItemToCharacterProfileWidget(this);
+					}
+
+					return DeleteItemWidget();
 				}
 
-				if (m_ParentWidget)
-				{
-					m_ParentWidget->MOVE_ItemToCharacterProfileWidget(this);
-				}
-
-				return DeleteItemWidget();
+				return FReply::Handled();
 			}
-
-			return FReply::Handled();
 		}		
-	}
+	}	
 
 	return FReply::Unhandled();
+}
+
+FReply SInventoryItemWidget::OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
+{
+	if (InKeyEvent.GetKey() == EKeys::LeftShift)
+	{
+		if (m_bIsShiftKeyDown)
+		{
+			return FReply::Handled();
+		}
+
+		UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("SHIFT key is down !"));
+		m_bIsShiftKeyDown = true;
+	}
+
+	return FReply::Handled();
+}
+
+FReply SInventoryItemWidget::OnKeyUp(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
+{
+	if (InKeyEvent.GetKey() == EKeys::LeftShift)
+	{
+		UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("SHIFT key is up !"));
+		m_bIsShiftKeyDown = false;
+	}
+	return FReply::Handled();
 }
 
 FReply SInventoryItemWidget::OnDragDetected(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
