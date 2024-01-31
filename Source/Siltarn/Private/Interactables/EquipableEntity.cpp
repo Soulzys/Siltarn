@@ -25,6 +25,8 @@ void UEquipableEntity::Initialize_Entity(AEquipableActor* p_IA)
 	m_Rarety            = p_IA->GET_Rarety()            ;
 	m_bIsEquipable      = p_IA->GET_IsEquipable()       ;
 	m_ItemEquipmentType = p_IA->GET_ItemEquipmentType() ;
+	m_bIsDroppableAsIs  = p_IA->GET_IsDroppableAsIs()   ;
+	m_DroppableBagClass = p_IA->GET_DroppableBagClass() ;
 }
 
 EPickupEntityType UEquipableEntity::GET_ItemType() const

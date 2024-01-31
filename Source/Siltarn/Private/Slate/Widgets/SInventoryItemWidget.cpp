@@ -13,8 +13,9 @@ BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
 SInventoryItemWidget::SInventoryItemWidget()
 {
-	m_bIsInInventory = true;
-	m_bIsShiftKeyDown = false;
+	m_bIsInInventory          = true  ;
+	m_bIsShiftKeyDown         = false ;
+	m_bIsSelectedForGroupDrop = false ;
 }
 
 SInventoryItemWidget::~SInventoryItemWidget()
@@ -97,10 +98,11 @@ void SInventoryItemWidget::OnMouseLeave(const FPointerEvent& MouseEvent)
 		return;
 	}
 
-	m_ItemBackgroundColor.A = 0.0f;
-
-
-	m_BackgroundBorder->SetBorderBackgroundColor(m_ItemBackgroundColor);
+	if (!m_bIsSelectedForGroupDrop)
+	{
+		m_ItemBackgroundColor.A = 0.0f;
+		m_BackgroundBorder->SetBorderBackgroundColor(m_ItemBackgroundColor);
+	}	
 
 	if (m_ItemTooltip.IsValid())
 	{
@@ -109,7 +111,8 @@ void SInventoryItemWidget::OnMouseLeave(const FPointerEvent& MouseEvent)
 	}
 
 	// Unfocuses this widget. I have no idea what default widget is focused after. In fact, is this actually supposed to be done this way ? I have no idea. 
-	FSlateApplication::Get().ClearUserFocus(0);
+	FSlateApplication::Get().ClearUserFocus(0); // Do we need this ? Try to remove it later
+	FSlateApplication::Get().SetUserFocusToGameViewport(0);
 }
 
 FReply SInventoryItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
@@ -135,10 +138,17 @@ FReply SInventoryItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, cons
 			A quick fix would be to set the game mode to "UI only" when we open the inventory, but do we actually want that ? 
 			Also, why, prior implementing the Keyboard + Mouse clicks, the MouseEvent.GetEffectingButton() == EKeys::RightMouseButton did not trigger
 			the ADS ? We need to investigate on that. 
+
+			Luciole 31/01/2024 | I'm too lazy to solve this out right now. Currently switching to "UI only" mode when opening the inventory.
+				! Update ! --> In fact, we're switching back to "Game and UI" because "UI only" blocks the other input events, such as pressing "I" to 
+				close the inventory when it's open...
 		*/
 		if (m_bIsShiftKeyDown)
 		{
-			UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("SHIFT + left mouse button works !"));
+			m_ItemBackgroundColor.B = 0.5f;
+			m_ItemBackgroundColor.A = 0.5f;
+			m_BackgroundBorder->SetBorderBackgroundColor(m_ItemBackgroundColor);
+			m_bIsSelectedForGroupDrop = true;
 		}
 		else
 		{

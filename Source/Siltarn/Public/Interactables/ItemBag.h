@@ -11,6 +11,10 @@ class SILTARN_API AItemBag : public AInteractableActor
 
 public:
 
+protected:
 
+	virtual void BeginPlay() override;
+
+private:
 	
 };

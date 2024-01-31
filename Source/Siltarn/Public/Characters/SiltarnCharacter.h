@@ -4,7 +4,7 @@
 #include "GameFramework/Character.h"
 #include "SiltarnCharacter.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogClass_SiltarnCharacter, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogClass_ASiltarnCharacter, Log, All);
 
 class USkeletalMeshComponent        ;
 class UCameraComponent              ;

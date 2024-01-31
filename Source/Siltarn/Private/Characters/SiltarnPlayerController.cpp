@@ -6,6 +6,11 @@
 
 DEFINE_LOG_CATEGORY(LogClass_SiltarnPlayerController);
 
+ASiltarnPlayerController::ASiltarnPlayerController()
+{
+	m_bIsInventoryOpen = false;
+}
+
 void ASiltarnPlayerController::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
@@ -59,11 +64,13 @@ void ASiltarnPlayerController::TOGGLE_Inventory()
 		case EWidgetVisibilityState::VISIBLE:
 			SetInputMode(FInputModeGameAndUI());
 			SetShowMouseCursor(true);
+			m_bIsInventoryOpen = true;
 			break;
 
 		case EWidgetVisibilityState::COLLAPSED:
 			SetInputMode(FInputModeGameOnly());
 			SetShowMouseCursor(false);
+			m_bIsInventoryOpen = false;
 			break;
 
 		case EWidgetVisibilityState::BUG:

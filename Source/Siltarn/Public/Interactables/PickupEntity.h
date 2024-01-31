@@ -47,13 +47,15 @@ public:
 	virtual EPickupEntityType GET_ItemType()    const ;
 	const   FLinearColor&     GET_RaretyColor() const ;
 
-	FORCEINLINE const FIntPoint&          GET_InventorySpace() const { return m_InventorySpace ; }
-	FORCEINLINE UMaterialInstance*        GET_Icon()           const { return m_Icon           ; }
-	FORCEINLINE TSubclassOf<APickupActor> GET_ActorClass()     const { return m_ActorClass     ; }
-	FORCEINLINE int32                     GET_ItemId()         const { return m_ItemId         ; }
-	FORCEINLINE int32                     GET_ResellValue()    const { return m_ResellValue    ; }
-	FORCEINLINE const FString&            GET_Description()    const { return m_Description    ; }
-	FORCEINLINE bool                      IS_Equipable()       const { return m_bIsEquipable   ; }
+	FORCEINLINE const FIntPoint&                GET_InventorySpace()    const { return m_InventorySpace    ; }
+	FORCEINLINE UMaterialInstance*              GET_Icon()              const { return m_Icon              ; }
+	FORCEINLINE TSubclassOf<APickupActor>       GET_ActorClass()        const { return m_ActorClass        ; }
+	FORCEINLINE int32                           GET_ItemId()            const { return m_ItemId            ; }
+	FORCEINLINE int32                           GET_ResellValue()       const { return m_ResellValue       ; }
+	FORCEINLINE const FString&                  GET_Description()       const { return m_Description       ; }
+	FORCEINLINE TSubclassOf<AInteractableActor> GET_DroppableBagClass() const { return m_DroppableBagClass ; }
+	FORCEINLINE bool                            IS_Equipable()          const { return m_bIsEquipable      ; }
+	FORCEINLINE bool                            IS_DroppableAsIs()      const { return m_bIsDroppableAsIs  ; }
 
 	void SET_ItemId       (uint32 p_NewId); // This function should only be called once, in UInventory in CREATE_NewItemId()
 	void SET_ControlTileId(uint32 p_NewId);
@@ -69,13 +71,15 @@ protected:
 
 protected:
 
-	UPROPERTY() UMaterialInstance*        m_Icon = nullptr       ; // UPROPERTY is added in order to avoid m_Icon to be removed by the garbage collector
-	            FIntPoint                 m_InventorySpace       ;
-	UPROPERTY()	TSubclassOf<APickupActor> m_ActorClass = nullptr ;
-	            int32                     m_ResellValue          ;
-	            FString                   m_Description          ;
-	            EPickupActorRaretyType    m_Rarety               ;
-				bool                      m_bIsEquipable         ;
+	UPROPERTY() UMaterialInstance*              m_Icon = nullptr       ; // UPROPERTY is added in order to avoid m_Icon to be removed by the garbage collector
+	            FIntPoint                       m_InventorySpace       ;
+	UPROPERTY()	TSubclassOf<APickupActor>       m_ActorClass = nullptr ;
+	            int32                           m_ResellValue          ;
+	            FString                         m_Description          ;
+	            EPickupActorRaretyType          m_Rarety               ;
+				bool                            m_bIsEquipable         ;
+				bool                            m_bIsDroppableAsIs     ;
+	UPROPERTY() TSubclassOf<AInteractableActor> m_DroppableBagClass    ;
 				
 
 	FLinearColor m_RaretyTypesColors[5] =

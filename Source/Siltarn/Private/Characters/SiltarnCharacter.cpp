@@ -9,11 +9,12 @@
 #include "Siltarn/Public/Interfaces/InteractInterface.h"
 #include "Siltarn/Public/Interactables/PickupActor.h"
 #include "Siltarn/Public/Interactables/PickupEntity.h"
+#include "Siltarn/Public/Interactables/ItemBag.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/MovementComponent.h"
 
-DEFINE_LOG_CATEGORY(LogClass_SiltarnCharacter);
+DEFINE_LOG_CATEGORY(LogClass_ASiltarnCharacter);
 
 ASiltarnCharacter::ASiltarnCharacter()
 {
@@ -237,6 +238,12 @@ void ASiltarnCharacter::LookUp(const float p_Value)
 
 void ASiltarnCharacter::ACTION_Aiming_PRESSED()
 {
+	// If the inventory is open, we do not want to consume this event. This may cause issue for multiplayer (perhaps ? need to check ?)
+	if (m_PlayerController->IS_InventoryOpen())
+	{
+		return;
+	}
+
 	if (m_AnimInstance)
 	{
 		if (m_bIsAiming == true)
@@ -502,20 +509,12 @@ void ASiltarnCharacter::TRACE_LineForward()
 void ASiltarnCharacter::DROP_Item(UPickupEntity* p_Item)
 {
 	checkf(GetWorld() != nullptr, TEXT("ASiltarnCharacter::DROP_Item() : GetWorld() returns NULL."));
-
 	check(m_CharacterMesh != nullptr);
 
 	const USkeletalMeshSocket* _DropItemSocket = m_CharacterMesh->GetSocketByName("DropItemSocket");
 	check(_DropItemSocket != nullptr);
 
-	UE_LOG(LogTemp, Error, TEXT("We've arrived up to here !"));
-
 	const FTransform _SocketTransform = _DropItemSocket->GetSocketTransform(m_CharacterMesh);
-
-	//EPickupEntityType _ItemEntityType = p_Item->GET_ItemType();
-
-	//if ()
-
 	const FVector _Loc(_SocketTransform.GetLocation());
 	const FRotator _Rot(_SocketTransform.GetRotation().Rotator());
 
@@ -523,16 +522,22 @@ void ASiltarnCharacter::DROP_Item(UPickupEntity* p_Item)
 	check(p_Item->GET_ActorClass() != nullptr);
 	check(p_Item->GET_ActorClass()->GetName().IsEmpty() == false);
 
-	UE_LOG(LogClass_SiltarnCharacter, Warning, TEXT("p_Item class name : %s"), *p_Item->GET_ActorClass()->GetName());
-
+	UE_LOG(LogClass_ASiltarnCharacter, Warning, TEXT("p_Item class name : %s"), *p_Item->GET_ActorClass()->GetName());
 
 
 	//APickupActor* _Actor = GetWorld()->SpawnActor<APickupActor>(p_Item->GET_ActorClass(), _SocketTransform.GetLocation(), _SocketTransform.GetRotation().Rotator());
 
+	if (p_Item->IS_DroppableAsIs())
+	{
+		GetWorld()->SpawnActor(p_Item->GET_ActorClass(), &_Loc, &_Rot);
+	}
+	else
+	{
+		UE_LOG(LogClass_ASiltarnCharacter, Warning, TEXT("This item is not droppable as is."));
+		GetWorld()->SpawnActor(p_Item->GET_DroppableBagClass(), &_Loc, &_Rot);
+	}
 
 
-
-	GetWorld()->SpawnActor(p_Item->GET_ActorClass(), &_Loc, &_Rot);
 
 
 	/*

@@ -89,6 +89,7 @@ private:
 
 	bool m_bIsInInventory;
 	bool m_bIsShiftKeyDown;
+	bool m_bIsSelectedForGroupDrop;
 
 	
 	const FSiltarnGeneralStyleContainerStruct m_GeneralStyle = FSiltarnStyleController::GET_SiltarnGeneralStyleContainerStruct();

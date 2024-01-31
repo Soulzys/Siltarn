@@ -20,6 +20,8 @@ class SILTARN_API ASiltarnPlayerController : public APlayerController
 
 public:
 
+	ASiltarnPlayerController();
+
 	virtual void PostInitializeComponents() override;
 
 	void TOGGLE_Inventory();
@@ -31,6 +33,7 @@ public:
 	//
 	bool DOES_InventoryHasRoomForItem(const FIntPoint& p_ItemSize);
 	FORCEINLINE UInventory* GET_Inventory() const { return m_Inventory; }
+	FORCEINLINE bool IS_InventoryOpen() const { return m_bIsInventoryOpen; }
 	void ADD_ItemToInventory(UPickupEntity* p_Item);
 	void DISPLAY_InteractableEntityTag(const FString& p_ItemName);
 
@@ -53,4 +56,6 @@ private:
 
 	UPROPERTY()
 	UInventory* m_Inventory = nullptr;
+
+	bool m_bIsInventoryOpen;
 };
