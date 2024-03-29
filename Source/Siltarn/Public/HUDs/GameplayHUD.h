@@ -4,7 +4,7 @@
 #include "GameFramework/HUD.h"
 #include "GameplayHUD.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogClass_GameplayHUD, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogClass_AGameplayHUD, Log, All);
 
 class UTexture2D;
 class SInventoryWidget;
@@ -13,9 +13,11 @@ class SProfileMenu;
 class SGameMessageWidget;
 class SInGameMenu;
 class SEchapMenu;
+class SInventoryBagWidget;
+class SInGameBagInventory;
+class SInGamePlayerInventoryWidget;
 class UInteractableEntity;
 class UPickupEntity;
-
 
 UENUM() 
 enum class EWidgetVisibilityState : uint8
@@ -57,9 +59,14 @@ public:
 
 	// New inventory stuff
 	//
-	bool DOES_InventoryHasRoomForItem(const FIntPoint& p_ItemSize);
-	bool ADD_ItemToInventory(UPickupEntity* p_Item);
 	void DISPLAY_InteractableEntityTag(const FString& p_ItemName);
+
+	void OPEN_ItemBag(const FIntPoint& p_InventorySize, TArray<UPickupEntity*>& p_Items);
+
+	TSharedPtr<SInGameBagInventory> GET_InGameBagInventory() const;
+	TSharedPtr<SInGamePlayerInventoryWidget> GET_InGamePlayerInventoryWidget() const;
+
+	void SET_InventoryManager(class UInventoryManager* p_InventoryManager) const;
 
 private:
 
@@ -96,10 +103,12 @@ private:
 
 	// *** Slate widgets *** //
 	//
-	TSharedPtr<SProfileMenu      > m_ProfileMenu         = nullptr;
-	TSharedPtr<SGameMessageWidget> m_GameMessageWidget   = nullptr;
-	TSharedPtr<SInGameMenu       > m_InGameMenu          = nullptr;
-	TSharedPtr<SEchapMenu        > m_EchapMenu           = nullptr;
+	TSharedPtr<SProfileMenu       > m_ProfileMenu         = nullptr ;
+	TSharedPtr<SGameMessageWidget > m_GameMessageWidget   = nullptr ;
+	TSharedPtr<SInGameMenu        > m_InGameMenu          = nullptr ;
+	TSharedPtr<SEchapMenu         > m_EchapMenu           = nullptr ;
+	TSharedPtr<SInventoryBagWidget> m_InventoryBagWidget  = nullptr ;
+	//TSharedPtr<SInGameBagInventory> m_IGBagInventoryWidget = nullptr;
 
 	bool m_bIsInventoryWidgetOpen;
 	bool m_bIsEchapMenuOpen;
@@ -108,5 +117,11 @@ private:
 
 	FVector2D m_CenterOfScreen;
 
-	int32 m_Toto;
+
+
+
+
+
+
+
 };

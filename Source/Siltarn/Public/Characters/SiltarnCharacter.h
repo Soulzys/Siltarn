@@ -17,6 +17,7 @@ class ASiltarnPlayerController      ;
 class IInteractInterface;
 class ADebugActor;
 class UPickupEntity;
+class AItemBagActor;
 
 
 UENUM()
@@ -38,7 +39,14 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	// old
 	void DROP_Item(UPickupEntity* p_Item);
+
+	// new
+	bool DropItem(UPickupEntity* p_ItemEntity, AItemBagActor* p_OutBagPtr, class APickupActor* p_ItemActor);
+	bool DropItems(TArray<UPickupEntity*>& p_Items);
+	class APickupActor* DropItemAsItIs(UPickupEntity* p_ItemEntity);
+	AItemBagActor* DropItemAsBag(UClass* p_BagClass);
 
 	FORCEINLINE USkeletalMeshComponent* GET_CharacterMesh()          const { return m_CharacterMesh;          }
 	//FORCEINLINE ARifle*                 GET_Weapon()                 const { return m_Weapon;                 }

@@ -3,12 +3,12 @@
 
 UEquipableEntity::UEquipableEntity()
 {
-
+	UE_LOG(LogTemp, Warning, TEXT("A new UEquipableEntity has been constructed"));
 }
 
 UEquipableEntity::~UEquipableEntity()
 {
-
+	UE_LOG(LogTemp, Warning, TEXT("A new UEquipableEntity has been destroyed"));
 }
 
 void UEquipableEntity::Initialize_Entity(AEquipableActor* p_IA)
@@ -27,6 +27,10 @@ void UEquipableEntity::Initialize_Entity(AEquipableActor* p_IA)
 	m_ItemEquipmentType = p_IA->GET_ItemEquipmentType() ;
 	m_bIsDroppableAsIs  = p_IA->GET_IsDroppableAsIs()   ;
 	m_DroppableBagClass = p_IA->GET_DroppableBagClass() ;
+
+	m_EntityId = ComputeUniqueId();
+
+	UE_LOG(LogTemp, Warning, TEXT("From UEquipableEntity -->> Initialize_Entity() has been called !"));
 }
 
 EPickupEntityType UEquipableEntity::GET_ItemType() const

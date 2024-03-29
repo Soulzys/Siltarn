@@ -1,0 +1,26 @@
+#pragma once
+
+#include "Siltarn/Public/Slate/Widgets/SInventoryWidget.h"
+#include "SlateBasics.h"
+
+DECLARE_LOG_CATEGORY_EXTERN(LogClass_SInGamePlayerInventoryWidget, Log, All);
+
+class UPickupEntity;
+
+class SILTARN_API SInGamePlayerInventoryWidget : public SInventoryWidget
+{
+public:
+
+	SInGamePlayerInventoryWidget();
+	~SInGamePlayerInventoryWidget();
+
+	bool AddItemToInventory(UPickupEntity* p_ItemEntity);
+	bool RemoveItemCanvasSlot(int64 p_InventoryItemId);
+	bool RemoveItemsCanvasSlot();
+
+private:
+
+	// Wouldn't the memmove issue come from here ? That this is in the child class rather than in the mother class ? 
+	// After checking... it doesn't come from here
+	TMap<int64, FInventoryItem*> m_InventoryItemsMapNew;
+};

@@ -5,6 +5,7 @@
 DECLARE_LOG_CATEGORY_EXTERN(LogClass_SInventoryBagWidget, Log, All);
 
 class AGameplayHUD;
+class SInGameBagInventory;
 
 class SILTARN_API SInventoryBagWidget : public SCompoundWidget
 {
@@ -22,7 +23,11 @@ public:
 
 	void Construct(const FArguments& p_InArgs);
 
+	FORCEINLINE TSharedPtr<SInGameBagInventory> GET_InventoryWidget() const { return m_InventoryWidget; }
+
 private:
 
 	TWeakObjectPtr<AGameplayHUD> m_HUDOwner = nullptr;
+
+	TSharedPtr<SInGameBagInventory> m_InventoryWidget = nullptr;
 };

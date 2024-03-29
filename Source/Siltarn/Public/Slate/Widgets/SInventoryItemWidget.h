@@ -3,6 +3,7 @@
 #include "Siltarn/Public/Slate/Styles/SiltarnGeneralStyleContainer.h"
 #include "Siltarn/Public/Slate/Styles/SiltarnStyleController.h"
 #include "Siltarn/Public/Slate/Widgets/SInventoryWidget.h" // It would be ideal if we coud get it in the .cpp
+#include "Siltarn/Public/Inventory/InventoryEnumsLib.h"
 #include "Input/DragAndDrop.h"
 #include "SlateBasics.h"
 
@@ -10,14 +11,23 @@
 #define RESOLUTION_X 1920
 #define RESOLUTION_Y 1080
 
-DECLARE_LOG_CATEGORY_EXTERN(LogClass_SInventoryItemWidget  , Log, All);
-DECLARE_LOG_CATEGORY_EXTERN(LogClass_FInventoryItemDragDrop, Log, All);
-DECLARE_LOG_CATEGORY_EXTERN(LogClass_FItemTooltip          , Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogClass_SInventoryItemWidget   , Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogClass_FInventoryItemDragDrop , Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogClass_FItemTooltip           , Log, All);
 
 class UMaterialInstance;
 class SInventoryWidget;
 class FItemTooltip;
 class UPickupEntity;
+class FInventoryItem;
+
+UENUM()
+enum class EInventoryItemWidgetState : uint8
+{
+	DEFAULT            = 0, 
+	DRAGGED            = 1,
+	SET_FOR_GROUP_DROP = 2
+};
 
 // Luciole
 // To fix or/and to investigate : 
@@ -34,16 +44,21 @@ class SILTARN_API SInventoryItemWidget : public SCompoundWidget
 
 public:
 
-	SLATE_BEGIN_ARGS(SInventoryItemWidget) : _a_ItemData    (nullptr)         , 
-											 _a_Tile        (nullptr)         , 
-											 _a_ItemSize    (FVector2D(0.0f)) , 
-											 _a_ParentWidget(nullptr)
+	SLATE_BEGIN_ARGS(SInventoryItemWidget) : _a_ItemData       (nullptr)         , 
+											 _a_Tile           (nullptr)         , 
+											 _a_ItemSize       (FVector2D(0.0f)) , 
+											 _a_InventoryOwner (nullptr)         ,
+											 _a_InventoryItemId(-1), 
+											 _a_InventoryItemWidgetLocation(EInventoryItemWidgetLocation::UNKNOWN)
 											 {}
 
-	SLATE_ARGUMENT(UPickupEntity*   , a_ItemData     )
-	SLATE_ARGUMENT(FTile*           , a_Tile         )
-	SLATE_ARGUMENT(FVector2D        , a_ItemSize     )
-	SLATE_ARGUMENT(SInventoryWidget*, a_ParentWidget )
+	SLATE_ARGUMENT(UPickupEntity*   , a_ItemData        )
+	SLATE_ARGUMENT(FTile*           , a_Tile            )
+	SLATE_ARGUMENT(FVector2D        , a_ItemSize        )
+	SLATE_ARGUMENT(SInventoryWidget*, a_InventoryOwner  )
+	SLATE_ARGUMENT(int32            , a_InventoryItemId )
+	SLATE_ARGUMENT(FInventoryItem*, a_InventoryItemClass) // new
+	SLATE_ARGUMENT(EInventoryItemWidgetLocation, a_InventoryItemWidgetLocation)
 
 	SLATE_END_ARGS()
 
@@ -85,11 +100,16 @@ private:
 	TSharedPtr<SImage>       m_IconImage   = nullptr;
 	TSharedPtr<FItemTooltip> m_ItemTooltip = nullptr;
 	UPickupEntity*           m_ItemData    = nullptr;
-	SInventoryWidget* m_ParentWidget;
+	SInventoryWidget* m_InventoryOwner = nullptr;
+	int32 m_InventoryItemId;
+	FInventoryItem* m_InventoryItemClass = nullptr;
 
 	bool m_bIsInInventory;
 	bool m_bIsShiftKeyDown;
 	bool m_bIsSelectedForGroupDrop;
+
+	EInventoryItemWidgetState    m_InventoryItemState    ;
+	EInventoryItemWidgetLocation m_InventoryItemLocation ;
 
 	
 	const FSiltarnGeneralStyleContainerStruct m_GeneralStyle = FSiltarnStyleController::GET_SiltarnGeneralStyleContainerStruct();
@@ -121,28 +141,48 @@ public:
 	virtual void                OnDragged(const class FDragDropEvent& DragDropEvent) override;
 	virtual TSharedPtr<SWidget> GetDefaultDecorator() const                          override;
 
-	// New way
-	static TSharedRef<FInventoryItemDragDrop> New
+	static TSharedRef<FInventoryItemDragDrop> CREATE_SingleItemDragOperation
 	(
 		SInventoryItemWidget* p_DraggedItem           , 
 		const float           p_ScreenToViewportRatio , 
 		const FVector2D&      p_WidgetSize            , 
 		UPickupEntity*        p_ItemEntity            ,
-		FTile*                p_Tile
+		FTile*                p_Tile, 
+		FInventoryItem* p_InventoryItemClass,
+		int32 p_InventoryItemId
 	);
 
-	FORCEINLINE const FVector2D GET_WidgetMiddlePosition() const { return m_DecoratorSize * 0.5f * m_ScreenToViewportRatio; }
-	FORCEINLINE UPickupEntity*  GET_ItemEntity()           const { return m_ItemEntity;                                     }
-	FORCEINLINE FTile*          GET_Tile()                 const { return m_Tile;                                           }
+	static TSharedRef<FInventoryItemDragDrop> CREATE_MultipleItemsDragOperation
+	(
+		//TArray<UPickupEntity*>& p_ItemEntities          , // old
+		//TArray<FInventoryItem*>& p_InventoryItems, // new
+		const float             p_ScreenToViewportRatio , 
+		const FVector2D&        p_WidgetSize            , 
+		const FSlateBrush*      p_DecoratorIcon
+	);
+
+	FORCEINLINE const FVector2D         GET_WidgetMiddlePosition()   const { return m_DecoratorSize * 0.5f * m_ScreenToViewportRatio ; }
+	FORCEINLINE UPickupEntity*          GET_ItemEntity()             const { return m_ItemEntity                                     ; }
+	FORCEINLINE TArray<UPickupEntity*>* GET_ItemsArray()             const { return m_ItemEntities                                   ; }
+	FORCEINLINE TArray<FInventoryItem*>* GET_InventoryItemsArray()             const { return m_InventoryItems; }
+	FORCEINLINE FTile*                  GET_Tile()                   const { return m_Tile                                           ; }
+	FORCEINLINE bool                    IS_SingleItemDragOperation() const { return m_bIsSingleItemDrag                              ; }
+	FORCEINLINE int32 GET_InventoryItemId() const { return m_InventoryItemid; }
+	FORCEINLINE FInventoryItem* GET_InventoryItemClass() const { return m_InventoryItemClass; }
 
 private:
 
-	FSlateBrush           m_IconBrush             ;
-	SInventoryItemWidget* m_DraggedItem = nullptr ;
-	float                 m_ScreenToViewportRatio ;
-	FVector2D             m_DecoratorSize         ;
-	UPickupEntity*        m_ItemEntity = nullptr  ;
-	FTile*                m_Tile       = nullptr  ;
+	FSlateBrush             m_IconBrush              ;
+	float                   m_ScreenToViewportRatio  ;
+	FVector2D               m_DecoratorSize          ;
+	SInventoryItemWidget*   m_DraggedItem  = nullptr ;
+	UPickupEntity*          m_ItemEntity   = nullptr ;
+	FTile*                  m_Tile         = nullptr ;
+	TArray<UPickupEntity*>* m_ItemEntities = nullptr ; // old
+	bool                    m_bIsSingleItemDrag      ;
+	TArray<FInventoryItem*>* m_InventoryItems = nullptr; // new
+	int32 m_InventoryItemid; // new (TMap)
+	FInventoryItem* m_InventoryItemClass = nullptr; // new new 
 
 	static int32 m_InstanceCount;
 };

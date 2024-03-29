@@ -5,9 +5,9 @@
 #include "Siltarn/Public/Slate/Widgets/SInventoryWidget.h"
 #include "Styling/CoreStyle.h"
 
-DEFINE_LOG_CATEGORY(LogClass_SInventoryItemWidget  );
-DEFINE_LOG_CATEGORY(LogClass_FInventoryItemDragDrop);
-DEFINE_LOG_CATEGORY(LogClass_FItemTooltip          );
+DEFINE_LOG_CATEGORY(LogClass_SInventoryItemWidget   );
+DEFINE_LOG_CATEGORY(LogClass_FInventoryItemDragDrop );
+DEFINE_LOG_CATEGORY(LogClass_FItemTooltip           );
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
@@ -16,6 +16,11 @@ SInventoryItemWidget::SInventoryItemWidget()
 	m_bIsInInventory          = true  ;
 	m_bIsShiftKeyDown         = false ;
 	m_bIsSelectedForGroupDrop = false ;
+
+	m_InventoryItemState    = EInventoryItemWidgetState   ::DEFAULT ;
+	m_InventoryItemLocation = EInventoryItemWidgetLocation::UNKNOWN ;
+
+	UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("I was created !"));
 }
 
 SInventoryItemWidget::~SInventoryItemWidget()
@@ -25,10 +30,13 @@ SInventoryItemWidget::~SInventoryItemWidget()
 
 void SInventoryItemWidget::Construct(const FArguments& p_InArgs)
 {
-	m_Tile         = p_InArgs._a_Tile; // Luciole ! We are not using m_Tile anymore. However, the game crashed when dealing with two items in the inventory. Need to investigate. Once it is done, remove m_Tile from here.
-	m_ItemSize     = p_InArgs._a_ItemSize;
-	m_ItemData     = p_InArgs._a_ItemData;
-	m_ParentWidget = p_InArgs._a_ParentWidget;
+	m_Tile            = p_InArgs._a_Tile; // Luciole ! We are not using m_Tile anymore. However, the game crashed when dealing with two items in the inventory. Need to investigate. Once it is done, remove m_Tile from here.
+	m_ItemSize        = p_InArgs._a_ItemSize;
+	m_ItemData        = p_InArgs._a_ItemData;
+	m_InventoryOwner  = p_InArgs._a_InventoryOwner;
+	m_InventoryItemId = p_InArgs._a_InventoryItemId;
+	m_InventoryItemLocation = p_InArgs._a_InventoryItemWidgetLocation;
+	m_InventoryItemClass = p_InArgs._a_InventoryItemClass;
 
 	if (m_ItemData)
 	{
@@ -145,10 +153,25 @@ FReply SInventoryItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, cons
 		*/
 		if (m_bIsShiftKeyDown)
 		{
-			m_ItemBackgroundColor.B = 0.5f;
-			m_ItemBackgroundColor.A = 0.5f;
-			m_BackgroundBorder->SetBorderBackgroundColor(m_ItemBackgroundColor);
-			m_bIsSelectedForGroupDrop = true;
+			if (!m_bIsSelectedForGroupDrop && m_InventoryOwner)
+			{
+				m_ItemBackgroundColor.B = 0.5f;
+				m_ItemBackgroundColor.A = 0.5f;
+				m_BackgroundBorder->SetBorderBackgroundColor(m_ItemBackgroundColor);
+
+				//m_InventoryOwner->SetInventoryItemForGroupDropping(m_InventoryItemId); // new
+				m_InventoryOwner->SetInventoryItemForGroupDropping(m_InventoryItemClass);
+				m_InventoryItemState = EInventoryItemWidgetState::SET_FOR_GROUP_DROP;
+				m_bIsSelectedForGroupDrop = true;
+				return FReply::Handled();
+			}
+			else
+			{
+				m_ItemBackgroundColor.B = 1.0f;
+				m_ItemBackgroundColor.A = 0.25f;
+				m_BackgroundBorder->SetBorderBackgroundColor(m_ItemBackgroundColor);
+				m_bIsSelectedForGroupDrop = false;
+			}
 		}
 		else
 		{
@@ -162,11 +185,12 @@ FReply SInventoryItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, cons
 						m_ItemTooltip.Reset();
 					}
 
-					if (m_ParentWidget)
+					if (m_InventoryOwner)
 					{
-						m_ParentWidget->MOVE_ItemToCharacterProfileWidget(this);
+						//m_InventoryOwner->MOVE_ItemToCharacterProfileWidget(this);
 					}
 
+					// Luciole 12/02/2024 | What is the purpose of this ??
 					return DeleteItemWidget();
 				}
 
@@ -208,21 +232,48 @@ FReply SInventoryItemWidget::OnDragDetected(const FGeometry& MyGeometry, const F
 {
 	if (MouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
 	{
-		const float _Ratio            = GET_ScreenToViewportRatio();
+		m_InventoryItemState = EInventoryItemWidgetState::DRAGGED;
+
+		const float _Ratio = GET_ScreenToViewportRatio();
 		FVector2D _MousePositionLocal = MyGeometry.AbsoluteToLocal(MouseEvent.GetScreenSpacePosition());
 
-		TSharedRef<FInventoryItemDragDrop> _Operation = FInventoryItemDragDrop::New
-		(
-			this       , 
-			_Ratio     , 
-			m_ItemSize , 
-			m_ItemData , 
-			m_Tile
-		);
+		// Normal single item drag
+		if (!m_bIsSelectedForGroupDrop)
+		{
+			TSharedRef<FInventoryItemDragDrop> _Operation = FInventoryItemDragDrop::CREATE_SingleItemDragOperation
+			(
+				this,
+				_Ratio,
+				m_ItemSize,
+				m_ItemData,
+				m_Tile, 
+				m_InventoryItemClass, 
+				m_InventoryItemId
+			);
 
-		SetVisibility(EVisibility::Collapsed);
+			SetVisibility(EVisibility::Collapsed);
 
-		return FReply::Handled().BeginDragDrop(_Operation);
+			return FReply::Handled().BeginDragDrop(_Operation);
+		}
+		else
+		{
+			if (m_InventoryOwner)
+			{
+				TSharedRef<FInventoryItemDragDrop> _Operation = FInventoryItemDragDrop::CREATE_MultipleItemsDragOperation
+				(
+					//m_InventoryOwner->BeginDraggingGroupItemsForDropping(), // old
+					//m_InventoryOwner->GET_FInventoryItemsCache(), // new 
+					_Ratio, 
+					m_ItemSize, 
+					&m_GeneralStyle.m_ItemBagIcon_SlateBrush
+				);
+
+				//SetVisibility(EVisibility::Collapsed); // old
+				m_InventoryOwner->HideAllItemsSetForGroupDrop(); // new
+
+				return FReply::Handled().BeginDragDrop(_Operation);
+			}
+		}		
 	}
 
 	return FReply::Unhandled();
@@ -241,7 +292,7 @@ float SInventoryItemWidget::GET_ScreenToViewportRatio() const
 		UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("GET_ScreenToViewportRatio() : GEngine is NOT NULL !"));
 	}
 
-	if (GEngine->GameViewport == nullptr)
+	if (GEngine->GameViewport.Get() == nullptr)
 	{
 		UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("GET_ScreenToViewportRatio() : GameViewport is NULL !"));
 	}
@@ -309,20 +360,28 @@ END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
 
 /**************************************************************************************
-	Drag & drop operation class
+	Drag & drop Item Operation Class
 /**************************************************************************************/
 
 int32 FInventoryItemDragDrop::m_InstanceCount = 0;
 
 FInventoryItemDragDrop::FInventoryItemDragDrop()
 {
+	m_bIsSingleItemDrag = true;
+
 	m_InstanceCount++;
 	UE_LOG(LogClass_FInventoryItemDragDrop, Log, TEXT("A new instance was created ! || Instance count : %d"), m_InstanceCount);
 }
 
 FInventoryItemDragDrop::~FInventoryItemDragDrop()
 {
-	m_DraggedItem->SetVisibility(EVisibility::Visible);
+	if (m_bIsSingleItemDrag)
+	{
+		if (m_DraggedItem)
+		{
+			m_DraggedItem->SetVisibility(EVisibility::Visible);
+		}
+	}
 	
 	m_InstanceCount--;
 	UE_LOG(LogClass_FInventoryItemDragDrop, Log, TEXT("An instance was destroyed ! || Instance count : %d"), m_InstanceCount);
@@ -336,13 +395,15 @@ void FInventoryItemDragDrop::OnDragged(const class FDragDropEvent& DragDropEvent
 	}
 }
 
-TSharedRef<FInventoryItemDragDrop> FInventoryItemDragDrop::New
+TSharedRef<FInventoryItemDragDrop> FInventoryItemDragDrop::CREATE_SingleItemDragOperation
 (
 	SInventoryItemWidget* p_DraggedItem           , 
 	const float           p_ScreenToViewportRatio , 
 	const FVector2D&      p_WidgetSize            , 
 	UPickupEntity*        p_ItemEntity            ,
-	FTile*                p_Tile
+	FTile*                p_Tile, 
+	FInventoryItem* p_InventoryItemClass,
+	int32 p_InventoryItemId
 )
 {
 	TSharedRef<FInventoryItemDragDrop> _Operation = MakeShareable(new FInventoryItemDragDrop);
@@ -354,8 +415,38 @@ TSharedRef<FInventoryItemDragDrop> FInventoryItemDragDrop::New
 	_Operation->m_ScreenToViewportRatio = p_ScreenToViewportRatio ;
 	_Operation->m_ItemEntity            = p_ItemEntity            ;
 	_Operation->m_Tile                  = p_Tile                  ;
+	_Operation->m_InventoryItemid       = p_InventoryItemId       ;
+	_Operation->m_InventoryItemClass = p_InventoryItemClass;
 
+	_Operation->m_bIsSingleItemDrag = true;
 	_Operation->Construct();
+
+	return _Operation;
+}
+
+TSharedRef<FInventoryItemDragDrop> FInventoryItemDragDrop::CREATE_MultipleItemsDragOperation
+(
+	//TArray<UPickupEntity*>& p_ItemEntities          ,
+	//TArray<FInventoryItem*>& p_InventoryItems,
+	const float             p_ScreenToViewportRatio ,
+	const FVector2D&        p_WidgetSize            ,
+	const FSlateBrush*      p_DecoratorIcon
+)
+{
+	TSharedRef<FInventoryItemDragDrop> _Operation = MakeShareable(new FInventoryItemDragDrop);
+
+	_Operation->m_IconBrush             = *p_DecoratorIcon        ; // old
+	//_Operation->m_InventoryItems = &p_InventoryItems; // new 
+	_Operation->m_ScreenToViewportRatio = p_ScreenToViewportRatio ;
+	//_Operation->m_ItemEntities          = &p_ItemEntities         ;
+	_Operation->m_DecoratorSize         = p_WidgetSize            ;
+
+	_Operation->m_bIsSingleItemDrag = false;
+	_Operation->Construct();
+
+	// Create ItemBagEntity ! 
+	// Wait... do we actually need one ? 
+
 
 	return _Operation;
 }

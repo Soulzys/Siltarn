@@ -9,7 +9,8 @@
 #include "Siltarn/Public/Interfaces/InteractInterface.h"
 #include "Siltarn/Public/Interactables/PickupActor.h"
 #include "Siltarn/Public/Interactables/PickupEntity.h"
-#include "Siltarn/Public/Interactables/ItemBag.h"
+#include "Siltarn/Public/Interactables/ItemBagActor.h"
+#include "Siltarn/Public/HUDs/GameplayHUD.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/MovementComponent.h"
@@ -94,6 +95,7 @@ ASiltarnCharacter::ASiltarnCharacter()
 void ASiltarnCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
 
 	INIT_References();
 	INIT_SpawnWeaponAndAttachToCharacter();
@@ -537,7 +539,8 @@ void ASiltarnCharacter::DROP_Item(UPickupEntity* p_Item)
 		GetWorld()->SpawnActor(p_Item->GET_DroppableBagClass(), &_Loc, &_Rot);
 	}
 
-
+	// NEW Luciole 12/02/2024 | the game crashes if we uncomment the line below. Need to investigate why
+	//p_Item->BeginDestroy();
 
 
 	/*
@@ -545,4 +548,89 @@ void ASiltarnCharacter::DROP_Item(UPickupEntity* p_Item)
 		No matter the size of the object, they all should be dropped following the same curve.
 	*/
 	//_Actor->ADD_Impulse(_Actor->GetActorForwardVector() * 250000.0f);
+}
+
+bool ASiltarnCharacter::DropItem(UPickupEntity* p_ItemEntity, AItemBagActor* p_OutBagPtr, APickupActor* p_ItemActor)
+{
+	if (p_ItemEntity && p_ItemEntity->GET_ActorClass() && GetWorld() && m_CharacterMesh)
+	{
+		const USkeletalMeshSocket* _DropItemSocket = m_CharacterMesh->GetSocketByName("DropItemSocket");
+		
+		if (_DropItemSocket)
+		{
+			const FTransform _SocketTransform = _DropItemSocket->GetSocketTransform(m_CharacterMesh);
+			const FVector _Loc(_SocketTransform.GetLocation());
+			const FRotator _Rot(_SocketTransform.GetRotation().Rotator());
+
+			if (p_ItemEntity->IS_DroppableAsIs())
+			{
+				APickupActor* _ItemActor = GetWorld()->SpawnActor<APickupActor>(p_ItemEntity->GET_ActorClass(), _Loc, _Rot);
+
+				if (_ItemActor)
+				{
+					p_ItemActor = _ItemActor;
+					UE_LOG(LogClass_ASiltarnCharacter, Warning, TEXT("DropItem() : Dropping a %s item"), *p_ItemEntity->GET_ActorClass()->GetName());
+					return true;
+				}
+			}
+			else
+			{
+				AItemBagActor* _DroppedBag = GetWorld()->SpawnActor<AItemBagActor>(p_ItemEntity->GET_DroppableBagClass(), _Loc, _Rot);
+
+				if (_DroppedBag)
+				{
+					p_OutBagPtr = _DroppedBag;
+					UE_LOG(LogClass_ASiltarnCharacter, Warning, TEXT("DropItem() : Dropping a AItemBagActor"));
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+APickupActor* ASiltarnCharacter::DropItemAsItIs(UPickupEntity* p_ItemEntity)
+{
+	if (p_ItemEntity && p_ItemEntity->GET_ActorClass() && GetWorld() && m_CharacterMesh)
+	{
+		const USkeletalMeshSocket* _DropItemSocket = m_CharacterMesh->GetSocketByName("DropItemSocket");
+		
+		if (_DropItemSocket)
+		{
+			const FTransform _SocketTransform = _DropItemSocket->GetSocketTransform(m_CharacterMesh);
+			const FVector _Loc(_SocketTransform.GetLocation());
+			const FRotator _Rot(_SocketTransform.GetRotation().Rotator());
+
+			return GetWorld()->SpawnActor<APickupActor>(p_ItemEntity->GET_ActorClass(), _Loc, _Rot);
+		}
+	}
+
+	return nullptr;
+}
+
+AItemBagActor* ASiltarnCharacter::DropItemAsBag(UClass* p_BagClass)
+{
+	if (p_BagClass && GetWorld() && m_CharacterMesh)
+	{
+		const USkeletalMeshSocket* _DropItemSocket = m_CharacterMesh->GetSocketByName("DropItemSocket");
+
+		if (_DropItemSocket)
+		{
+			const FTransform _SocketTransform = _DropItemSocket->GetSocketTransform(m_CharacterMesh);
+			const FVector _Loc(_SocketTransform.GetLocation());
+			const FRotator _Rot(_SocketTransform.GetRotation().Rotator());
+
+			return GetWorld()->SpawnActor<AItemBagActor>(p_BagClass, _Loc, _Rot);
+		}
+	}
+
+	return nullptr;
+}
+
+
+
+bool ASiltarnCharacter::DropItems(TArray<UPickupEntity*>& p_Items)
+{
+	return false;
 }

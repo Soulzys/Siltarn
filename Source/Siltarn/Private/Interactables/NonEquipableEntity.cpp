@@ -26,6 +26,10 @@ void UNonEquipableEntity::Initialize_Entity(ANonEquipableActor* p_IA)
 	m_bIsEquipable      = p_IA->GET_IsEquipable()       ;
 	m_bIsDroppableAsIs  = p_IA->GET_IsDroppableAsIs()   ;
 	m_DroppableBagClass = p_IA->GET_DroppableBagClass() ;
+
+	m_EntityId = ComputeUniqueId();
+
+	UE_LOG(LogTemp, Warning, TEXT("From UNonEquipableEntity -->> Initialize_Entity() has been called !"));
 }
 
 EPickupEntityType UNonEquipableEntity::GET_ItemType() const

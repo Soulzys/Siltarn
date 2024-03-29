@@ -14,6 +14,7 @@ void FSiltarnGeneralStyleContainerStruct::GetResources(TArray<const FSlateBrush*
 	OutBrushes.Add(&m_DebuggingMagenta_SlateBrush     );
 	OutBrushes.Add(&m_WhiteBackgroundImage_SlateBrush );
 	OutBrushes.Add(&m_ItemTooltipBorder_SlateBrush    );
+	OutBrushes.Add(&m_ItemBagIcon_SlateBrush          );
 	OutBrushes.Add(&m_Alphabet_E_SlateBrush           );
 	OutBrushes.Add(&m_Box_Alphabet_SlateBrush         );
 }

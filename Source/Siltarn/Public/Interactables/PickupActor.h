@@ -9,6 +9,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogClass_APickupActor, Log, All);
 
 class UMaterialInstance;
 class ASiltarnPlayerController;
+class UPickupEntity;
 
 UCLASS()
 class SILTARN_API APickupActor : public AInteractableActor
@@ -19,6 +20,8 @@ public:
 
 	APickupActor();
 	~APickupActor();
+
+	bool InitializeActorWithEntity(UPickupEntity* p_ItemEntity);
 
 	FORCEINLINE UMaterialInstance*              GET_Icon()              const { return m_Icon              ; }
 	FORCEINLINE FIntPoint                       GET_InventorySpace()    const { return m_InventorySpace    ; }

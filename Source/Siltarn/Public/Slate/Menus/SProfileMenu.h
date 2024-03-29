@@ -12,6 +12,9 @@ class SCharacterProfileWidget ;
 class SInventoryItemWidget    ;
 class UPickupEntity           ;
 class SCharacterProfileWidget ;
+class SInGamePlayerInventoryWidget;
+class SInGameBagInventory;
+class UInventoryManager;
 
 class SILTARN_API SProfileMenu : public SCompoundWidget
 {
@@ -40,23 +43,36 @@ public:
 	void Construct(const FArguments& p_InArgs);
 
 	bool DOES_InventoryHasRoomForItem(const FIntPoint& p_ItemSize);
-	bool ADD_ItemToInventory(UPickupEntity* p_Item);
 	bool MOVE_ItemToCharacterProfileMenu(SInventoryItemWidget* p_ItemWidget);
+	FORCEINLINE TSharedPtr<SInGamePlayerInventoryWidget> GET_InventoryWidget() const { return m_InventoryWidget; }
+
+	void SET_InventoryManager(UInventoryManager* p_InventoryManager);
+
+	// Dealing with external inventory (Bag, Chestbox...)
+	void ReconstructExternalInventoryWidget(int32 p_NumberOfRows, int32 p_NumberOfColumns);
+
+	void OpenExternalInventoryWidget(const FIntPoint& p_InventorySize, int32 p_TileSize, TArray<UPickupEntity*>& p_Items);
 
 
 private:
 
-	int32 m_NumberOfColumns;
-	int32 m_NumberOfRows;
+	int32 m_PlayerInventoryNumberOfColumns;
+	int32 m_PlayerInventoryNumberOfRows;
+	int32 m_ExternalInventoryNumberOfColumns;
+	int32 m_ExternalInventoryNumberOfRows;
 	int32 m_TileSize;
 
 	//
 
 	TWeakObjectPtr<AGameplayHUD> m_HUDOwner = nullptr;
 
-	TSharedPtr<SInventoryWidget> m_InventoryWidget = nullptr;
+	TSharedPtr<SInGamePlayerInventoryWidget> m_InventoryWidget = nullptr;
+	TSharedPtr<SInGameBagInventory> m_ExternalInventoryWidget = nullptr;
+
 	TSharedPtr<SCharacterProfileWidget> m_CharacterProfileWidget = nullptr;
 
+
+	UInventoryManager* m_InventoryManager = nullptr;
 
 	const FSiltarnGeneralStyleContainerStruct m_GeneralStyle = FSiltarnStyleController::GET_SiltarnGeneralStyleContainerStruct();
 };

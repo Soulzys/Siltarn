@@ -1,7 +1,9 @@
 #include "Characters/SiltarnPlayerController.h"
 #include "Siltarn/Public/HUDs/GameplayHUD.h"
 #include "Siltarn/Public/Interactables/InteractableEntity.h"
+#include "Siltarn/Public/Interactables/PickupActor.h"
 #include "Siltarn/Public/Inventory/Inventory.h"
+#include "Siltarn/Public/Inventory/InventoryManager.h"
 #include "Siltarn/Public/Characters/SiltarnCharacter.h"
 
 DEFINE_LOG_CATEGORY(LogClass_SiltarnPlayerController);
@@ -27,6 +29,17 @@ void ASiltarnPlayerController::BeginPlay()
 	m_GameplayHUD = Cast<AGameplayHUD>(GetHUD());
 
 	//CREATE_Inventory();	
+
+
+	// Inventory
+	m_InventoryManager = NewObject<UInventoryManager>();
+	m_InventoryManager->SET_InventoryWidget(m_GameplayHUD->GET_InGamePlayerInventoryWidget());
+	m_InventoryManager->SET_SiltarnPlayerController(this);
+
+	/*
+		We give SProfileMenu a reference to UInventoryManager in order to manage the dropping of items.
+	*/
+	m_GameplayHUD->SET_InventoryManager(m_InventoryManager);
 }
 
 // Should check if this has already been created as this function should be called once and ONLY once 
@@ -116,9 +129,16 @@ void ASiltarnPlayerController::SHUTDOWN_PickupItemWidget()
 
 bool ASiltarnPlayerController::DOES_InventoryHasRoomForItem(const FIntPoint& p_ItemSize)
 {
-	if (m_GameplayHUD)
+	// Old
+	/*if (m_GameplayHUD)
 	{
 		return m_GameplayHUD->DOES_InventoryHasRoomForItem(p_ItemSize);
+	}*/
+
+	// New (same result but more direct way)
+	if (m_InventoryManager)
+	{
+		return m_InventoryManager->DoesPlayerInventoryHasRoomForNewItem(p_ItemSize);
 	}
 
 	return false;
@@ -126,14 +146,9 @@ bool ASiltarnPlayerController::DOES_InventoryHasRoomForItem(const FIntPoint& p_I
 
 void ASiltarnPlayerController::ADD_ItemToInventory(UPickupEntity* p_Item)
 {
-	if (m_Inventory && m_GameplayHUD)
+	if (m_InventoryManager && p_Item)
 	{
-		bool _bWasAddingItemSuccessful = m_GameplayHUD->ADD_ItemToInventory(p_Item);
-
-		if (_bWasAddingItemSuccessful)
-		{
-			m_Inventory->ADD_Item(p_Item);
-		}		
+		m_InventoryManager->AddItemToPlayerInventory(p_Item);
 	}
 }
 
@@ -148,11 +163,87 @@ void ASiltarnPlayerController::DISPLAY_InteractableEntityTag(const FString& p_It
 void ASiltarnPlayerController::DROP_Item(UPickupEntity* p_Item)
 {
 	ASiltarnCharacter* _Character = Cast<ASiltarnCharacter>(GetCharacter());
-	check(_Character);
+	
+	if (_Character)
+	{
+		_Character->DROP_Item(p_Item);
+		m_Inventory->REMOVE_Item(p_Item);
+	}
+}
 
-	// Physically dropping the item
-	_Character->DROP_Item(p_Item);
+/*void ASiltarnPlayerController::DROP_Items(TArray<UPickupEntity*>& p_Items)
+{
+	ASiltarnCharacter* _Character = Cast<ASiltarnCharacter>(GetCharacter());
 
-	// 
-	m_Inventory->REMOVE_Item(p_Item);
+	if (_Character)
+	{
+		_Character->DROP_Items(p_Items);
+	}
+}*/
+
+void ASiltarnPlayerController::OPEN_ItemBag(const FIntPoint& p_InventorySize, TArray<UPickupEntity*>& p_Items)
+{
+	if (m_GameplayHUD)
+	{
+		m_GameplayHUD->OPEN_ItemBag(p_InventorySize, p_Items);
+	}
+}
+
+bool ASiltarnPlayerController::DropItem(UPickupEntity* p_ItemEntity, AItemBagActor* p_DroppingBag, APickupActor* p_ItemActor)
+{
+	if (p_ItemEntity)
+	{
+		ASiltarnCharacter* _Character = Cast<ASiltarnCharacter>(GetCharacter());
+
+		if (_Character)
+		{
+			return _Character->DropItem(p_ItemEntity, p_DroppingBag, p_ItemActor);
+		}
+	}
+
+	return false;
+}
+
+APickupActor* ASiltarnPlayerController::DropItemAsItIs(UPickupEntity* p_ItemEntity)
+{
+	if (p_ItemEntity)
+	{
+		ASiltarnCharacter* _Character = Cast<ASiltarnCharacter>(GetCharacter());
+
+		if (_Character)
+		{
+			return _Character->DropItemAsItIs(p_ItemEntity);
+		}
+	}
+
+	return nullptr;
+}
+
+AItemBagActor* ASiltarnPlayerController::DropItemAsBag(UClass* p_BagClass)
+{
+	if (p_BagClass)
+	{
+		ASiltarnCharacter* _Character = Cast<ASiltarnCharacter>(GetCharacter());
+
+		if (_Character)
+		{
+			return _Character->DropItemAsBag(p_BagClass);
+		}
+	}
+
+	return nullptr;
+}
+
+
+
+bool ASiltarnPlayerController::DropItems(TArray<UPickupEntity*>& p_Items)
+{
+	ASiltarnCharacter* _Character = Cast<ASiltarnCharacter>(GetCharacter());
+
+	if (_Character)
+	{
+		return _Character->DropItems(p_Items);
+	}
+
+	return false;
 }
