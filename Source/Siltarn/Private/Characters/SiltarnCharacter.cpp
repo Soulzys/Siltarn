@@ -167,8 +167,10 @@ void ASiltarnCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("DebugCameraTop"  , IE_Pressed, this, &ASiltarnCharacter::ACTION_DebugCameraTop_PRESSED   );
 	PlayerInputComponent->BindAction("DebugCameraFront", IE_Pressed, this, &ASiltarnCharacter::ACTION_DebugCameraFront_PRESSED );
 	PlayerInputComponent->BindAction("Interact"        , IE_Pressed, this, &ASiltarnCharacter::ACTION_Interact_PRESSED         );
-	PlayerInputComponent->BindAction("ToggleInventory" , IE_Pressed, this, &ASiltarnCharacter::ACTION_ToggleInventory_PRESSED  );
-	PlayerInputComponent->BindAction("ToggleEchapMenu" , IE_Pressed, this, &ASiltarnCharacter::ACTION_ToggleEchapMenu_PRESSED  );
+	//PlayerInputComponent->BindAction("ToggleInventory" , IE_Pressed, this, &ASiltarnCharacter::ACTION_ToggleInventory_PRESSED  ); // old
+	PlayerInputComponent->BindAction("ToggleInventory", IE_Pressed, this, &ASiltarnCharacter::Action_OpenCharacterProfileWidget_Pressed);
+	//PlayerInputComponent->BindAction("ToggleEchapMenu" , IE_Pressed, this, &ASiltarnCharacter::ACTION_ToggleEchapMenu_PRESSED  ); // old
+	PlayerInputComponent->BindAction("ToggleEchapMenu", IE_Pressed, this, &ASiltarnCharacter::Action_EchapKey_Pressed);
 }
 
 void ASiltarnCharacter::INIT_Inputs()
@@ -192,7 +194,7 @@ void ASiltarnCharacter::INIT_Inputs()
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping("DebugCameraFront", EKeys::NumPadFour       , false, true ));
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping("Interact"        , EKeys::E                              ));
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping("ToggleInventory" , EKeys::I                              ));
-		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping("ToggleEchapMenu" , EKeys::Escape                         ));
+		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping("ToggleEchapMenu" , EKeys::Escape                         )); 
 
 		_bAreBindingsAdded = true;
 	}	
@@ -371,18 +373,15 @@ void ASiltarnCharacter::ACTION_Interact_PRESSED()
 	}
 }
 
-void ASiltarnCharacter::ACTION_ToggleInventory_PRESSED()
+
+
+
+void ASiltarnCharacter::Action_EchapKey_Pressed()
 {
-	checkf(m_PlayerController != nullptr, TEXT("ASiltarnCharacter::ACTION_ToggleInventory_PRESSED() : m_PlayerController is NULL !"));
-
-	m_PlayerController->TOGGLE_Inventory();
-}
-
-void ASiltarnCharacter::ACTION_ToggleEchapMenu_PRESSED()
-{
-	checkf(m_PlayerController != nullptr, TEXT("ASiltarnCharacter::ACTION_ToggleEchapMenu_PRESSED() : m_PlayerController is NULL !"));
-
-	m_PlayerController->TOGGLE_EchapMenu();
+	if (m_PlayerController)
+	{
+		m_PlayerController->OpenEscapeMenu();
+	}
 }
 
 FVector ASiltarnCharacter::GET_DefaultCameraLocation() const
@@ -633,4 +632,14 @@ AItemBagActor* ASiltarnCharacter::DropItemAsBag(UClass* p_BagClass)
 bool ASiltarnCharacter::DropItems(TArray<UPickupEntity*>& p_Items)
 {
 	return false;
+}
+
+
+
+void ASiltarnCharacter::Action_OpenCharacterProfileWidget_Pressed()
+{
+	if (m_PlayerController)
+	{
+		m_PlayerController->OpenCharacterProfileWidget();
+	}
 }

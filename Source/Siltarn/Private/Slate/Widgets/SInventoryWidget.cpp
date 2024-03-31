@@ -537,6 +537,23 @@ void SInventoryWidget::COMPUTE_VerticalLines()
 
 
 
+void SInventoryWidget::ClearInventoryVisual()
+{
+	ClearVerticalAndHorizontalLines();
+	DestroyTiles();
+	DestroyCrossAnchors();
+}
+
+
+
+void SInventoryWidget::ClearVerticalAndHorizontalLines()
+{
+	m_VerticalLines.Empty();
+	m_HorizontalLines.Empty();
+}
+
+
+
 void SInventoryWidget::BUILD_Tiles()
 {
 	int32 _IterationCount = 0;
@@ -553,6 +570,14 @@ void SInventoryWidget::BUILD_Tiles()
 	}
 
 	UE_LOG(LogClass_SInventoryWidget, Log, TEXT("BUILD_Tiles() : Number of tiles built : %d"), _IterationCount);
+}
+
+
+
+void SInventoryWidget::DestroyTiles()
+{
+	UE_LOG(LogClass_SInventoryWidget, Warning, TEXT("Destroying all FTiles !"));
+	m_Tiles.Empty();
 }
 
 
@@ -595,6 +620,12 @@ void SInventoryWidget::BUILD_CrossAnchors()
 	UE_LOG(LogClass_SInventoryWidget, Log, TEXT("BUILD_CrossAnchors() : Number of FCrossAnchors built : %d"), _IterationCount);
 }
 
+
+
+void SInventoryWidget::DestroyCrossAnchors()
+{
+	m_CrossAnchors.Empty();
+}
 
 
 void SInventoryWidget::BuildCrossAnchorsNew()
@@ -1007,6 +1038,12 @@ FReply SInventoryWidget::OnDrop(const FGeometry& MyGeometry, const FDragDropEven
 			// Luciole 12/03/2024 || Investigate on the use of GET_Tile(). Do we really need to have a reference to the control FTile within SInventoryItemWidget ??
 			TryDroppingItemToTile(_Operation->GET_InventoryItemClass(), _ItemEntity, _Operation->GET_Tile(), _TargetTile);
 
+
+
+
+
+			FSlateApplication::Get().SetUserFocus(0, SharedThis(this), EFocusCause::SetDirectly);
+
 			return FReply::Handled();
 		}
 	}
@@ -1175,49 +1212,6 @@ void SInventoryWidget::DEBUG_DisplayTilesStatusThroughUELogs()
 
 
 
-TArray<FInventoryItem*>& SInventoryWidget::GET_FInventoryItemsCache()
-{
-	return m_DroppingItemsCache;
-}
-
-
-
-int32 SInventoryWidget::ComputeUniqueItemId()
-{
-	if (m_ItemsId.Num() == 0)
-	{
-		m_ItemsId.Emplace(0);
-		return 0;
-	}
-
-	if (m_ItemsId[0] != 0)
-	{
-		m_ItemsId.Emplace(0);
-		m_ItemsId.Sort();
-		return 0;
-	}
-
-	m_ItemsId.Sort(); // Not sure if necessary, i.e. too lazy to test it.
-
-	for (int32 i = 0; i < m_ItemsId.Num() - 1; i++)
-	{
-		int32 _Temp = m_ItemsId[i] + 1;
-
-		if (_Temp != m_ItemsId[i + 1])
-		{
-			m_ItemsId.EmplaceAt(i + 1, _Temp);
-			return _Temp;
-		}
-	}
-
-	int32 _Last = m_ItemsId.Last();
-
-	m_ItemsId.Emplace(_Last + 1);
-	return _Last + 1;
-}
-
-
-
 void SInventoryWidget::CleanCachedTilesIndexes()
 {
 	m_CachedTileIndex = -1;
@@ -1300,6 +1294,27 @@ void SInventoryWidget::SetItemsForGroupDrop()
 void SInventoryWidget::SET_InventoryManager(UInventoryManager* p_InventoryManager)
 {
 	m_InventoryManager = p_InventoryManager;
+}
+
+
+
+FReply SInventoryWidget::OnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
+{
+	if (InKeyEvent.GetKey() == EKeys::I || InKeyEvent.GetKey() == EKeys::Escape)
+	{
+		if (m_HUDOwner.IsValid())
+		{
+			m_HUDOwner->CloseCharacterProfileWidget();
+		}
+	}
+
+	return FReply::Handled();
+}
+
+
+void SInventoryWidget::ResetFocus()
+{
+	FSlateApplication::Get().SetUserFocus(0, SharedThis(this));
 }
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION

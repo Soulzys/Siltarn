@@ -201,8 +201,6 @@ private:
 	2/ Investigate whether it would be better to make the item widget move itself by setting its slot position in SInventoryItemWidget, 
 	   or if we should keep its slot reference in FInventoryItem and move it from here only. When I think about it atm, it appears to make more sense. 
 */
-
-
 class SILTARN_API SInventoryWidget : public SCompoundWidget
 {
 
@@ -227,13 +225,12 @@ public:
 	virtual int32  OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyCullingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const override;
 	virtual bool   SupportsKeyboardFocus() const override { return true; }
 	virtual FReply OnDrop(const FGeometry& MyGeometry, const FDragDropEvent& DragDropEvent) override;
+	virtual FReply OnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
 
 	void Construct(const FArguments& p_InArgs);
 	bool IsThereRoomInInventory(const FIntPoint& p_ItemSize);
 
 	void DEBUG_DisplayTilesStatusThroughUELogs();
-
-	TArray<FInventoryItem*>& GET_FInventoryItemsCache(); // new
 
 	void HideAllItemsSetForGroupDrop();
 
@@ -246,14 +243,23 @@ public:
 
 	static int32 TileCoordinatesToTileIndexStatic(const FIntPoint& p_Coordinates, int32 p_NumberOfColumns);
 
+	void ClearInventoryVisual();
+
+	
+	// Luciole 29/03/2024 || This is a cheap way to "resolve" an issue. Look at MYSTERY 1 in Documentation.h for more info about it.
+	void ResetFocus();
+
 protected:
 
 	void COMPUTE_HorizontalLines();
 	void COMPUTE_VerticalLines();
+	void ClearVerticalAndHorizontalLines();
 	void BUILD_Tiles(); // old
 	void BuildTilesNew(); // new
 	void BUILD_CrossAnchors(); // old
 	void BuildCrossAnchorsNew(); // new
+	void DestroyTiles();
+	void DestroyCrossAnchors();
 	void ConstructCanvasItemSlot(UPickupEntity* p_ItemEntity, FTile* p_ControlTile, FInventoryItem* p_InventoryItem, EInventoryItemWidgetLocation p_ItemWidgetLocation); // new 
 
 	/*
@@ -288,13 +294,6 @@ protected:
 	bool IS_RoomAvailableAtTileIndex(const FIntPoint& p_ItemSize, int32 p_TileIndex);
 	
 
-
-
-	int32 ComputeUniqueItemId();	
-
-
-protected:
-
 	void CleanCachedTilesIndexes();
 
 	// Utilitary FTile functions
@@ -310,6 +309,8 @@ protected:
 	FVector2D     TileToRelativeLocation                  (FTile*           p_Tile                             );
 	FTile*        RelativeLocationToTile                  (const FVector2D& p_Loc, const FIntPoint& p_ItemSize );
 	FCrossAnchor* RelativeLocationToCrossAnchor           (const FVector2D& p_Loc                              );
+
+
 
 protected:
 

@@ -39,6 +39,7 @@ public:
 
 	virtual bool SupportsKeyboardFocus() const override { return true; }
 	virtual FReply OnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent) override;
+	virtual FReply OnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
 
 	void Construct(const FArguments& p_InArgs);
 
@@ -49,10 +50,8 @@ public:
 	void SET_InventoryManager(UInventoryManager* p_InventoryManager);
 
 	// Dealing with external inventory (Bag, Chestbox...)
-	void ReconstructExternalInventoryWidget(int32 p_NumberOfRows, int32 p_NumberOfColumns);
-
 	void OpenExternalInventoryWidget(const FIntPoint& p_InventorySize, int32 p_TileSize, TArray<UPickupEntity*>& p_Items);
-
+	void CloseExternalInventoryWidget();
 
 private:
 

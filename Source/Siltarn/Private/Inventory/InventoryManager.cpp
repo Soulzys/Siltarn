@@ -145,7 +145,6 @@ void UInventoryManager::DropItemAsItIs(UPickupEntity* p_ItemEntity)
 
 		if (_ItemActor)
 		{
-			//bool _bWasItemWidgetRemoved = m_PlayerInventoryWidget->RemoveItemCanvasSlot(p_ItemEntity->GET_InventoryId()); // old
 			bool _bWasItemWidgetRemoved = m_PlayerInventoryWidget->RemoveItemCanvasSlot(p_ItemEntity->GET_EntityId());
 
 			if (_bWasItemWidgetRemoved)
@@ -178,7 +177,6 @@ void UInventoryManager::DropItemAsBag(UClass* p_BagClass, UPickupEntity* p_ItemE
 
 		if (_ItemBag)
 		{
-			//bool _bWasItemWidgetRemoved = m_PlayerInventoryWidget->RemoveItemCanvasSlot(p_ItemEntity->GET_InventoryId()); // old
 			bool _bWasItemWidgetRemoved = m_PlayerInventoryWidget->RemoveItemCanvasSlot(p_ItemEntity->GET_EntityId());
 
 			if (_bWasItemWidgetRemoved)
@@ -210,17 +208,18 @@ void UInventoryManager::DropItems()
 
 				if (_bWereItemsWereLoaded)
 				{
-					int32 _C = 0;
-
-					while (_C < m_ItemsToDrop.Num())
+					// Luciole 30/03/2024 || Too tired to come up with anything else. There's probably plenty of room for improvement 
+					for (int32 i = 0; i < m_ItemsToDrop.Num(); i++)
 					{
-
+						for (int32 j = 0; j < m_ItemEntities.Num(); j++)
+						{
+							if (*m_ItemsToDrop[i] == *m_ItemEntities[j])
+							{
+								m_ItemEntities.RemoveAt(j);
+								break;
+							}
+						}
 					}
-
-					/*for (auto _ItemEntity : m_ItemsToDrop)
-					{
-						m_ItemEntities[_ItemEntity->GET_InventoryId()] = nullptr;
-					}*/
 
 					m_ItemsToDrop.Empty();
 
@@ -257,9 +256,9 @@ void UInventoryManager::DEBUG_DisplayAllItemsName() const
 {
 	UE_LOG(LogClass_UInventoryManager, Warning, TEXT("DEBUG_DisplayAllItemsName() : START -----"));
 
-	for (auto _ItemEntity : m_ItemEntities)
+	for (int32 i = 0; i < m_ItemEntities.Num(); i++)
 	{
-		UE_LOG(LogClass_UInventoryManager, Log, TEXT("%s"), *_ItemEntity->GET_Name());
+		UE_LOG(LogClass_UInventoryManager, Log, TEXT("m_ItemEntities[%d] : %s"), i, *m_ItemEntities[i]->GET_Name());
 	}
 
 	UE_LOG(LogClass_UInventoryManager, Warning, TEXT("DEBUG_DisplayAllItemsName() : FINISH -----"));

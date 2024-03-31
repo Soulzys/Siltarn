@@ -19,13 +19,6 @@ class SInGamePlayerInventoryWidget;
 class UInteractableEntity;
 class UPickupEntity;
 
-UENUM() 
-enum class EWidgetVisibilityState : uint8
-{
-	VISIBLE   = 0, 
-	COLLAPSED = 1, 
-	BUG       = 2
-};
 
 UENUM()
 enum class ECrosshairTypes : uint8
@@ -34,10 +27,10 @@ enum class ECrosshairTypes : uint8
 	CROSS = 1
 };
 
+
 /*
 	This class should eventually renamed as PyralinthHUD
 */
-
 UCLASS()
 class SILTARN_API AGameplayHUD : public AHUD
 {
@@ -49,12 +42,7 @@ public:
 	virtual void PostInitializeComponents() override;
 	virtual void DrawHUD() override;
 
-	// Returns the visibility state of the widget
-	EWidgetVisibilityState TOGGLE_InventoryWidget();
-	EWidgetVisibilityState TOGGLE_EchapMenu();
-
 	void SET_GameMessageWidgetText(const FText& p_Message);
-
 	void SHUTDOWN_PickupItemWidget();
 
 	// New inventory stuff
@@ -67,6 +55,12 @@ public:
 	TSharedPtr<SInGamePlayerInventoryWidget> GET_InGamePlayerInventoryWidget() const;
 
 	void SET_InventoryManager(class UInventoryManager* p_InventoryManager) const;
+
+	// New ones
+	void OpenEscapeMenu();
+	void CloseEscapeMenu();
+	void OpenCharacterProfileWidget();
+	void CloseCharacterProfileWidget();
 
 private:
 
@@ -106,9 +100,8 @@ private:
 	TSharedPtr<SProfileMenu       > m_ProfileMenu         = nullptr ;
 	TSharedPtr<SGameMessageWidget > m_GameMessageWidget   = nullptr ;
 	TSharedPtr<SInGameMenu        > m_InGameMenu          = nullptr ;
-	TSharedPtr<SEchapMenu         > m_EchapMenu           = nullptr ;
+	TSharedPtr<SEchapMenu         > m_EscapeMenu          = nullptr ;
 	TSharedPtr<SInventoryBagWidget> m_InventoryBagWidget  = nullptr ;
-	//TSharedPtr<SInGameBagInventory> m_IGBagInventoryWidget = nullptr;
 
 	bool m_bIsInventoryWidgetOpen;
 	bool m_bIsEchapMenuOpen;
@@ -116,12 +109,4 @@ private:
 	FTimerHandle m_GameMessageCollapseTimer;
 
 	FVector2D m_CenterOfScreen;
-
-
-
-
-
-
-
-
 };

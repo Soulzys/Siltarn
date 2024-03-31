@@ -73,15 +73,11 @@ public:
 	virtual FReply OnDragDetected       (const FGeometry& MyGeometry, const FPointerEvent& MouseEvent) override;
 	virtual bool   SupportsKeyboardFocus() const override { return true; }
 	virtual FReply OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent) override;
-	virtual FReply OnKeyUp(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent) override;
 
 	void Construct(const FArguments& p_InArgs);
 	void UPDATE_Tile(FTile& p_NewTile);
 
 	void UPDATE_Widget(SInventoryItemWidget* p_ItemWidget);
-
-	// Custom FReply
-	FReply DeleteItemWidget();
 
 	FORCEINLINE UPickupEntity* GET_ItemData() const { return m_ItemData; }
 
@@ -105,7 +101,6 @@ private:
 	FInventoryItem* m_InventoryItemClass = nullptr;
 
 	bool m_bIsInInventory;
-	bool m_bIsShiftKeyDown;
 	bool m_bIsSelectedForGroupDrop;
 
 	EInventoryItemWidgetState    m_InventoryItemState    ;

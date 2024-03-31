@@ -109,3 +109,39 @@
 		MR -> Millisecond or random number
 		   
 */
+
+
+
+/*
+	LANDMINE
+
+	@
+	@
+	@
+
+	Mine 1 : FSlateApplication::SetUserFocus()
+	------------------------------------------
+
+	When we use FSlateApplication::SetUserFocus(), such as in SInventoryItemWidget::OnMouseEnter() or SInventoryWidget::OnDrop(), 
+	we pass in 0 as the User index. This may come back to bite us later when we deal with multiplayer.
+
+
+
+
+	Mine 2 : SInventoryItemWidget::GET_ScreenToViewportRatio()
+	----------------------------------------------------------
+	
+	I forgot how we got to deal with it this way, but right now we are working with a static resolution of 1920x1080. 
+	We would ideally need to make this dynamic and let everything adapt to the viewport size. 
+*/
+
+/*
+	MYSTERIES LAND
+
+	@
+	@
+	@
+
+	Mystery 1 : Look for the Luciole in SInventoryItemWidget::OnMouseLeave()
+	------------------------------------------------------------------------
+*/

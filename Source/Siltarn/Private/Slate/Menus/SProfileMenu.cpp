@@ -16,20 +16,22 @@ void SProfileMenu::Construct(const FArguments& p_InArgs)
 {
 	m_PlayerInventoryNumberOfColumns = p_InArgs._a_NumberOfColumns.Get();
 	m_PlayerInventoryNumberOfRows    = p_InArgs._a_NumberOfRows   .Get();
-	m_TileSize        = p_InArgs._a_TileSize       .Get();
+	m_TileSize                       = p_InArgs._a_TileSize       .Get();
+	m_HUDOwner                       = p_InArgs._a_HUDOwner             ;
 
-	m_HUDOwner = p_InArgs._a_HUDOwner;
-
-	
 	ChildSlot
 	.HAlign(HAlign_Fill)
 	.VAlign(VAlign_Fill)
 	[
 		SNew(SHorizontalBox)
 
+		// External inventory (bag, chest, lootbox...
+		//
 		+ SHorizontalBox::Slot()
 		[
 			SNew(SBorder)
+			//.HAlign(HAlign_Center)
+			//.VAlign(VAlign_Center)
 			//.BorderImage(FCoreStyle::Get().GetBrush("NoBrush"))
 			.BorderImage(&m_GeneralStyle.m_DebuggingBlue_SlateBrush)
 			.Padding(0)
@@ -38,12 +40,19 @@ void SProfileMenu::Construct(const FArguments& p_InArgs)
 				.WidthOverride(m_ExternalInventoryNumberOfColumns * m_TileSize)
 				.HeightOverride(m_ExternalInventoryNumberOfRows   * m_TileSize)
 				[
-					SAssignNew(m_ExternalInventoryWidget, SInGameBagInventory)
-					.a_HUDOwner(m_HUDOwner)
-					.a_NumberOfColumns(m_ExternalInventoryNumberOfColumns)
-					.a_NumberOfRows(m_ExternalInventoryNumberOfRows)
-					.a_TileSize(m_TileSize)
-					.a_ParentWidget(this)
+					/*SNew(SBorder)
+					.HAlign(HAlign_Center)
+					.VAlign(VAlign_Center)
+					.BorderImage(&m_GeneralStyle.m_DebuggingYellow_SlateBrush)
+					.Padding(0)
+					[*/
+						SAssignNew(m_ExternalInventoryWidget, SInGameBagInventory)
+						.a_HUDOwner(m_HUDOwner)
+						.a_NumberOfColumns(m_ExternalInventoryNumberOfColumns)
+						.a_NumberOfRows(m_ExternalInventoryNumberOfRows)
+						.a_TileSize(m_TileSize)
+						.a_ParentWidget(this)
+					//]					
 				]
 			]
 		]
@@ -86,7 +95,7 @@ void SProfileMenu::Construct(const FArguments& p_InArgs)
 					]					
 				]
 					
-				// Inventory
+				// Character inventory
 				//
 				+ SVerticalBox::Slot()
 				[
@@ -131,63 +140,25 @@ FReply SProfileMenu::OnDrop(const FGeometry& InGeometry, const FDragDropEvent& I
 {
 	TSharedPtr<FInventoryItemDragDrop> _DragOperation = InDragDropEvent.GetOperationAs<FInventoryItemDragDrop>();
 
-	ASiltarnPlayerController* _SPC = Cast<ASiltarnPlayerController>(m_HUDOwner->GetOwningPlayerController());
-	check(_SPC);
-
-	if (_DragOperation->IS_SingleItemDragOperation())
+	if (_DragOperation.IsValid())
 	{
-		if (m_InventoryManager)
+		if (_DragOperation->IS_SingleItemDragOperation())
 		{
-			m_InventoryManager->DropItem(_DragOperation->GET_ItemEntity());
-			return FReply::Handled();
+			if (m_InventoryManager)
+			{
+				m_InventoryManager->DropItem(_DragOperation->GET_ItemEntity());
+				return FReply::Handled();
+			}
 		}
-
-		//m_InventoryWidget->REMOVE_Item(_DragOperation->GET_Tile()); // old old
-
-		//_SPC->DROP_Item(_DragOperation->GET_ItemEntity()); // old
-		//m_InventoryWidget->REMOVE_Item(_DragOperation->GET_InventoryItemId()); // old
-
-		return FReply::Handled();
-	}
-	else
-	{
-		//TArray<UPickupEntity*>* _ItemsArray = _DragOperation->GET_ItemsArray(); // old
-		//TArray<FInventoryItem*> _InventoryItemsArray = *_DragOperation->GET_InventoryItemsArray(); // new 
-
-		//_SPC->DROP_Items(*_DragOperation->GET_ItemsArray());
-
-		/*TArray<UPickupEntity*> _TempArray;
-
-		for (int i = 0; i < _InventoryItemsArray.Num(); i++)
+		else
 		{
-			FInventoryItem* _Item = _InventoryItemsArray[i];
-
-			_TempArray.Emplace(_Item->s_ItemWidget->GET_ItemData());
-			m_InventoryWidget->REMOVE_Item(_Item->GET_ControlTile());
+			if (m_InventoryWidget)
+			{
+				m_InventoryWidget->SetItemsForGroupDrop();
+				return FReply::Handled();
+			}
 		}
-
-		m_InventoryWidget->CLEAN_GroupDropCache();
-
-		_SPC->DROP_Items(_TempArray);*/
-
-
-		// new 
-		//TArray<UPickupEntity*> _TempArray;
-
-
-
-		UE_LOG(LogClass_SProfileMenu, Error, TEXT("We've arrived here"));
-
-
-		// real new stuff happens below !!
-		if (m_InventoryWidget)
-		{
-			m_InventoryWidget->SetItemsForGroupDrop();
-			return FReply::Handled();
-		}
-
-		return FReply::Handled();
-	}
+	}	
 
 	return FReply::Unhandled();
 }
@@ -225,24 +196,53 @@ void SProfileMenu::SET_InventoryManager(UInventoryManager* p_InventoryManager)
 
 void SProfileMenu::OpenExternalInventoryWidget(const FIntPoint& p_InventorySize, int32 p_TileSize, TArray<UPickupEntity*>& p_Items)
 {
-	// Reconstruct inventory
-	SInventoryWidget::FArguments _Args         ;
-	_Args.a_NumberOfColumns(p_InventorySize.X) ;
-	_Args.a_NumberOfRows   (p_InventorySize.Y) ;
-	_Args.a_TileSize       (p_TileSize)        ;
-	_Args.a_HUDOwner       (m_HUDOwner)        ;
-	_Args.a_ParentWidget   (this)              ;
+	if (m_ExternalInventoryWidget.IsValid())
+	{
+		// Reconstruct inventory
+		SInventoryWidget::FArguments _Args         ;
+		_Args.a_NumberOfColumns(p_InventorySize.X) ;
+		_Args.a_NumberOfRows   (p_InventorySize.Y) ;
+		_Args.a_TileSize       (p_TileSize)        ;
+		_Args.a_HUDOwner       (m_HUDOwner)        ;
+		_Args.a_ParentWidget   (this)              ;
 
-	m_ExternalInventoryWidget->Reconstruct(_Args)                  ;
-	m_ExternalInventoryWidget->SetVisibility(EVisibility::Visible) ;
-	m_ExternalInventoryWidget->LoadItemsWidgets(p_Items);
+		m_ExternalInventoryWidget->Reconstruct(_Args)                  ;
+		m_ExternalInventoryWidget->SetVisibility(EVisibility::Visible) ;
+		m_ExternalInventoryWidget->LoadItemsWidgets(p_Items)           ;
+	}
+	else
+	{
+		UE_LOG(LogClass_SProfileMenu, Error, TEXT("OpenExternalInventoryWidget() : m_ExternalInventoryWidget is invalid !"));
+	}
 }
 
 
 
-void SProfileMenu::ReconstructExternalInventoryWidget(int32 p_NumberOfRows, int32 p_NumberOfColumns)
+void SProfileMenu::CloseExternalInventoryWidget()
 {
-	//SInventoryWidget::FArguments _Arg;
-	//_Arg.a_HUDOwner(m_HUDOwner);
-	//m_ExternalInventoryWidget->Construct(_Arg);
+	if (m_ExternalInventoryWidget.IsValid() && m_ExternalInventoryWidget->GetVisibility() == EVisibility::Visible)
+	{
+		m_ExternalInventoryWidget->ClearInventoryVisual();
+		m_ExternalInventoryWidget->SetVisibility(EVisibility::Collapsed);
+	}
+}
+
+
+
+FReply SProfileMenu::OnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
+{
+	if (InKeyEvent.GetKey() == EKeys::I || InKeyEvent.GetKey() == EKeys::Escape)
+	{
+		if (m_HUDOwner.IsValid())
+		{
+			m_HUDOwner->CloseCharacterProfileWidget();
+		}
+	}
+
+	if (InKeyEvent.GetKey() == EKeys::T)
+	{
+		UE_LOG(LogClass_SProfileMenu, Warning, TEXT("T was pressed !"));
+	}
+
+	return FReply::Handled();
 }

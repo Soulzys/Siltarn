@@ -78,8 +78,11 @@ private:
 	void ACTION_DebugCameraTop_PRESSED  ();
 	void ACTION_DebugCameraFront_PRESSED();
 	void ACTION_Interact_PRESSED        ();
-	void ACTION_ToggleInventory_PRESSED ();
-	void ACTION_ToggleEchapMenu_PRESSED ();
+
+
+	// New actions format
+	void Action_EchapKey_Pressed();
+	void Action_OpenCharacterProfileWidget_Pressed();
 
 	void SWITCH_Camera(float p_DeltaTime);
 	void TRACE_LineForward();

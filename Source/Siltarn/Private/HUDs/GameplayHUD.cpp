@@ -51,35 +51,32 @@ void AGameplayHUD::PostInitializeComponents()
 			.a_TileSize(m_TileSize);
 		SAssignNew(m_GameMessageWidget, SGameMessageWidget).a_HUDOwner(this);
 		SAssignNew(m_InGameMenu, SInGameMenu).a_HUDOwner(this);
-		SAssignNew(m_EchapMenu, SEchapMenu).a_HUDOwner(this);
+		SAssignNew(m_EscapeMenu, SEchapMenu).a_HUDOwner(this);
 		SAssignNew(m_InventoryBagWidget, SInventoryBagWidget);
-		//SAssignNew(m_IGBagInventoryWidget, SInGameBagInventoryWidget);
 
 
 		bool _bWidgets = m_ProfileMenu       &&
 						 m_GameMessageWidget &&
 					     m_InGameMenu        &&
-						 m_EchapMenu          ;
+						 m_EscapeMenu         ;
 
 		if (_bWidgets)
 		{
 			GEngine->GameViewport->AddViewportWidgetContent(SNew(SWeakWidget).PossiblyNullContent(m_ProfileMenu         .ToSharedRef())) ;
 			GEngine->GameViewport->AddViewportWidgetContent(SNew(SWeakWidget).PossiblyNullContent(m_GameMessageWidget   .ToSharedRef())) ;
 			GEngine->GameViewport->AddViewportWidgetContent(SNew(SWeakWidget).PossiblyNullContent(m_InGameMenu          .ToSharedRef())) ;
-			GEngine->GameViewport->AddViewportWidgetContent(SNew(SWeakWidget).PossiblyNullContent(m_EchapMenu           .ToSharedRef())) ;
+			GEngine->GameViewport->AddViewportWidgetContent(SNew(SWeakWidget).PossiblyNullContent(m_EscapeMenu          .ToSharedRef())) ;
 			GEngine->GameViewport->AddViewportWidgetContent(SNew(SWeakWidget).PossiblyNullContent(m_InventoryBagWidget  .ToSharedRef())) ;
-			//GEngine->GameViewport->AddViewportWidgetContent(SNew(SWeakWidget).PossiblyNullContent(m_IGBagInventoryWidget.ToSharedRef())) ;
 
 			m_ProfileMenu        ->SetVisibility(EVisibility::Collapsed) ;
 			m_GameMessageWidget  ->SetVisibility(EVisibility::Collapsed) ;
 			m_InGameMenu         ->SetVisibility(EVisibility::Collapsed) ;
-			m_EchapMenu          ->SetVisibility(EVisibility::Collapsed) ;
+			m_EscapeMenu         ->SetVisibility(EVisibility::Collapsed) ;
 			m_InventoryBagWidget ->SetVisibility(EVisibility::Collapsed) ;
-			//m_IGBagInventoryWidget->SetVisibility(EVisibility::Visible);
 		}
 		else
 		{
-			UE_LOG(LogClass_AGameplayHUD, Warning, TEXT("PostInitializeComponents() : At least one of the Slate widget is NULL."))
+			UE_LOG(LogClass_AGameplayHUD, Error, TEXT("PostInitializeComponents() : At least one of the Slate widget is NULL."))
 		}
 	}
 }
@@ -111,56 +108,8 @@ void AGameplayHUD::DrawHUD()
 
 
 
-EWidgetVisibilityState AGameplayHUD::TOGGLE_InventoryWidget()
-{
-	if (m_ProfileMenu == nullptr)
-	{
-		UE_LOG(LogClass_AGameplayHUD, Warning, TEXT("TOGGLE_InventoryWidget() : m_ProfileMenu is NULL. || Unable to proceed further."));
-		return EWidgetVisibilityState::BUG;
-	}
-
-	if (m_bIsInventoryWidgetOpen)
-	{
-		m_ProfileMenu->SetVisibility(EVisibility::Collapsed);
-		m_bIsInventoryWidgetOpen = false;
-		
-		return EWidgetVisibilityState::COLLAPSED;
-	}
-	else
-	{
-		m_ProfileMenu->SetVisibility(EVisibility::Visible);
-		m_bIsInventoryWidgetOpen = true;
-		m_InGameMenu->SetVisibility(EVisibility::Collapsed);
-		
-		return EWidgetVisibilityState::VISIBLE;
-	}
-}
 
 
-
-EWidgetVisibilityState AGameplayHUD::TOGGLE_EchapMenu()
-{
-	if (m_EchapMenu == nullptr)
-	{
-		UE_LOG(LogClass_AGameplayHUD, Warning, TEXT("TOGGLE_EchapMenu() : m_EchapMenu is NULL. || Unable to proceed further."));
-		return EWidgetVisibilityState::BUG;
-	}
-
-	if (m_bIsEchapMenuOpen)
-	{
-		m_EchapMenu->SetVisibility(EVisibility::Collapsed);
-		m_bIsEchapMenuOpen = false;
-
-		return EWidgetVisibilityState::COLLAPSED;
-	}
-	else
-	{
-		m_EchapMenu->SetVisibility(EVisibility::Visible);
-		m_bIsEchapMenuOpen = true;
-
-		return EWidgetVisibilityState::VISIBLE;
-	}
-}
 
 
 
@@ -223,7 +172,7 @@ void AGameplayHUD::OPEN_ItemBag(const FIntPoint& p_InventorySize, TArray<UPickup
 {
 	if (m_ProfileMenu.IsValid())
 	{
-		TOGGLE_InventoryWidget();
+		OpenCharacterProfileWidget();
 		m_ProfileMenu->OpenExternalInventoryWidget(p_InventorySize, m_TileSize, p_Items);
 	}
 }
@@ -255,5 +204,132 @@ void AGameplayHUD::SET_InventoryManager(class UInventoryManager* p_InventoryMana
 	if (m_ProfileMenu)
 	{
 		m_ProfileMenu->SET_InventoryManager(p_InventoryManager);
+	}
+}
+
+
+
+void AGameplayHUD::OpenEscapeMenu()
+{
+	if (!m_EscapeMenu.IsValid())
+	{
+		UE_LOG(LogClass_AGameplayHUD, Error, TEXT("OpenEscapeMenu() : m_EscapeMenu is not valid !"));
+		return;
+	}
+
+	if (!m_InGameMenu.IsValid())
+	{
+		UE_LOG(LogClass_AGameplayHUD, Error, TEXT("OpenEscapeMenu() : m_InGameMenu is not valid !"));
+		return;
+	}
+
+
+	// If we don't shutdown the m_InGameMenu (which is basically the APickupActor's tag widget, then it will be "above" our SProfileMenu widget
+	m_InGameMenu->SetVisibility(EVisibility::Collapsed);
+
+	APlayerController* _PC = GetOwningPlayerController();
+
+	if (_PC)
+	{
+		FInputModeUIOnly _IM;
+		_IM.SetWidgetToFocus(m_EscapeMenu);
+		_PC->SetInputMode(_IM);
+		_PC->SetShowMouseCursor(true);
+
+		m_EscapeMenu->SetVisibility(EVisibility::Visible);
+	}
+	else
+	{
+		UE_LOG(LogClass_AGameplayHUD, Error, TEXT("OpenEscapeMenu() : Could not retrieve the owning player controller !"));
+	}
+}
+
+
+
+void AGameplayHUD::CloseEscapeMenu()
+{
+	if (!m_EscapeMenu.IsValid())
+	{
+		UE_LOG(LogClass_AGameplayHUD, Error, TEXT("CloseEscapeMenu() : m_EscapeMenu is not valid !"));
+		return;
+	}
+
+
+	APlayerController* _PC = GetOwningPlayerController();
+
+	if (_PC)
+	{
+		_PC->SetInputMode(FInputModeGameOnly());
+		_PC->SetShowMouseCursor(false);
+
+		m_EscapeMenu->SetVisibility(EVisibility::Collapsed);
+	}
+	else
+	{
+		UE_LOG(LogClass_AGameplayHUD, Error, TEXT("CloseEscapeMenu() : Could not retrieve the owning player controller !"));
+	}
+}
+
+
+
+void AGameplayHUD::OpenCharacterProfileWidget()
+{
+	if (!m_ProfileMenu.IsValid())
+	{
+		UE_LOG(LogClass_AGameplayHUD, Error, TEXT("OpenCharacterProfileWidget() : m_ProfileMenu is not valid !"));
+		return;
+	}
+
+	if (!m_InGameMenu.IsValid())
+	{
+		UE_LOG(LogClass_AGameplayHUD, Error, TEXT("OpenCharacterProfileWidget() : m_InGameMenu is not valid !"));
+		return;
+	}
+
+
+	// If we don't shutdown the m_InGameMenu (which is basically the APickupActor's tag widget, then it will be "above" our SProfileMenu widget
+	m_InGameMenu->SetVisibility(EVisibility::Collapsed);
+
+	APlayerController* _PC = GetOwningPlayerController();
+
+	if (_PC)
+	{
+		FInputModeUIOnly _IM;
+		_IM.SetWidgetToFocus(m_ProfileMenu);
+		_PC->SetInputMode(_IM);
+		_PC->SetShowMouseCursor(true);
+
+		m_ProfileMenu->SetVisibility(EVisibility::Visible);
+	}
+	else
+	{
+		UE_LOG(LogClass_AGameplayHUD, Error, TEXT("OpenCharacterProfileWidget() : Could not retrieve the owning player controller !"));
+	}
+}
+
+
+
+void AGameplayHUD::CloseCharacterProfileWidget()
+{
+	if (!m_ProfileMenu.IsValid())
+	{
+		UE_LOG(LogClass_AGameplayHUD, Error, TEXT("CloseCharacterProfileWidget() : m_ProfileMenu is not valid !"));
+		return;
+	}
+
+
+	APlayerController* _PC = GetOwningPlayerController();
+
+	if (_PC)
+	{
+		m_ProfileMenu->CloseExternalInventoryWidget(); // The external inventory widget can only be opened when interacting with a bag, a chest... etc.
+		m_ProfileMenu->SetVisibility(EVisibility::Collapsed);
+
+		_PC->SetInputMode(FInputModeGameOnly());
+		_PC->SetShowMouseCursor(false);		
+	}
+	else
+	{
+		UE_LOG(LogClass_AGameplayHUD, Error, TEXT("CloseCharacterProfileWidget() : Could not retrieve the owning player controller !"));
 	}
 }

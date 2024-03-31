@@ -14,7 +14,6 @@ BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 SInventoryItemWidget::SInventoryItemWidget()
 {
 	m_bIsInInventory          = true  ;
-	m_bIsShiftKeyDown         = false ;
 	m_bIsSelectedForGroupDrop = false ;
 
 	m_InventoryItemState    = EInventoryItemWidgetState   ::DEFAULT ;
@@ -118,9 +117,13 @@ void SInventoryItemWidget::OnMouseLeave(const FPointerEvent& MouseEvent)
 		m_ItemTooltip.Reset(); // If we do not add this line, the FItemTooltip that is created when the item is hovered for the first time is never deleted 
 	}
 
-	// Unfocuses this widget. I have no idea what default widget is focused after. In fact, is this actually supposed to be done this way ? I have no idea. 
-	FSlateApplication::Get().ClearUserFocus(0); // Do we need this ? Try to remove it later
-	FSlateApplication::Get().SetUserFocusToGameViewport(0);
+	/*
+		Luciole 29/03/2024
+		For some god forsaken reason, uncommenting the line below leads to a crash without debugging symbols. Yet, if we write basically the same
+		function within SInventoryWidget instead, it works like a charm. I suppose this thefore comes from the "MakeShareable(m_InventoryOwner)" part... but why ? 
+	*/
+	//FSlateApplication::Get().SetUserFocus(0, MakeShareable(m_InventoryOwner), EFocusCause::SetDirectly);
+	m_InventoryOwner->ResetFocus();
 }
 
 FReply SInventoryItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
@@ -140,18 +143,7 @@ FReply SInventoryItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, cons
 	// Right click -> place in character profile widget
 	if (MouseEvent.GetEffectingButton() == EKeys::RightMouseButton)
 	{
-		/*
-			Luciole 31/01/2024 | Combining SHIFT + Right mouse button works. The issue now is that the game inputs are also consumed.
-			This, for some reason that are probably related to widgets' focus, causes the player to activate the ADS feature.
-			A quick fix would be to set the game mode to "UI only" when we open the inventory, but do we actually want that ? 
-			Also, why, prior implementing the Keyboard + Mouse clicks, the MouseEvent.GetEffectingButton() == EKeys::RightMouseButton did not trigger
-			the ADS ? We need to investigate on that. 
-
-			Luciole 31/01/2024 | I'm too lazy to solve this out right now. Currently switching to "UI only" mode when opening the inventory.
-				! Update ! --> In fact, we're switching back to "Game and UI" because "UI only" blocks the other input events, such as pressing "I" to 
-				close the inventory when it's open...
-		*/
-		if (m_bIsShiftKeyDown)
+		if (MouseEvent.IsLeftShiftDown())
 		{
 			if (!m_bIsSelectedForGroupDrop && m_InventoryOwner)
 			{
@@ -183,15 +175,8 @@ FReply SInventoryItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, cons
 					{
 						m_ItemTooltip->DESTROY_Tooltip();
 						m_ItemTooltip.Reset();
+						return FReply::Handled();
 					}
-
-					if (m_InventoryOwner)
-					{
-						//m_InventoryOwner->MOVE_ItemToCharacterProfileWidget(this);
-					}
-
-					// Luciole 12/02/2024 | What is the purpose of this ??
-					return DeleteItemWidget();
 				}
 
 				return FReply::Handled();
@@ -204,27 +189,14 @@ FReply SInventoryItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, cons
 
 FReply SInventoryItemWidget::OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
 {
-	if (InKeyEvent.GetKey() == EKeys::LeftShift)
+	if (InKeyEvent.GetKey() == EKeys::I || InKeyEvent.GetKey() == EKeys::Escape)
 	{
-		if (m_bIsShiftKeyDown)
+		if (m_InventoryOwner)
 		{
-			return FReply::Handled();
+			m_InventoryOwner->OnKeyDown(MyGeometry, InKeyEvent); // Luciole 29/03/2024 || Is it even right to do it this way ? 
 		}
-
-		UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("SHIFT key is down !"));
-		m_bIsShiftKeyDown = true;
 	}
 
-	return FReply::Handled();
-}
-
-FReply SInventoryItemWidget::OnKeyUp(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
-{
-	if (InKeyEvent.GetKey() == EKeys::LeftShift)
-	{
-		UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("SHIFT key is up !"));
-		m_bIsShiftKeyDown = false;
-	}
 	return FReply::Handled();
 }
 
@@ -261,15 +233,12 @@ FReply SInventoryItemWidget::OnDragDetected(const FGeometry& MyGeometry, const F
 			{
 				TSharedRef<FInventoryItemDragDrop> _Operation = FInventoryItemDragDrop::CREATE_MultipleItemsDragOperation
 				(
-					//m_InventoryOwner->BeginDraggingGroupItemsForDropping(), // old
-					//m_InventoryOwner->GET_FInventoryItemsCache(), // new 
 					_Ratio, 
 					m_ItemSize, 
 					&m_GeneralStyle.m_ItemBagIcon_SlateBrush
 				);
 
-				//SetVisibility(EVisibility::Collapsed); // old
-				m_InventoryOwner->HideAllItemsSetForGroupDrop(); // new
+				m_InventoryOwner->HideAllItemsSetForGroupDrop();
 
 				return FReply::Handled().BeginDragDrop(_Operation);
 			}
@@ -279,27 +248,11 @@ FReply SInventoryItemWidget::OnDragDetected(const FGeometry& MyGeometry, const F
 	return FReply::Unhandled();
 }
 
+
+
 float SInventoryItemWidget::GET_ScreenToViewportRatio() const
 {
 	FVector2D _ViewportSize;
-
-	if (GEngine == nullptr)
-	{
-		UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("GET_ScreenToViewportRatio() : GEngine is NULL !"));
-	}
-	else
-	{
-		UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("GET_ScreenToViewportRatio() : GEngine is NOT NULL !"));
-	}
-
-	if (GEngine->GameViewport.Get() == nullptr)
-	{
-		UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("GET_ScreenToViewportRatio() : GameViewport is NULL !"));
-	}
-	else
-	{
-		UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("GET_ScreenToViewportRatio() : GameViewport is NOT NULL !"));
-	}
 
 	GEngine->GameViewport->GetViewportSize(_ViewportSize);
 
@@ -333,17 +286,14 @@ float SInventoryItemWidget::GET_ScreenToViewportRatio() const
 	return _Ratio;
 }
 
+
+
 void SInventoryItemWidget::UPDATE_Tile(FTile& p_NewTile)
 {
 	m_Tile = &p_NewTile;
 }
 
-FReply SInventoryItemWidget::DeleteItemWidget()
-{
 
-
-	return FReply::Handled();
-}
 
 void SInventoryItemWidget::UPDATE_Widget(SInventoryItemWidget* p_ItemWidget)
 {
