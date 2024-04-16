@@ -24,7 +24,7 @@ public:
 	virtual void PostInitializeComponents() override;
 
 	void SHUTDOWN_PickupItemWidget();
-	void OPEN_ItemBag(const FIntPoint& p_InventorySize, TArray<UPickupEntity*>& p_Items);
+	void OPEN_ItemBag(AItemBagActor* p_BagActor, const FIntPoint& p_InventorySize, TArray<UPickupEntity*>& p_Items);
 
 	// new
 	class APickupActor* DropItemAsItIs(UPickupEntity* p_ItemEntity); // Need to think of a better name

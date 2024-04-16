@@ -69,8 +69,18 @@ void AItemBagActor::BeginPlay()
 
 void AItemBagActor::INTERFACE_Interact(ASiltarnPlayerController* p_SiltarnController)
 {
-	p_SiltarnController->OPEN_ItemBag(m_InventorySize, m_Items);
+	p_SiltarnController->OPEN_ItemBag(this, m_InventorySize, m_Items);
 	DEBUG_ListAllItemEntities();
+}
+
+
+
+void AItemBagActor::RemoveItem(UPickupEntity* p_ItemActor)
+{
+	if (p_ItemActor)
+	{
+		m_Items.Remove(p_ItemActor);
+	}
 }
 
 
@@ -514,7 +524,13 @@ bool AItemBagActor::LoadBag(UPickupEntity* p_ItemEntity)
 	if (p_ItemEntity)
 	{
 		m_Items.Emplace(p_ItemEntity);
-		return true;
+
+		DEBUG_ListAllItemEntities();
+		DEBUG_ListAllItemEntitiesCoordinates();
+		DEBUG_ListAllItemEntitiesInQueue();
+		
+
+		return ComputeBagInventoryWidgetData(p_ItemEntity);
 	}
 
 	return false;
@@ -532,3 +548,18 @@ bool AItemBagActor::LoadBag(TArray<UPickupEntity*>& p_ItemEntities)
 	UE_LOG(LogClass_AItemBagActor, Error, TEXT("LoadBag() : p_ItemEntities seems to be empty !"));
 	return false;
 }
+
+
+
+bool AItemBagActor::ComputeBagInventoryWidgetData(UPickupEntity* p_ItemEntity)
+{
+	if (p_ItemEntity)
+	{
+		p_ItemEntity->SET_InventoryLocationTile(FIntPoint(0, 0));
+		m_InventorySize = p_ItemEntity->GET_InventorySpace();
+		return true;
+	}
+
+	return false;
+}
+

@@ -60,6 +60,11 @@ public:
 	SLATE_ARGUMENT(FInventoryItem*, a_InventoryItemClass) // new
 	SLATE_ARGUMENT(EInventoryItemWidgetLocation, a_InventoryItemWidgetLocation)
 
+
+	// New (08/04/2024)
+	SLATE_ARGUMENT(int64, a_ItemId)
+	
+
 	SLATE_END_ARGS()
 
 public:
@@ -76,14 +81,28 @@ public:
 
 	void Construct(const FArguments& p_InArgs);
 	void UPDATE_Tile(FTile& p_NewTile);
+	void AssignTiles(TArray<int32>& p_OccupiedTiles);
+
+	/*
+		This also reset the FTile::s_ItemOwner with this SInventoryItemWidget
+	*/
+	void AssignTiles(TArray<FTile>& p_InventoryTiles, TArray<int32>& p_OccupiedTilesIndexes);
+	void FreeOccupiedTiles();
 
 	void UPDATE_Widget(SInventoryItemWidget* p_ItemWidget);
 
 	FORCEINLINE UPickupEntity* GET_ItemData() const { return m_ItemData; }
+	FORCEINLINE SCanvas::FSlot* GET_ItemCanvasSlot() const { return m_ItemCanvasSlot; }
+
+	void SET_InventoryItemLocation(EInventoryItemWidgetLocation p_Location);
+	void SET_ItemCanvasSlot(SCanvas::FSlot* p_ItemCanvasSlot);
+
 
 private:
 
 	float GET_ScreenToViewportRatio() const;
+	void RightButtonClicked_InPlayerInventory(bool p_bIsLeftShiftDown);
+	void RightButtonClicked_InExternalInventory();
 
 private:
 
@@ -103,11 +122,31 @@ private:
 	bool m_bIsInInventory;
 	bool m_bIsSelectedForGroupDrop;
 
-	EInventoryItemWidgetState    m_InventoryItemState    ;
-	EInventoryItemWidgetLocation m_InventoryItemLocation ;
+	EInventoryItemWidgetState    m_ItemWidgetState    ;
+	EInventoryItemWidgetLocation m_ItemWidgetLocation ;
 
-	
+	// new
+	int64 m_ItemId;
+	SCanvas::FSlot* m_ItemCanvasSlot = nullptr;
+
+	// All the FTile this item occupies
+	TArray<int32> m_TilesIndexes; // old
+	TArray<FTile*> m_OccupiedTiles; // new 
+
 	const FSiltarnGeneralStyleContainerStruct m_GeneralStyle = FSiltarnStyleController::GET_SiltarnGeneralStyleContainerStruct();
+
+
+private:
+
+	friend bool operator==(const SInventoryItemWidget& p_A, const SInventoryItemWidget& p_B)
+	{
+		return (p_A.m_OccupiedTiles[0] == p_B.m_OccupiedTiles[0]);
+	}
+
+	friend bool operator!=(const SInventoryItemWidget& p_A, const SInventoryItemWidget& p_B)
+	{
+		return !(p_A == p_B);
+	}
 };
 
 
@@ -138,19 +177,16 @@ public:
 
 	static TSharedRef<FInventoryItemDragDrop> CREATE_SingleItemDragOperation
 	(
-		SInventoryItemWidget* p_DraggedItem           , 
+		TSharedPtr<SInventoryItemWidget> p_DraggedItem           , 
 		const float           p_ScreenToViewportRatio , 
 		const FVector2D&      p_WidgetSize            , 
 		UPickupEntity*        p_ItemEntity            ,
 		FTile*                p_Tile, 
-		FInventoryItem* p_InventoryItemClass,
-		int32 p_InventoryItemId
+		FInventoryItem* p_InventoryItemClass
 	);
 
 	static TSharedRef<FInventoryItemDragDrop> CREATE_MultipleItemsDragOperation
 	(
-		//TArray<UPickupEntity*>& p_ItemEntities          , // old
-		//TArray<FInventoryItem*>& p_InventoryItems, // new
 		const float             p_ScreenToViewportRatio , 
 		const FVector2D&        p_WidgetSize            , 
 		const FSlateBrush*      p_DecoratorIcon
@@ -158,26 +194,21 @@ public:
 
 	FORCEINLINE const FVector2D         GET_WidgetMiddlePosition()   const { return m_DecoratorSize * 0.5f * m_ScreenToViewportRatio ; }
 	FORCEINLINE UPickupEntity*          GET_ItemEntity()             const { return m_ItemEntity                                     ; }
-	FORCEINLINE TArray<UPickupEntity*>* GET_ItemsArray()             const { return m_ItemEntities                                   ; }
-	FORCEINLINE TArray<FInventoryItem*>* GET_InventoryItemsArray()             const { return m_InventoryItems; }
 	FORCEINLINE FTile*                  GET_Tile()                   const { return m_Tile                                           ; }
+	FORCEINLINE FInventoryItem*         GET_InventoryItemClass()     const { return m_InventoryItemClass                             ; }
 	FORCEINLINE bool                    IS_SingleItemDragOperation() const { return m_bIsSingleItemDrag                              ; }
-	FORCEINLINE int32 GET_InventoryItemId() const { return m_InventoryItemid; }
-	FORCEINLINE FInventoryItem* GET_InventoryItemClass() const { return m_InventoryItemClass; }
+	FORCEINLINE TSharedPtr<SInventoryItemWidget> GET_ItemWidget() const { return m_DraggedItem; }
 
 private:
 
-	FSlateBrush             m_IconBrush              ;
-	float                   m_ScreenToViewportRatio  ;
-	FVector2D               m_DecoratorSize          ;
-	SInventoryItemWidget*   m_DraggedItem  = nullptr ;
-	UPickupEntity*          m_ItemEntity   = nullptr ;
-	FTile*                  m_Tile         = nullptr ;
-	TArray<UPickupEntity*>* m_ItemEntities = nullptr ; // old
-	bool                    m_bIsSingleItemDrag      ;
-	TArray<FInventoryItem*>* m_InventoryItems = nullptr; // new
-	int32 m_InventoryItemid; // new (TMap)
-	FInventoryItem* m_InventoryItemClass = nullptr; // new new 
+	FSlateBrush             m_IconBrush                    ;
+	float                   m_ScreenToViewportRatio        ;
+	FVector2D               m_DecoratorSize                ;
+	TSharedPtr<SInventoryItemWidget>   m_DraggedItem        = nullptr ;
+	UPickupEntity*          m_ItemEntity         = nullptr ;
+	FTile*                  m_Tile               = nullptr ;
+	FInventoryItem*         m_InventoryItemClass = nullptr ;
+	bool                    m_bIsSingleItemDrag            ;
 
 	static int32 m_InstanceCount;
 };

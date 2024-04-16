@@ -75,3 +75,51 @@
 			  }
 */
 
+
+
+
+/*
+	Notes brouillon
+	---------------
+
+	At this point, SInventoryItemWidget contains : 
+	- UPickupEntity*
+	- item size
+	- SInventoryWidget*
+	- EInventoryItemWidgetLocation
+	- All the occupied FTile (the first of the array being the control tile)
+
+	+ UPickupEntity::m_InventoryLocationTile has been SET
+
+	+ SInventoryWidget::m_CachedTileIndex and SInventoryWidget::m_CachedTilesIndexes have been RESET
+
+
+	
+*/
+
+
+
+
+/*
+	Adding item to player inventory from world (14/04/2024)
+
+	1/ 
+	APickupActor::INTERFACE_Interact( ASiltarnPlayerController* )
+		a) Checks if there is enough space in the inventory. 
+				- if enough space     : sets SInventoryWidget::m_CachedTileIndex (*1) and SInventoryWidget::m_CachedTilesIndexes
+				- if not enough space : leaves the function -> the item is not picked up
+		b) Creates a new UPickupEntity object
+
+	2/ 
+	UInventoryManager::AddItemToPlayerInventory( UPickupEntity* )
+		a) Use
+		
+
+
+
+
+	##### 
+
+	(*1) We may not need m_CachedTileIndex and probably should only retrieve m_CachedTilesIndexes[0] as a substitute.
+
+*/

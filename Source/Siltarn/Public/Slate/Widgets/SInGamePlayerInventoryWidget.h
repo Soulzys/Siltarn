@@ -14,9 +14,10 @@ public:
 	SInGamePlayerInventoryWidget();
 	~SInGamePlayerInventoryWidget();
 
-	bool AddItemToInventory(UPickupEntity* p_ItemEntity);
+	bool AddItemToInventoryNew(UPickupEntity* p_ItemEntity);
 	bool RemoveItemCanvasSlot(int64 p_InventoryItemId);
-	bool RemoveItemsCanvasSlot();
+	//bool RemoveItemsCanvasSlot();
+	bool RemoveItemsCanvasSlotNew();
 
 private:
 

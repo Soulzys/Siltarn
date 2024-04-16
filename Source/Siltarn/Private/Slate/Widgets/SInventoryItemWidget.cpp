@@ -3,6 +3,7 @@
 #include "Siltarn/Public/Interactables/EquipableEntity.h"
 #include "Siltarn/Public/Interactables/NonEquipableEntity.h"
 #include "Siltarn/Public/Slate/Widgets/SInventoryWidget.h"
+#include "Siltarn/Public/Slate/Widgets/SInGameBagInventory.h"
 #include "Styling/CoreStyle.h"
 
 DEFINE_LOG_CATEGORY(LogClass_SInventoryItemWidget   );
@@ -16,15 +17,25 @@ SInventoryItemWidget::SInventoryItemWidget()
 	m_bIsInInventory          = true  ;
 	m_bIsSelectedForGroupDrop = false ;
 
-	m_InventoryItemState    = EInventoryItemWidgetState   ::DEFAULT ;
-	m_InventoryItemLocation = EInventoryItemWidgetLocation::UNKNOWN ;
+	m_ItemWidgetState    = EInventoryItemWidgetState   ::DEFAULT ;
+	m_ItemWidgetLocation = EInventoryItemWidgetLocation::UNKNOWN ;
 
 	UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("I was created !"));
 }
 
 SInventoryItemWidget::~SInventoryItemWidget()
 {
-	UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("I was destroyed !"));
+	if (!m_OccupiedTiles.IsEmpty())
+	{
+		for (auto _Tile : m_OccupiedTiles)
+		{
+			_Tile->SET_OwnerNew(nullptr);
+		}
+
+		m_OccupiedTiles.Empty();
+	}
+
+	UE_LOG(LogClass_SInventoryItemWidget, Log, TEXT("I was destroyed !"));
 }
 
 void SInventoryItemWidget::Construct(const FArguments& p_InArgs)
@@ -34,8 +45,9 @@ void SInventoryItemWidget::Construct(const FArguments& p_InArgs)
 	m_ItemData        = p_InArgs._a_ItemData;
 	m_InventoryOwner  = p_InArgs._a_InventoryOwner;
 	m_InventoryItemId = p_InArgs._a_InventoryItemId;
-	m_InventoryItemLocation = p_InArgs._a_InventoryItemWidgetLocation;
+	m_ItemWidgetLocation = p_InArgs._a_InventoryItemWidgetLocation;
 	m_InventoryItemClass = p_InArgs._a_InventoryItemClass;
+	m_ItemId = p_InArgs._a_ItemId;
 
 	if (m_ItemData)
 	{
@@ -140,52 +152,103 @@ FReply SInventoryItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, cons
 		return FReply::Handled().DetectDrag(SharedThis(this), EKeys::LeftMouseButton).CaptureMouse(SharedThis(this));
 	}
 
-	// Right click -> place in character profile widget
+
 	if (MouseEvent.GetEffectingButton() == EKeys::RightMouseButton)
 	{
-		if (MouseEvent.IsLeftShiftDown())
+		if (m_ItemWidgetLocation == EInventoryItemWidgetLocation::PLAYER_INVENTORY)
 		{
-			if (!m_bIsSelectedForGroupDrop && m_InventoryOwner)
-			{
-				m_ItemBackgroundColor.B = 0.5f;
-				m_ItemBackgroundColor.A = 0.5f;
-				m_BackgroundBorder->SetBorderBackgroundColor(m_ItemBackgroundColor);
-
-				//m_InventoryOwner->SetInventoryItemForGroupDropping(m_InventoryItemId); // new
-				m_InventoryOwner->SetInventoryItemForGroupDropping(m_InventoryItemClass);
-				m_InventoryItemState = EInventoryItemWidgetState::SET_FOR_GROUP_DROP;
-				m_bIsSelectedForGroupDrop = true;
-				return FReply::Handled();
-			}
-			else
-			{
-				m_ItemBackgroundColor.B = 1.0f;
-				m_ItemBackgroundColor.A = 0.25f;
-				m_BackgroundBorder->SetBorderBackgroundColor(m_ItemBackgroundColor);
-				m_bIsSelectedForGroupDrop = false;
-			}
+			RightButtonClicked_InPlayerInventory(MouseEvent.IsLeftShiftDown());
+			return FReply::Handled();
 		}
-		else
-		{
-			if (m_bIsInInventory)
-			{
-				if (m_ItemData->IS_Equipable())
-				{
-					if (m_ItemTooltip.IsValid())
-					{
-						m_ItemTooltip->DESTROY_Tooltip();
-						m_ItemTooltip.Reset();
-						return FReply::Handled();
-					}
-				}
 
-				return FReply::Handled();
-			}
-		}		
-	}	
+		if (m_ItemWidgetLocation == EInventoryItemWidgetLocation::EXTERNAL_INVENTORY)
+		{
+			RightButtonClicked_InExternalInventory();
+			return FReply::Handled();
+		}
+	}
 
 	return FReply::Unhandled();
 }
+
+void SInventoryItemWidget::RightButtonClicked_InPlayerInventory(bool p_bIsLeftShiftDown)
+{
+	if (!m_InventoryOwner)
+	{
+		UE_LOG(LogClass_SInventoryItemWidget, Error, TEXT("RightButtonClicked_InPlayerInventory() : m_InventoryOwner is NULL !"));
+		return;
+	}
+	if (!m_ItemData)
+	{
+		UE_LOG(LogClass_SInventoryItemWidget, Error, TEXT("RightButtonClicked_InPlayerInventory() : m_ItemData is NULL !"));
+		return;
+	}
+	if (!m_ItemTooltip.IsValid())
+	{
+		UE_LOG(LogClass_SInventoryItemWidget, Error, TEXT("RightButtonClicked_InPlayerInventory() : m_ItemTooltip is INVALID !"));
+		return;
+	}
+
+	if (p_bIsLeftShiftDown)
+	{
+		if (!m_bIsSelectedForGroupDrop)
+		{
+			m_ItemBackgroundColor.B = 0.5f;
+			m_ItemBackgroundColor.A = 0.5f;
+			m_BackgroundBorder->SetBorderBackgroundColor(m_ItemBackgroundColor);
+
+			//m_InventoryOwner->SetInventoryItemForGroupDropping(m_InventoryItemClass); old
+			m_InventoryOwner->SetInventoryItemForGroupDropping(SharedThis(this));
+			m_ItemWidgetState = EInventoryItemWidgetState::SET_FOR_GROUP_DROP;
+			m_bIsSelectedForGroupDrop = true;
+		}
+		else
+		{
+			m_ItemBackgroundColor.B = 1.0f;
+			m_ItemBackgroundColor.A = 0.25f;
+			m_BackgroundBorder->SetBorderBackgroundColor(m_ItemBackgroundColor);
+
+			//m_InventoryOwner->RemoveInventoryItemFromGroupDropping(m_InventoryItemClass); old
+			m_InventoryOwner->RemoveInventoryItemFromGroupDropping(SharedThis(this));
+			m_ItemWidgetState = EInventoryItemWidgetState::DEFAULT;
+			m_bIsSelectedForGroupDrop = false;
+		}
+	}
+	else
+	{
+		if (m_ItemData->IS_Equipable())
+		{
+			m_ItemTooltip->DESTROY_Tooltip();
+			m_ItemTooltip.Reset();
+
+			// Equip the item
+
+		}
+	}
+}
+
+
+
+void SInventoryItemWidget::RightButtonClicked_InExternalInventory()
+{
+	// Move item to player inventory
+	if (m_InventoryOwner)
+	{
+		//SInGameBagInventory* _BagInventory = Cast<SInGameBagInventory>(m_InventoryOwner);
+		SInGameBagInventory* _BagInventory = static_cast<SInGameBagInventory*>(m_InventoryOwner);
+
+		if (_BagInventory)
+		{
+			_BagInventory->MoveItemToPlayerInventory(SharedThis(this));
+		}
+
+		//m_InventoryOwner->MoveItemToPlayerInventory(SharedThis(this));
+
+		UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("I was clicked !"));
+	}
+}
+
+
 
 FReply SInventoryItemWidget::OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
 {
@@ -200,11 +263,13 @@ FReply SInventoryItemWidget::OnKeyDown(const FGeometry& MyGeometry, const FKeyEv
 	return FReply::Handled();
 }
 
+
+
 FReply SInventoryItemWidget::OnDragDetected(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
 	if (MouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
 	{
-		m_InventoryItemState = EInventoryItemWidgetState::DRAGGED;
+		m_ItemWidgetState = EInventoryItemWidgetState::DRAGGED;
 
 		const float _Ratio = GET_ScreenToViewportRatio();
 		FVector2D _MousePositionLocal = MyGeometry.AbsoluteToLocal(MouseEvent.GetScreenSpacePosition());
@@ -214,13 +279,12 @@ FReply SInventoryItemWidget::OnDragDetected(const FGeometry& MyGeometry, const F
 		{
 			TSharedRef<FInventoryItemDragDrop> _Operation = FInventoryItemDragDrop::CREATE_SingleItemDragOperation
 			(
-				this,
+				SharedThis(this),
 				_Ratio,
 				m_ItemSize,
 				m_ItemData,
 				m_Tile, 
-				m_InventoryItemClass, 
-				m_InventoryItemId
+				m_InventoryItemClass
 			);
 
 			SetVisibility(EVisibility::Collapsed);
@@ -295,12 +359,68 @@ void SInventoryItemWidget::UPDATE_Tile(FTile& p_NewTile)
 
 
 
+void SInventoryItemWidget::AssignTiles(TArray<int32>& p_OccupiedTiles)
+{
+	if (p_OccupiedTiles.IsEmpty())
+	{
+		UE_LOG(LogClass_SInventoryItemWidget, Error, TEXT("AssignTile() : p_OccupiedTiles is empty !"));
+		return;
+	}
+
+	m_TilesIndexes.Append(p_OccupiedTiles);
+}
+
+
+
+void SInventoryItemWidget::AssignTiles(TArray<FTile>& p_InventoryTiles, TArray<int32>& p_OccupiedTilesIndexes)
+{
+	for (int32 i = 0; i < p_OccupiedTilesIndexes.Num(); i++)
+	{
+		FTile* _TilePtr = &p_InventoryTiles[p_OccupiedTilesIndexes[i]];
+
+		if (_TilePtr)
+		{
+			_TilePtr->SET_OwnerNew(SharedThis(this));
+			m_OccupiedTiles.Emplace(_TilePtr);
+		}
+	}
+}
+
+
+
+void SInventoryItemWidget::FreeOccupiedTiles()
+{
+	for (FTile* _Tile : m_OccupiedTiles)
+	{
+		_Tile->SET_OwnerNew(nullptr);
+		UE_LOG(LogClass_SInventoryItemWidget, Log, TEXT("FTile[%d] has been freed !"), _Tile->GET_TileIndex());
+	}
+
+	m_OccupiedTiles.Empty();
+}
+
+
+
 void SInventoryItemWidget::UPDATE_Widget(SInventoryItemWidget* p_ItemWidget)
 {
 	m_IconImage = p_ItemWidget->m_IconImage ;
 	m_ItemData  = p_ItemWidget->m_ItemData  ;
 
 	m_ItemIcon.SetResourceObject(m_ItemData->GET_Icon());
+}
+
+
+
+void SInventoryItemWidget::SET_InventoryItemLocation(EInventoryItemWidgetLocation p_Location)
+{
+	m_ItemWidgetLocation = p_Location;
+}
+
+
+
+void SInventoryItemWidget::SET_ItemCanvasSlot(SCanvas::FSlot* p_ItemCanvasSlot)
+{
+	m_ItemCanvasSlot = p_ItemCanvasSlot;
 }
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
@@ -317,7 +437,8 @@ int32 FInventoryItemDragDrop::m_InstanceCount = 0;
 
 FInventoryItemDragDrop::FInventoryItemDragDrop()
 {
-	m_bIsSingleItemDrag = true;
+	m_bIsSingleItemDrag     = true ;
+	m_ScreenToViewportRatio = 0.0f ;
 
 	m_InstanceCount++;
 	UE_LOG(LogClass_FInventoryItemDragDrop, Log, TEXT("A new instance was created ! || Instance count : %d"), m_InstanceCount);
@@ -347,13 +468,12 @@ void FInventoryItemDragDrop::OnDragged(const class FDragDropEvent& DragDropEvent
 
 TSharedRef<FInventoryItemDragDrop> FInventoryItemDragDrop::CREATE_SingleItemDragOperation
 (
-	SInventoryItemWidget* p_DraggedItem           , 
+	TSharedPtr<SInventoryItemWidget> p_DraggedItem           , 
 	const float           p_ScreenToViewportRatio , 
 	const FVector2D&      p_WidgetSize            , 
 	UPickupEntity*        p_ItemEntity            ,
-	FTile*                p_Tile, 
-	FInventoryItem* p_InventoryItemClass,
-	int32 p_InventoryItemId
+	FTile*                p_Tile                  , 
+	FInventoryItem*       p_InventoryItemClass
 )
 {
 	TSharedRef<FInventoryItemDragDrop> _Operation = MakeShareable(new FInventoryItemDragDrop);
@@ -361,12 +481,11 @@ TSharedRef<FInventoryItemDragDrop> FInventoryItemDragDrop::CREATE_SingleItemDrag
 	_Operation->m_IconBrush.SetResourceObject(p_ItemEntity->GET_Icon());
 
 	_Operation->m_DraggedItem           = p_DraggedItem           ;
-	_Operation->m_DecoratorSize         = p_WidgetSize            ;
 	_Operation->m_ScreenToViewportRatio = p_ScreenToViewportRatio ;
+	_Operation->m_DecoratorSize         = p_WidgetSize            ;
 	_Operation->m_ItemEntity            = p_ItemEntity            ;
 	_Operation->m_Tile                  = p_Tile                  ;
-	_Operation->m_InventoryItemid       = p_InventoryItemId       ;
-	_Operation->m_InventoryItemClass = p_InventoryItemClass;
+	_Operation->m_InventoryItemClass    = p_InventoryItemClass    ;
 
 	_Operation->m_bIsSingleItemDrag = true;
 	_Operation->Construct();
@@ -376,8 +495,6 @@ TSharedRef<FInventoryItemDragDrop> FInventoryItemDragDrop::CREATE_SingleItemDrag
 
 TSharedRef<FInventoryItemDragDrop> FInventoryItemDragDrop::CREATE_MultipleItemsDragOperation
 (
-	//TArray<UPickupEntity*>& p_ItemEntities          ,
-	//TArray<FInventoryItem*>& p_InventoryItems,
 	const float             p_ScreenToViewportRatio ,
 	const FVector2D&        p_WidgetSize            ,
 	const FSlateBrush*      p_DecoratorIcon
@@ -385,17 +502,12 @@ TSharedRef<FInventoryItemDragDrop> FInventoryItemDragDrop::CREATE_MultipleItemsD
 {
 	TSharedRef<FInventoryItemDragDrop> _Operation = MakeShareable(new FInventoryItemDragDrop);
 
-	_Operation->m_IconBrush             = *p_DecoratorIcon        ; // old
-	//_Operation->m_InventoryItems = &p_InventoryItems; // new 
 	_Operation->m_ScreenToViewportRatio = p_ScreenToViewportRatio ;
-	//_Operation->m_ItemEntities          = &p_ItemEntities         ;
 	_Operation->m_DecoratorSize         = p_WidgetSize            ;
+	_Operation->m_IconBrush             = *p_DecoratorIcon        ;
 
 	_Operation->m_bIsSingleItemDrag = false;
 	_Operation->Construct();
-
-	// Create ItemBagEntity ! 
-	// Wait... do we actually need one ? 
 
 
 	return _Operation;

@@ -18,6 +18,7 @@ class SInGameBagInventory;
 class SInGamePlayerInventoryWidget;
 class UInteractableEntity;
 class UPickupEntity;
+class AItemBagActor;
 
 
 UENUM()
@@ -49,7 +50,7 @@ public:
 	//
 	void DISPLAY_InteractableEntityTag(const FString& p_ItemName);
 
-	void OPEN_ItemBag(const FIntPoint& p_InventorySize, TArray<UPickupEntity*>& p_Items);
+	void OPEN_ItemBag(AItemBagActor* p_BagActor, const FIntPoint& p_InventorySize, TArray<UPickupEntity*>& p_Items);
 
 	TSharedPtr<SInGameBagInventory> GET_InGameBagInventory() const;
 	TSharedPtr<SInGamePlayerInventoryWidget> GET_InGamePlayerInventoryWidget() const;

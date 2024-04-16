@@ -33,6 +33,7 @@ public:
 	void DropItems();
 	void SetItemForGroupDrop(int32 p_ItemEntityId); // Old
 	void SetItemForGroupDrop(UPickupEntity* p_ItemEntity); // New
+	bool MoveItemToPlayerInventory(UPickupEntity* p_ItemEntity);
 
 	void SET_InventoryWidget(TSharedPtr<SInGamePlayerInventoryWidget> p_InventoryWidget);
 	void SET_SiltarnPlayerController(ASiltarnPlayerController* p_Controller);
@@ -40,9 +41,6 @@ public:
 	void DEBUG_DisplayAllItemsName() const;
 
 private:
-
-	int32 CreateUniqueInventoryId();
-	void PlaceItemEntityInArray(UPickupEntity* p_ItemEntity, int32 p_ItemInventoryId);
 
 	void DropItemAsItIs(UPickupEntity* p_ItemEntity);
 	void DropItemAsBag(UClass* p_BagClass, UPickupEntity* p_ItemEntit);

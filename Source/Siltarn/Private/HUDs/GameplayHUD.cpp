@@ -168,12 +168,12 @@ void AGameplayHUD::DISPLAY_InteractableEntityTag(const FString& p_ItemName)
 
 
 
-void AGameplayHUD::OPEN_ItemBag(const FIntPoint& p_InventorySize, TArray<UPickupEntity*>& p_Items)
+void AGameplayHUD::OPEN_ItemBag(AItemBagActor* p_BagActor, const FIntPoint& p_InventorySize, TArray<UPickupEntity*>& p_Items)
 {
 	if (m_ProfileMenu.IsValid())
 	{
 		OpenCharacterProfileWidget();
-		m_ProfileMenu->OpenExternalInventoryWidget(p_InventorySize, m_TileSize, p_Items);
+		m_ProfileMenu->OpenExternalInventoryWidget(p_BagActor, p_InventorySize, m_TileSize, p_Items);
 	}
 }
 

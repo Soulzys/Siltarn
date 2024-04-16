@@ -57,11 +57,13 @@ struct SILTARN_API FTile
 	void DEBUG_DisplayStructDataThroughLogs();
 	uint32 GET_TileIndex() const; 
 	FVector2D GET_RelativeCoordinates(const int32 p_TileSize) const;
+	__forceinline FIntPoint GET_TileCoordinates() const { return s_TileCoordinates; }
 
 	/*
 		If p_item is a nullptr, it means the FTile has been freed.
 	*/
 	void SET_Owner(class FInventoryItem* p_Item);
+	void SET_OwnerNew(TSharedPtr<SInventoryItemWidget> p_ItemWidget); // new
 
 	/*
 		Returns null if unoccupied. 
@@ -73,6 +75,7 @@ struct SILTARN_API FTile
 		Used to check whether the FTile is occupied or not. If s_Owner is not NULL, it means the FTile is occupied. 
 	*/
 	class FInventoryItem* GET_Owner() const;
+	TSharedPtr<SInventoryItemWidget> GET_OwnerNew() const;
 
 public:
 
@@ -84,6 +87,7 @@ private:
 	uint32 s_TileIndex; // Can also be seen as the FTile struct's id. It serves as the index to retrieve an FTile from the m_Tiles TArray.
 	FVector2D s_RelativeCoordinates = FVector2D(-100.0f);
 	class FInventoryItem* s_Owner = nullptr;
+	TSharedPtr<SInventoryItemWidget> s_ItemOwner; // new
 
 	static int32 s_InstanceCount;
 
@@ -130,68 +134,6 @@ private:
 };
 
 
-// New FInventoryItem
-// Luciole 10/03/2024 || We should use this class to conduct some test and improve our understanding about move semantics and such
-
-/*
-	Luciole 29/03/2024 || Consider having a UPickupEntity* variable, which would replace s_UniqueId and wouldn't need such a heavy constructor as most of the necessary
-	data are already inside our UPickupEntity object.
-*/
-class SILTARN_API FInventoryItem
-{
-public:
-
-	FInventoryItem();
-	// Old
-	FInventoryItem(TArray<int32>& p_CachedTilesIndex, TArray<FTile>& p_Tiles, int64 p_UniqueId);
-	FInventoryItem(const FIntPoint& p_OriginTile, const FIntPoint& p_ItemSize, int64 p_UniqueId, int32 p_NumberOfColumns, TArray<FTile>& p_Tiles);
-	// New
-	//FInventoryItem(TArray<int32>& p_CachedTilesIndex, TArray<FTile*>& p_Tiles, int32 p_UniqueId);
-	~FInventoryItem();
-
-	void MoveItem(const FVector2D& p_NewLocation) const;
-	void FreeOccupiedTiles();
-	void EmptyTilesArray();
-	bool EmplaceNewTileInArray(FTile* p_Tile);
-	void UPDATE_Tile();
-
-	FTile* GET_ControlTile() const;
-	__forceinline TSharedPtr<SInventoryItemWidget> GET_ItemWidget() const { return s_ItemWidget ; }
-	__forceinline int64                            GET_UniqueId()   const { return s_UniqueId   ; }
-
-	void SET_ItemWidget(TSharedPtr<SInventoryItemWidget> p_ItemWidget);
-	void SET_CanvasSlot(SCanvas::FSlot* p_Slot);
-
-private:
-
-	TSharedPtr<SInventoryItemWidget> s_ItemWidget = nullptr;
-
-	/*
-		Used to modify the slot's position when dragging the item around
-	*/
-	SCanvas::FSlot* s_CanvasSlot = nullptr;
-
-	/*
-		All the FTile that are occupied by the SInventoryItemWidget
-	*/
-	TArray<FTile*> s_OccupyingTiles;
-
-	int64 s_UniqueId;
-
-	static int32 s_InstanceNumber;
-
-private:
-
-	friend bool operator==(const FInventoryItem& p_A, const FInventoryItem& p_B)
-	{
-		return (p_A.s_OccupyingTiles[0] == p_B.s_OccupyingTiles[0]);
-	}
-
-	friend bool operator!=(const FInventoryItem& p_A, const FInventoryItem& p_B)
-	{
-		return (p_A.s_OccupyingTiles[0] != p_B.s_OccupyingTiles[0]);
-	}
-};
 
 
 /*
@@ -234,16 +176,16 @@ public:
 
 	void HideAllItemsSetForGroupDrop();
 
-	// Group dropping new
-	void SetInventoryItemForGroupDropping(int32 p_ItemId);
-	void SetInventoryItemForGroupDropping(FInventoryItem* p_InventoryItem);
+	// Group dropping
+	void SetInventoryItemForGroupDropping(TSharedPtr<SInventoryItemWidget> p_ItemWidget); // new 
+	void RemoveInventoryItemFromGroupDropping(TSharedPtr<SInventoryItemWidget> p_ItemWidget); // new
 	void SetItemsForGroupDrop();
-
 	void SET_InventoryManager(UInventoryManager* p_InventoryManager);
 
 	static int32 TileCoordinatesToTileIndexStatic(const FIntPoint& p_Coordinates, int32 p_NumberOfColumns);
 
 	void ClearInventoryVisual();
+	void MoveItemToPlayerInventory(TSharedPtr<SInventoryItemWidget> p_ItemWidget);
 
 	
 	// Luciole 29/03/2024 || This is a cheap way to "resolve" an issue. Look at MYSTERY 1 in Documentation.h for more info about it.
@@ -260,17 +202,18 @@ protected:
 	void BuildCrossAnchorsNew(); // new
 	void DestroyTiles();
 	void DestroyCrossAnchors();
-	void ConstructCanvasItemSlot(UPickupEntity* p_ItemEntity, FTile* p_ControlTile, FInventoryItem* p_InventoryItem, EInventoryItemWidgetLocation p_ItemWidgetLocation); // new 
+	TSharedPtr<SInventoryItemWidget> ConstructItemWidget(UPickupEntity* p_ItemEntity, FTile* p_ControlTile, EInventoryItemWidgetLocation p_ItemWidgetLocation);
+	TSharedPtr<SInventoryItemWidget> ConstructItemWidget(UPickupEntity* p_ItemEntity, EInventoryItemWidgetLocation p_ItemWidgetLocation);
 
 	/*
 		Used when dragging & dropping item within the inventory. Called in OnDrop().
 	*/
-	bool TryDroppingItemToTile(FInventoryItem* p_InventoryItem, UPickupEntity* p_ItemEntity, FTile* p_OriginalTile, FTile* p_TargetTile); // new
+	bool TryDroppingItemToTileNew(TSharedPtr<SInventoryItemWidget> p_ItemWidget, FTile* p_TargetTile);
 
 	/*
 		Paired with TryDroppingItemToTile()
 	*/
-	bool IsTileAvailable(FInventoryItem* p_InventoryItem, UPickupEntity* p_ItemEntity, FTile* p_TargetTile);
+	bool IsTileAvailableNew(TSharedPtr<SInventoryItemWidget> p_ItemWidget, FTile* p_TargetTile);
 	
 	/*
 		Gets an item widget's relative location and returns it centered according to the item size and the inventory FTile size.
@@ -282,7 +225,7 @@ protected:
 		Move SInventoryItemWidget to a new location at the end of a drag and drop operation.
 		The location is relative to the canvas as it is actually the SCanvas::FSlot that is being moved.
 	*/
-	void MoveItemCanvasSlot(FInventoryItem* p_ItemEntity, const FVector2D& p_Location);
+	void MoveItemCanvasSlotNew(TSharedPtr<SInventoryItemWidget> p_ItemWidget, const FVector2D& p_Location);
 
 	/*
 		Paired with TRY_AddingItemToInventory()
@@ -341,7 +284,8 @@ protected:
 		Contains all the items in the inventory and their respective occupying FTile
 	*/
 	TMap<int32, FInventoryItem*> m_InventoryItemsMap;
-	TArray<FInventoryItem*> m_DroppingItemsCache;
+	TArray<FInventoryItem*> m_DroppingItemsCache; // old
+	TArray<TSharedPtr<SInventoryItemWidget>> m_DroppingItemsCacheNew;
 
 	// Slate stuff
 	//
@@ -382,6 +326,17 @@ protected:
 
 
 	UInventoryManager* m_InventoryManager = nullptr;
+
+
+
+
+
+
+
+
+
+	// All item widgets are stored here (new !)
+	TMap<int64, TSharedPtr<SInventoryItemWidget>> m_ItemsMap;
 
 
 	

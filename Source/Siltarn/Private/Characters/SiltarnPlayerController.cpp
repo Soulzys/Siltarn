@@ -80,11 +80,11 @@ void ASiltarnPlayerController::DISPLAY_InteractableEntityTag(const FString& p_It
 
 
 
-void ASiltarnPlayerController::OPEN_ItemBag(const FIntPoint& p_InventorySize, TArray<UPickupEntity*>& p_Items)
+void ASiltarnPlayerController::OPEN_ItemBag(AItemBagActor* p_BagActor, const FIntPoint& p_InventorySize, TArray<UPickupEntity*>& p_Items)
 {
 	if (m_GameplayHUD)
 	{
-		m_GameplayHUD->OPEN_ItemBag(p_InventorySize, p_Items);
+		m_GameplayHUD->OPEN_ItemBag(p_BagActor, p_InventorySize, p_Items);
 	}
 }
 

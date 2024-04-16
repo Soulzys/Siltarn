@@ -10,9 +10,11 @@ SInGamePlayerInventoryWidget::SInGamePlayerInventoryWidget()
 	UE_LOG(LogClass_SInGamePlayerInventoryWidget, Error, TEXT("I was constructed !"));
 }
 
+
+
 SInGamePlayerInventoryWidget::~SInGamePlayerInventoryWidget()
 {
-	for (auto _it : m_InventoryItemsMapNew)
+	/*for (auto _it : m_InventoryItemsMapNew)
 	{
 		FInventoryItem* _InventoryItem = _it.Value;
 
@@ -22,7 +24,7 @@ SInGamePlayerInventoryWidget::~SInGamePlayerInventoryWidget()
 			m_Canvas->RemoveSlot(_InventoryItem->GET_ItemWidget().ToSharedRef()); 
 			delete _InventoryItem;
 		}		
-	}
+	}*/
 
 	m_DroppingItemsCache.Empty();
 	m_InventoryItemsMapNew.Empty();
@@ -30,7 +32,9 @@ SInGamePlayerInventoryWidget::~SInGamePlayerInventoryWidget()
 	UE_LOG(LogClass_SInGamePlayerInventoryWidget, Error, TEXT("I was destroyed !"));
 }
 
-bool SInGamePlayerInventoryWidget::AddItemToInventory(UPickupEntity* p_ItemEntity)
+
+
+bool SInGamePlayerInventoryWidget::AddItemToInventoryNew(UPickupEntity* p_ItemEntity)
 {
 	if (!p_ItemEntity)
 	{
@@ -38,84 +42,82 @@ bool SInGamePlayerInventoryWidget::AddItemToInventory(UPickupEntity* p_ItemEntit
 		CleanCachedTilesIndexes();
 		return false;
 	}
-	// Old
+
 	if (m_CachedTileIndex < 0 || m_CachedTileIndex >= m_Tiles.Num())
 	{
 		UE_LOG(LogClass_SInGamePlayerInventoryWidget, Error, TEXT("AddItemToInventoryNew() : there is an issue with m_CachedTileIndex !"));
 		CleanCachedTilesIndexes();
 		return false;
 	}
-	/*if (m_CachedTileIndex < 0 || m_CachedTileIndex >= m_TilesNew.Num())
+
+	if (m_CachedTilesIndexes.IsEmpty())
 	{
-		UE_LOG(LogClass_SInGamePlayerInventoryWidget, Error, TEXT("AddItemToInventoryNew() : there is an issue with m_CachedTileIndex !"));
-		CleanCachedTilesIndexes();
+		UE_LOG(LogClass_SInGamePlayerInventoryWidget, Error, TEXT("AddItemToInventoryNew() : Could not retrieved the cached FTiles !"));
 		return false;
-	}*/
+	}
 
-	// Old
+
 	FTile* _NewItemControlTile = &m_Tiles[m_CachedTileIndex];
-
-	// New
-	//FTile* _NewItemControlTile = m_TilesNew[m_CachedTileIndex];
 
 	if (_NewItemControlTile && !_NewItemControlTile->IS_Occupied())
 	{
-		// Old
-		FInventoryItem* _NewInventoryItem = new FInventoryItem(m_CachedTilesIndexes, m_Tiles, p_ItemEntity->GET_EntityId());
+		TSharedPtr<SInventoryItemWidget> _ItemWidget = ConstructItemWidget(p_ItemEntity, _NewItemControlTile, EInventoryItemWidgetLocation::PLAYER_INVENTORY);
 
-		// New
-		//FInventoryItem* _NewInventoryItem = new FInventoryItem(m_CachedTilesIndexes, m_TilesNew, p_ItemId);
-
-		if (_NewInventoryItem)
+		if (_ItemWidget.IsValid())
 		{
-			// Luciole 11/03/2024 || Should probably check whether the Canvas' slot construction went well before adding the inventory item to the TMap
-			ConstructCanvasItemSlot(p_ItemEntity, _NewItemControlTile, _NewInventoryItem, EInventoryItemWidgetLocation::PLAYER_INVENTORY);
-			//m_InventoryItemsMapNew.Emplace(p_ItemId, _NewInventoryItem); // old
-			m_InventoryItemsMapNew.Emplace(p_ItemEntity->GET_EntityId(), _NewInventoryItem); // New
+			m_ItemsMap.Emplace(p_ItemEntity->GET_EntityId(), _ItemWidget);
+			p_ItemEntity->SET_InventoryLocationTile(_NewItemControlTile->GET_TileCoordinates());
+
 			CleanCachedTilesIndexes();
 			return true;
 		}
 	}
 
-	UE_LOG(LogClass_SInGamePlayerInventoryWidget, Error, TEXT("AddItemToInventoryNew() : _TilePtr is occupied, which should never happen..."));
-	CleanCachedTilesIndexes();
 	return false;
 }
+
+
 
 bool SInGamePlayerInventoryWidget::RemoveItemCanvasSlot(int64 p_InventoryItemId)
 {
 	if (p_InventoryItemId >= 0 && m_Canvas)
 	{
-		FInventoryItem* _InventoryItem = m_InventoryItemsMapNew.FindAndRemoveChecked(p_InventoryItemId);
+		//FInventoryItem* _InventoryItem = m_InventoryItemsMapNew.FindAndRemoveChecked(p_InventoryItemId); // old
+		TSharedPtr<SInventoryItemWidget> _ItemWidget = m_ItemsMap.FindAndRemoveChecked(p_InventoryItemId); // new
 
-		if (_InventoryItem)
+		// new
+		if (_ItemWidget)
+		{
+			_ItemWidget->FreeOccupiedTiles();
+			m_Canvas->RemoveSlot(_ItemWidget.ToSharedRef());
+			
+			return true;
+		}
+
+		// old
+		/*if (_InventoryItem)
 		{
 			m_Canvas->RemoveSlot(_InventoryItem->GET_ItemWidget().ToSharedRef());
 			_InventoryItem->FreeOccupiedTiles();
 			delete _InventoryItem;
 
-			//UE_LOG(LogClass_SInGamePlayerInventoryWidget, Warning, TEXT("There are %d slots left in SCanvas !"), m_Canvas->Numb)
-
 			return true;
-		}
+		}*/
 	}
 
 	return false;
 }
 
-bool SInGamePlayerInventoryWidget::RemoveItemsCanvasSlot()
+
+
+/*bool SInGamePlayerInventoryWidget::RemoveItemsCanvasSlot()
 {
-	UE_LOG(LogClass_SInGamePlayerInventoryWidget, Error, TEXT("Checking checking in inventory... (1)"));
-
-	UE_LOG(LogClass_SInGamePlayerInventoryWidget, Warning, TEXT("There are %d items that are about to get dropped !"), m_DroppingItemsCache.Num());
-
 	for (int32 i = 0; i < m_DroppingItemsCache.Num(); i++)
 	{
 		FInventoryItem* _InventoryItem = m_DroppingItemsCache[i];
 
 		if (_InventoryItem)
 		{
-			UE_LOG(LogClass_SInGamePlayerInventoryWidget, Error, TEXT("Checking checking in inventory loop (TRUE)... (%d)"), i);
 			_InventoryItem->FreeOccupiedTiles();
 			//m_DroppingItemsCache[i] = nullptr;
 
@@ -128,11 +130,9 @@ bool SInGamePlayerInventoryWidget::RemoveItemsCanvasSlot()
 			delete _InventoryItem;
 			m_InventoryItemsMapNew.FindAndRemoveChecked(_Key);
 
-			UE_LOG(LogClass_SInGamePlayerInventoryWidget, Warning, TEXT("All inventory items count : %d"), m_InventoryItemsMapNew.Num());
 		}
 		else
 		{
-			UE_LOG(LogClass_SInGamePlayerInventoryWidget, Error, TEXT("Checking checking in inventory loop (FALSE)... (%d)"), i);
 			return false;
 		}
 	}
@@ -144,7 +144,33 @@ bool SInGamePlayerInventoryWidget::RemoveItemsCanvasSlot()
 	}*/
 
 	// Luciole 15/03/2024 || Probably should put this into its own function.
-	m_DroppingItemsCache.Empty();
+	/*m_DroppingItemsCache.Empty();
+
+	return true;
+}*/
+
+
+
+bool SInGamePlayerInventoryWidget::RemoveItemsCanvasSlotNew()
+{
+	for (int32 i = 0; i < m_DroppingItemsCacheNew.Num(); i++)
+	{
+		TSharedPtr<SInventoryItemWidget> _ItemWidget = m_DroppingItemsCacheNew[i];
+
+		if (_ItemWidget)
+		{
+			_ItemWidget->FreeOccupiedTiles();
+			int64 _Key = _ItemWidget->GET_ItemData()->GET_EntityId();
+			m_Canvas->RemoveSlot(_ItemWidget.ToSharedRef());
+			m_ItemsMap.FindAndRemoveChecked(_Key);
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	m_DroppingItemsCacheNew.Empty();
 
 	return true;
 }

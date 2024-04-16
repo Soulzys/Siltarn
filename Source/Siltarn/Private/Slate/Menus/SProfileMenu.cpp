@@ -194,7 +194,7 @@ void SProfileMenu::SET_InventoryManager(UInventoryManager* p_InventoryManager)
 
 
 
-void SProfileMenu::OpenExternalInventoryWidget(const FIntPoint& p_InventorySize, int32 p_TileSize, TArray<UPickupEntity*>& p_Items)
+void SProfileMenu::OpenExternalInventoryWidget(AItemBagActor* p_BagActor, const FIntPoint& p_InventorySize, int32 p_TileSize, TArray<UPickupEntity*>& p_Items)
 {
 	if (m_ExternalInventoryWidget.IsValid())
 	{
@@ -206,9 +206,13 @@ void SProfileMenu::OpenExternalInventoryWidget(const FIntPoint& p_InventorySize,
 		_Args.a_HUDOwner       (m_HUDOwner)        ;
 		_Args.a_ParentWidget   (this)              ;
 
-		m_ExternalInventoryWidget->Reconstruct(_Args)                  ;
+		m_ExternalInventoryWidget->Construct(_Args)                    ;
 		m_ExternalInventoryWidget->SetVisibility(EVisibility::Visible) ;
-		m_ExternalInventoryWidget->LoadItemsWidgets(p_Items)           ;
+		m_ExternalInventoryWidget->LoadItemsWidgetsNew(p_Items)        ;
+		//m_ExternalInventoryWidget->LoadItemsWidgets(p_Items)           ; old
+
+		m_ExternalInventoryWidget->SET_InventoryManager(m_InventoryManager);
+		m_ExternalInventoryWidget->SET_BagActor(p_BagActor);
 	}
 	else
 	{
@@ -237,11 +241,6 @@ FReply SProfileMenu::OnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InK
 		{
 			m_HUDOwner->CloseCharacterProfileWidget();
 		}
-	}
-
-	if (InKeyEvent.GetKey() == EKeys::T)
-	{
-		UE_LOG(LogClass_SProfileMenu, Warning, TEXT("T was pressed !"));
 	}
 
 	return FReply::Handled();

@@ -15,6 +15,7 @@ class SCharacterProfileWidget ;
 class SInGamePlayerInventoryWidget;
 class SInGameBagInventory;
 class UInventoryManager;
+class AItemBagActor;
 
 class SILTARN_API SProfileMenu : public SCompoundWidget
 {
@@ -50,7 +51,7 @@ public:
 	void SET_InventoryManager(UInventoryManager* p_InventoryManager);
 
 	// Dealing with external inventory (Bag, Chestbox...)
-	void OpenExternalInventoryWidget(const FIntPoint& p_InventorySize, int32 p_TileSize, TArray<UPickupEntity*>& p_Items);
+	void OpenExternalInventoryWidget(AItemBagActor* p_BagActor, const FIntPoint& p_InventorySize, int32 p_TileSize, TArray<UPickupEntity*>& p_Items);
 	void CloseExternalInventoryWidget();
 
 private:

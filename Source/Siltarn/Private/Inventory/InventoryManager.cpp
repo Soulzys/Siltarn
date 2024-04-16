@@ -29,6 +29,8 @@ void UInventoryManager::SET_InventoryWidget(TSharedPtr<SInGamePlayerInventoryWid
 	m_PlayerInventoryWidget->SET_InventoryManager(this);
 }
 
+
+
 void UInventoryManager::SET_SiltarnPlayerController(ASiltarnPlayerController* p_Controller)
 {
 	if (!p_Controller)
@@ -40,74 +42,23 @@ void UInventoryManager::SET_SiltarnPlayerController(ASiltarnPlayerController* p_
 	m_SiltarnController = p_Controller;
 }
 
+
+
 void UInventoryManager::AddItemToPlayerInventory(UPickupEntity* p_ItemEntity)
 {
 	if (p_ItemEntity && m_PlayerInventoryWidget)
 	{
-		// old
-		//int32 _NewItemId = CreateUniqueInventoryId();
-		//UE_LOG(LogClass_UInventoryManager, Log, TEXT("_NewItemId : %d"), _NewItemId);
-		//p_ItemEntity->SET_InventoryId(_NewItemId);
-
-
-
-
-		bool _bWasAddingItemWidgetSuccessful = m_PlayerInventoryWidget->AddItemToInventory(p_ItemEntity);
+		//bool _bWasAddingItemWidgetSuccessful = m_PlayerInventoryWidget->AddItemToInventory(p_ItemEntity);
+		bool _bWasAddingItemWidgetSuccessful = m_PlayerInventoryWidget->AddItemToInventoryNew(p_ItemEntity);
 
 		if (_bWasAddingItemWidgetSuccessful)
 		{
-			// PlaceItemEntityInArray(p_ItemEntity, _NewItemId); // old
-			m_ItemEntities.Emplace(p_ItemEntity); // New
+			m_ItemEntities.Emplace(p_ItemEntity);
 		}
 	}
 }
 
-int32 UInventoryManager::CreateUniqueInventoryId()
-{
-	
 
-
-
-
-
-	int32 _ArraySize = m_ItemEntities.Num();
-
-	if (_ArraySize == 0)
-	{
-		return 0;
-	}
-
-	for (int32 i = 0; i < _ArraySize; i++)
-	{
-		UPickupEntity* _ItemEntity = m_ItemEntities[i];
-
-		if (_ItemEntity == nullptr)
-		{
-			return i;
-		}
-	}
-
-	return _ArraySize;
-}
-
-void UInventoryManager::PlaceItemEntityInArray(UPickupEntity* p_ItemEntity, int32 p_ItemInventoryId)
-{
-	if (p_ItemInventoryId > m_ItemEntities.Num())
-	{
-		UE_LOG(LogClass_UInventoryManager, Error, TEXT("PlaceItemEntityInArray() : This should never happen."));
-	}
-	else if (p_ItemInventoryId == m_ItemEntities.Num())
-	{
-		m_ItemEntities.Emplace(p_ItemEntity);
-	}
-	else
-	{
-		if (m_ItemEntities[p_ItemInventoryId] == nullptr) // double check
-		{
-			m_ItemEntities[p_ItemInventoryId] = p_ItemEntity;
-		}
-	}
-}
 
 bool UInventoryManager::DoesPlayerInventoryHasRoomForNewItem(const FIntPoint& p_ItemSize)
 {
@@ -149,7 +100,7 @@ void UInventoryManager::DropItemAsItIs(UPickupEntity* p_ItemEntity)
 
 			if (_bWasItemWidgetRemoved)
 			{
-				m_ItemEntities[p_ItemEntity->GET_InventoryId()] = nullptr;
+				m_ItemEntities.Remove(p_ItemEntity);
 				_ItemActor->InitializeActorWithEntity(p_ItemEntity);
 
 				/* Luciole 13/03/2024
@@ -185,7 +136,7 @@ void UInventoryManager::DropItemAsBag(UClass* p_BagClass, UPickupEntity* p_ItemE
 
 				if (_bWasBagSuccesfullyLoaded)
 				{
-					m_ItemEntities[p_ItemEntity->GET_InventoryId()] = nullptr;
+					m_ItemEntities.Remove(p_ItemEntity);
 				}
 			}
 		}		
@@ -200,7 +151,8 @@ void UInventoryManager::DropItems()
 
 		if (_ItemBag)
 		{
-			bool _bWereItemWidgetsRemoved = m_PlayerInventoryWidget->RemoveItemsCanvasSlot();
+			// bool _bWereItemWidgetsRemoved = m_PlayerInventoryWidget->RemoveItemsCanvasSlot();old
+			bool _bWereItemWidgetsRemoved = m_PlayerInventoryWidget->RemoveItemsCanvasSlotNew();
 
 			if (_bWereItemWidgetsRemoved)
 			{
@@ -251,6 +203,21 @@ void UInventoryManager::SetItemForGroupDrop(UPickupEntity* p_ItemEntity)
 		m_ItemsToDrop.Emplace(p_ItemEntity);
 	}
 }
+
+
+
+bool UInventoryManager::MoveItemToPlayerInventory(UPickupEntity* p_ItemEntity)
+{
+	if (m_PlayerInventoryWidget && p_ItemEntity)
+	{
+		AddItemToPlayerInventory(p_ItemEntity);
+		return true;
+	}
+
+	return false;
+}
+
+
 
 void UInventoryManager::DEBUG_DisplayAllItemsName() const
 {

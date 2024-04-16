@@ -52,6 +52,7 @@ public:
 	void SET_BagWidgetReference(TSharedPtr<SInGameBagInventory> p_BagWidget);
 	bool LoadBag(UPickupEntity* p_ItemEntity);
 	bool LoadBag(TArray<UPickupEntity*>& p_ItemEntities);
+	void RemoveItem(UPickupEntity* p_ItemEntity);
 
 protected:
 
@@ -62,6 +63,7 @@ protected:
 private:
 
 	bool ComputeItemsPositionsInInventory();
+	bool ComputeBagInventoryWidgetData(UPickupEntity* p_ItemEntity);
 	void FillUnoccupiedTiles(UPickupEntity* p_ItemEntity, int32 p_ItemIndexInQueue);
 	bool DoesItemFit(int32 p_UnoccupiedTileIndex, UPickupEntity* p_ItemEntity);
 	void InsertItemIntoUnoccupiedTiles(UPickupEntity* p_ItemEntity, int32 p_ItemIndexInQueue);
@@ -81,6 +83,7 @@ private:
 	void BuildTilesForItem(UPickupEntity* p_ItemEntity);
 	void BuildLeftOverTiles(UPickupEntity* p_ItemEntity, EExpansionDir p_ExpansionDir);
 	void ExpandInventory(UPickupEntity* p_ItemEntity, int32 p_ItemIndexInQueue);
+	
 
 private:
 

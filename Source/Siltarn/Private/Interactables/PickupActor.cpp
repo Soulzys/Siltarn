@@ -23,12 +23,11 @@ void APickupActor::INTERFACE_Interact(ASiltarnPlayerController* p_SiltarnControl
 
 	if (m_bIsInteractible)
 	{
-		bool _bEnoughRoomForItem = p_SiltarnController->DOES_InventoryHasRoomForItem(m_InventorySpace);
+		bool _bHasEnoughRoom = p_SiltarnController->DOES_InventoryHasRoomForItem(m_InventorySpace);
 
-		if (_bEnoughRoomForItem)
+		if (_bHasEnoughRoom)
 		{
 			UPickupEntity* _NewEntity = NewObject<UPickupEntity>();
-			UE_LOG(LogClass_APickupActor, Warning, TEXT("WTF ???"));
 			_NewEntity->Initialize_Entity(this);
 			p_SiltarnController->ADD_ItemToInventory(_NewEntity);
 

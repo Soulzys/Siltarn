@@ -117,6 +117,19 @@ FVector2D FTile::GET_RelativeCoordinates(const int32 p_TileSize) const
 
 bool FTile::IS_Occupied()
 {
+	// New
+	if (s_ItemOwner)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+
+
+
+	// Old
 	if (s_Owner)
 	{
 		return true;
@@ -136,9 +149,23 @@ FInventoryItem* FTile::GET_Owner() const
 
 
 
+TSharedPtr<SInventoryItemWidget> FTile::GET_OwnerNew() const
+{
+	return s_ItemOwner;
+}
+
+
+
 void FTile::SET_Owner(FInventoryItem* p_Item)
 {
 	s_Owner = p_Item;
+}
+
+
+
+void FTile::SET_OwnerNew(TSharedPtr<SInventoryItemWidget> p_ItemWidget)
+{
+	s_ItemOwner = p_ItemWidget;
 }
 
 
@@ -215,182 +242,6 @@ int32 FCrossAnchor::GET_Index() const
 
 
 
-
-
-/*****************************************************************************************
-	FInventoryItem class
-******************************************************************************************/
-
-int32 FInventoryItem::s_InstanceNumber = 0;
-
-FInventoryItem::FInventoryItem()
-{
-	s_InstanceNumber++;
-	UE_LOG(LogStruct_FInventoryItem, Warning, TEXT("Number of instances : %d"), s_InstanceNumber);
-}
-
-
-
-//old
-FInventoryItem::FInventoryItem(TArray<int32>& p_CachedTilesIndex, TArray<FTile>& p_Tiles, int64 p_UniqueId)
-{
-	for (int32 i = 0; i < p_CachedTilesIndex.Num(); i++)
-	{
-		FTile* _TilePtr = &p_Tiles[p_CachedTilesIndex[i]];
-
-		if (_TilePtr)
-		{
-			_TilePtr->SET_Owner(this);
-			s_OccupyingTiles.Emplace(_TilePtr);
-		}
-	}
-
-	s_UniqueId = p_UniqueId;
-
-	s_InstanceNumber++;
-	UE_LOG(LogStruct_FInventoryItem, Warning, TEXT("Number of instances : %d"), s_InstanceNumber);
-}
-
-FInventoryItem::FInventoryItem(const FIntPoint& p_OriginTile, const FIntPoint& p_ItemSize, int64 p_UniqueId, int32 p_NumberOfColumns, TArray<FTile>& p_Tiles)
-{
-	for (int32 y = p_OriginTile.Y; y < p_OriginTile.Y + p_ItemSize.Y; y++)
-	{
-		for (int32 x = p_OriginTile.X; x < p_OriginTile.X + p_ItemSize.X; x++)
-		{
-			FIntPoint _TileCoordinates = FIntPoint(x, y);
-			int32 _TileIndex = SInventoryWidget::TileCoordinatesToTileIndexStatic(_TileCoordinates, p_NumberOfColumns);
-			FTile* _TilePtr = &p_Tiles[_TileIndex];
-
-			if (_TilePtr)
-			{
-				_TilePtr->SET_Owner(this);
-				s_OccupyingTiles.Emplace(_TilePtr);
-			}
-		}
-	}
-
-	s_UniqueId = p_UniqueId;
-
-	s_InstanceNumber++;
-	UE_LOG(LogStruct_FInventoryItem, Warning, TEXT("Number of instances : %d"), s_InstanceNumber);
-}
-/*FInventoryItem::FInventoryItem(TArray<int32>& p_CachedTilesIndex, TArray<FTile*>& p_Tiles, int32 p_UniqueId)
-{
-	UE_LOG(LogTemp, Warning, TEXT("Am I here ?"));
-
-	for (int32 i = 0; i < p_CachedTilesIndex.Num(); i++)
-	{
-		FTile* _TilePtr = p_Tiles[p_CachedTilesIndex[i]];
-
-		if (_TilePtr)
-		{
-			_TilePtr->SET_Owner(this);
-			s_OccupyingTiles.Emplace(_TilePtr);
-		}
-	}
-
-	s_UniqueId = p_UniqueId;
-
-	s_InstanceNumber++;
-	UE_LOG(LogStruct_FInventoryItem, Warning, TEXT("Number of instances : %d"), s_InstanceNumber);
-}*/
-
-
-
-
-FInventoryItem::~FInventoryItem()
-{
-	if (!s_OccupyingTiles.IsEmpty())
-	{
-		for (auto _it : s_OccupyingTiles)
-		{
-			_it->SET_Owner(nullptr);
-		}
-	}
-
-	s_OccupyingTiles.Empty();
-
-	s_InstanceNumber--;
-	UE_LOG(LogStruct_FInventoryItem, Warning, TEXT("Number of instances : %d"), s_InstanceNumber);
-}
-
-
-
-void FInventoryItem::MoveItem(const FVector2D& p_NewLocation) const
-{
-	if (s_CanvasSlot)
-	{
-		s_CanvasSlot->SetPosition(p_NewLocation);
-	}
-}
-
-
-
-void FInventoryItem::FreeOccupiedTiles()
-{
-	for (FTile* _Tile : s_OccupyingTiles)
-	{
-		_Tile->SET_Owner(nullptr);
-		UE_LOG(LogStruct_FInventoryItem, Log, TEXT("FTile.s_StructId = %d has been freed !"), _Tile->GET_TileIndex());
-	}
-
-	s_OccupyingTiles.Empty();
-}
-
-
-
-void FInventoryItem::EmptyTilesArray()
-{
-	s_OccupyingTiles.Empty();
-}
-
-
-
-bool FInventoryItem::EmplaceNewTileInArray(FTile* p_Tile)
-{
-	if (p_Tile)
-	{
-		s_OccupyingTiles.Emplace(p_Tile);
-		return true;
-	}
-
-	return false;
-}
-
-
-
-FTile* FInventoryItem::GET_ControlTile() const
-{
-	if (!s_OccupyingTiles.IsEmpty())
-	{
-		return s_OccupyingTiles[0];
-	}
-
-	return nullptr;
-}
-
-
-void FInventoryItem::SET_CanvasSlot(SCanvas::FSlot* p_Slot)
-{
-	s_CanvasSlot = p_Slot;
-}
-
-
-
-void FInventoryItem::SET_ItemWidget(TSharedPtr<SInventoryItemWidget> p_ItemWidget)
-{
-	s_ItemWidget = p_ItemWidget;
-}
-
-
-
-void FInventoryItem::UPDATE_Tile()
-{
-	if (s_ItemWidget)
-	{
-		s_ItemWidget->UPDATE_Tile(*s_OccupyingTiles[0]);
-	}
-}
 
 
 /*****************************************************************************************
@@ -648,8 +499,21 @@ void SInventoryWidget::BuildCrossAnchorsNew()
 
 
 
-void SInventoryWidget::ConstructCanvasItemSlot(UPickupEntity* p_ItemEntity, FTile* p_ControlTile, FInventoryItem* p_InventoryItem, EInventoryItemWidgetLocation p_ItemWidgetLocation)
+TSharedPtr<SInventoryItemWidget> SInventoryWidget::ConstructItemWidget(UPickupEntity* p_ItemEntity, FTile* p_ControlTile, EInventoryItemWidgetLocation p_ItemWidgetLocation)
 {
+	if (!p_ItemEntity)
+	{
+		UE_LOG(LogClass_SInventoryWidget, Error, TEXT("ConstructItemWidget() : p_ItemEntity is NULL !"));
+		return nullptr;
+	}
+
+	if (!p_ControlTile)
+	{
+		UE_LOG(LogClass_SInventoryWidget, Error, TEXT("ContructItemWidget() : p_ControlTile is NULL !"));
+		return nullptr;
+	}
+
+
 	// The widget location (0, 0) is its top left corner
 	const float _SlotPosX = p_ControlTile->s_TileCoordinates.X * m_TileSize;
 	const float _SlotPosY = p_ControlTile->s_TileCoordinates.Y * m_TileSize;
@@ -660,26 +524,50 @@ void SInventoryWidget::ConstructCanvasItemSlot(UPickupEntity* p_ItemEntity, FTil
 	TSharedPtr<SInventoryItemWidget> _ItemWidget = nullptr             ;
 	SCanvas::FSlot*                  _Slot       = nullptr             ;
 	FVector2D                        _ItemSize(_SlotSizeX, _SlotSizeY) ;
+	FVector2D                        _ItemPos(_SlotPosX, _SlotPosY)    ;
 
 
 	m_Canvas->AddSlot()
-	.Position(FVector2D(_SlotPosX, _SlotPosY))
-	.Size    (_ItemSize)
+	.Position(_ItemPos)
+	.Size(_ItemSize)
 	[
 		SAssignNew(_ItemWidget, SInventoryItemWidget)
-		.a_Tile    (p_ControlTile)
 		.a_ItemData(p_ItemEntity)
 		.a_ItemSize(_ItemSize)
 		.a_InventoryOwner(this)
-		//.a_InventoryItemId(p_InventoryItem->GET_UniqueId())
-		.a_InventoryItemId(p_ItemEntity->GET_InventoryId())
 		.a_InventoryItemWidgetLocation(p_ItemWidgetLocation)
-		.a_InventoryItemClass(p_InventoryItem)
 	]
 	.Expose(_Slot);
 
-	p_InventoryItem->SET_ItemWidget(_ItemWidget);
-	p_InventoryItem->SET_CanvasSlot(_Slot);
+
+	if (_ItemWidget.IsValid() && _Slot)
+	{
+		// Luciole 08/04/2024 || Still unsure whether we should deal with FTile in m_Tiles indexes or with FTile* pointers directly
+		// Luciole 10/04/2024 || UPDATE : it was decided to use FTile* in order to avoid going a long way to free the occupied FTiles when dropping the item
+		// Note to myself : eventually need to remove these comments and move this explanation and this "history" to a clean documentation.
+		//_ItemWidget->AssignTiles(m_CachedTilesIndexes);
+		_ItemWidget->AssignTiles(m_Tiles, m_CachedTilesIndexes);
+		_ItemWidget->SET_ItemCanvasSlot(_Slot);
+
+		return _ItemWidget;
+	}
+
+	return nullptr;	
+}
+
+
+
+TSharedPtr<SInventoryItemWidget> SInventoryWidget::ConstructItemWidget(UPickupEntity* p_ItemEntity, EInventoryItemWidgetLocation p_ItemWidgetLocation)
+{
+	int32 _CTileIndex = TileCoordinatesToTileIndex(p_ItemEntity->GET_InventoryLocationTile());
+	FTile* _CTile = &m_Tiles[_CTileIndex];
+
+	if (_CTile)
+	{
+		return ConstructItemWidget(p_ItemEntity, _CTile, p_ItemWidgetLocation);
+	}
+
+	return nullptr;
 }
 
 
@@ -693,7 +581,7 @@ bool SInventoryWidget::IsThereRoomInInventory(const FIntPoint& p_ItemSize)
 		return false;
 	}
 
-	// Old
+
 	for (int32 i = 0; i < m_Tiles.Num(); i++)
 	{
 		if (IS_RoomAvailableAtTileIndex(p_ItemSize, i))
@@ -702,16 +590,6 @@ bool SInventoryWidget::IsThereRoomInInventory(const FIntPoint& p_ItemSize)
 			return true;
 		}
 	}
-
-	// New
-	/*for (int32 i = 0; i < m_TilesNew.Num(); i++)
-	{
-		if (IS_RoomAvailableAtTileIndex(p_ItemSize, i))
-		{
-			m_CachedTileIndex = i;
-			return true;
-		}
-	}*/
 
 	return false;
 }
@@ -756,32 +634,6 @@ bool SInventoryWidget::IS_RoomAvailableAtTileIndex(const FIntPoint& p_ItemSize, 
 		}
 	}
 
-	// New
-	/*for (int32 y = _TopLeftTile.Y; y < p_ItemSize.Y + _TopLeftTile.Y; y++)
-	{
-		for (int32 x = _TopLeftTile.X; x < p_ItemSize.X + _TopLeftTile.X; x++)
-		{
-			const FIntPoint _TileCoordinates = FIntPoint(x, y);
-			const int32     _TileIndex = TileCoordinatesToTileIndex(_TileCoordinates);
-
-			// Checking for "out of bounds" case (happens when checking for the last FTile)
-			if (_TileIndex >= m_TilesNew.Num())
-			{
-				UE_LOG(LogClass_SInventoryWidget, Warning, TEXT("IS_RoomAvailableAtTileIndex() : FTile %d -> Out of bound case."), p_TileIndex);
-				return false;
-			}
-
-			// Checking for "already occupied" case
-			if (m_TilesNew[_TileIndex]->IS_Occupied())
-			{
-				UE_LOG(LogClass_SInventoryWidget, Warning, TEXT("IS_RoomAvailableAtTileIndex() : FTile %d -> Already occupied case."), p_TileIndex);
-				return false;
-			}
-
-			// It is supposed to be cleaned in ADD_item()
-			m_CachedTilesIndexes.Add(_TileIndex);
-		}
-	}*/
 
 	UE_LOG(LogClass_SInventoryWidget, Log, TEXT("We have found a room at FTile %d !"), p_TileIndex);
 	return true;
@@ -1036,7 +888,12 @@ FReply SInventoryWidget::OnDrop(const FGeometry& MyGeometry, const FDragDropEven
 
 
 			// Luciole 12/03/2024 || Investigate on the use of GET_Tile(). Do we really need to have a reference to the control FTile within SInventoryItemWidget ??
-			TryDroppingItemToTile(_Operation->GET_InventoryItemClass(), _ItemEntity, _Operation->GET_Tile(), _TargetTile);
+			//TryDroppingItemToTile(_Operation->GET_InventoryItemClass(), _ItemEntity, _Operation->GET_Tile(), _TargetTile);
+
+
+
+			// Luciole 10/04/2024 || Finish this + what is the use of _Operation->GET_Tile() ? We do not use the original FTile anyway.
+			TryDroppingItemToTileNew(_Operation->GET_ItemWidget(), _TargetTile);
 
 
 
@@ -1053,23 +910,25 @@ FReply SInventoryWidget::OnDrop(const FGeometry& MyGeometry, const FDragDropEven
 
 
 
-bool SInventoryWidget::TryDroppingItemToTile(FInventoryItem* p_InventoryItem, UPickupEntity* p_ItemEntity, FTile* p_OriginalTile, FTile* p_TargetTile)
+bool SInventoryWidget::TryDroppingItemToTileNew(TSharedPtr<SInventoryItemWidget> p_ItemWidget, FTile* p_TargetTile)
 {
-	bool _bIsTileAvailable = IsTileAvailable(p_InventoryItem, p_ItemEntity, p_TargetTile);
+	bool _bIsTileAvailable = IsTileAvailableNew(p_ItemWidget, p_TargetTile);
 
 	if (_bIsTileAvailable)
 	{
-		p_InventoryItem->FreeOccupiedTiles();
+		p_ItemWidget->FreeOccupiedTiles();
 		//p_InventoryItem->EmptyTilesArray();
 
-		for (int32 i = 0; i < m_CachedTilesIndexes.Num(); i++)
+		p_ItemWidget->AssignTiles(m_CachedTilesIndexes);
+
+		/*for (int32 i = 0; i < m_CachedTilesIndexes.Num(); i++)
 		{
 			// Old
 			FTile* _Tile = &m_Tiles[m_CachedTilesIndexes[i]];
 
 			// New
 			//FTile* _Tile = m_TilesNew[m_CachedTilesIndexes[i]];
-			_Tile->SET_Owner(p_InventoryItem);
+			_Tile->SET_OwnerNew(p_ItemWidget);
 
 			if (!p_InventoryItem->EmplaceNewTileInArray(_Tile))
 			{
@@ -1077,26 +936,40 @@ bool SInventoryWidget::TryDroppingItemToTile(FInventoryItem* p_InventoryItem, UP
 			}
 
 			UE_LOG(LogTemp, Log, TEXT("FTile %d has been occupied by the item !"), _Tile->GET_TileIndex());
-		}
+		}*/
 
-		p_InventoryItem->UPDATE_Tile();
-		MoveItemCanvasSlot(p_InventoryItem, p_TargetTile->GET_RelativeCoordinates(m_TileSize));
+		//p_InventoryItem->UPDATE_Tile();
+		//MoveItemCanvasSlot(p_InventoryItem, p_TargetTile->GET_RelativeCoordinates(m_TileSize));
+		MoveItemCanvasSlotNew(p_ItemWidget, p_TargetTile->GET_RelativeCoordinates(m_TileSize));
 	}
 	else
 	{
-		p_InventoryItem->GET_ItemWidget()->SetVisibility(EVisibility::Visible);
+		p_ItemWidget->SetVisibility(EVisibility::Visible);
+		//p_InventoryItem->GET_ItemWidget()->SetVisibility(EVisibility::Visible);
 	}
 
 	CleanCachedTilesIndexes();
 	return false;
+
+	return false;
 }
 
-
-
-bool SInventoryWidget::IsTileAvailable(FInventoryItem* p_InventoryItem, UPickupEntity* p_ItemEntity, FTile* p_TargetTile)
+bool SInventoryWidget::IsTileAvailableNew(TSharedPtr<SInventoryItemWidget> p_ItemWidget, FTile* p_TargetTile)
 {
+	if (!p_ItemWidget.IsValid())
+	{
+		UE_LOG(LogClass_SInventoryWidget, Error, TEXT("IsTileAvailableNew() : p_ItemWidget is INVALID !"));
+		return false;
+	}
+
+	if (!p_TargetTile)
+	{
+		UE_LOG(LogClass_SInventoryWidget, Error, TEXT("IsTileAvailableNew() : p_TargetTile is NULL !"));
+		return false;
+	}
+
 	const FIntPoint _TileCoordinates = p_TargetTile->s_TileCoordinates;
-	const FIntPoint _ItemDimensions = p_ItemEntity->GET_InventorySpace();
+	const FIntPoint _ItemDimensions = p_ItemWidget->GET_ItemData()->GET_InventorySpace();
 
 	if (_TileCoordinates.X + _ItemDimensions.X > m_NumberOfColumns || _TileCoordinates.Y + _ItemDimensions.Y > m_NumberOfRows)
 	{
@@ -1122,7 +995,7 @@ bool SInventoryWidget::IsTileAvailable(FInventoryItem* p_InventoryItem, UPickupE
 
 			if (m_Tiles[_TileIndex].IS_Occupied())
 			{
-				if (*m_Tiles[_TileIndex].GET_Owner() != *p_InventoryItem)
+				if (*m_Tiles[_TileIndex].GET_OwnerNew() != *p_ItemWidget.Get())
 				{
 					UE_LOG(LogClass_SInventoryWidget, Warning, TEXT("IS_TileAvailable() : FTile occupied case. (Checking for FTile %d"), _TileIndex);
 					CleanCachedTilesIndexes();
@@ -1158,12 +1031,17 @@ bool SInventoryWidget::IsTileAvailable(FInventoryItem* p_InventoryItem, UPickupE
 
 
 
-void SInventoryWidget::MoveItemCanvasSlot(FInventoryItem* p_ItemEntity, const FVector2D& p_Location)
+void SInventoryWidget::MoveItemCanvasSlotNew(TSharedPtr<SInventoryItemWidget> p_ItemWidget, const FVector2D& p_Location)
 {
-	if (p_ItemEntity)
+	if (!p_ItemWidget.IsValid())
 	{
-		p_ItemEntity->MoveItem(p_Location);
+		UE_LOG(LogClass_SInventoryWidget, Error, TEXT("MoveItemCanvasSlotNew() : p_ItemWidget is INVALID !"));
+		return;
 	}
+
+
+	// Luciole 10/04/2024 || Should we do this here or create a function in SInventoryItemWidget to move its own FSlot ? 
+	p_ItemWidget->GET_ItemCanvasSlot()->SetPosition(p_Location);
 }
 
 
@@ -1220,28 +1098,6 @@ void SInventoryWidget::CleanCachedTilesIndexes()
 
 
 
-void SInventoryWidget::SetInventoryItemForGroupDropping(int32 p_ItemId)
-{
-	if (p_ItemId >= 0)
-	{
-		m_ItemsSelectedForGroupDrop.Emplace(p_ItemId);
-	}
-	else
-	{
-		UE_LOG(LogClass_SInventoryWidget, Error, TEXT("SetInventoryItemForGroupDropping() : The item set for group dropping has a negative id !"));
-	}
-
-	// Debug
-	UE_LOG(LogClass_SInventoryWidget, Warning, TEXT("Item set for group dropping's id"));
-
-	for (int32 i : m_ItemsSelectedForGroupDrop)
-	{
-		UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("Item's id : %d"), i);
-	}
-}
-
-
-
 void SInventoryWidget::HideAllItemsSetForGroupDrop()
 {
 	/*for (int32 i = 0; i < m_ItemsSelectedForGroupDrop.Num(); i++)
@@ -1254,19 +1110,37 @@ void SInventoryWidget::HideAllItemsSetForGroupDrop()
 		}
 	}*/
 
+	/* old
 	for (auto _InventoryItem : m_DroppingItemsCache)
 	{
 		_InventoryItem->GET_ItemWidget()->SetVisibility(EVisibility::Hidden);
+	}
+	*/
+
+	// new
+	for (auto _ItemWidget : m_DroppingItemsCacheNew)
+	{
+		_ItemWidget->SetVisibility(EVisibility::Hidden);
 	}
 }
 
 
 
-void SInventoryWidget::SetInventoryItemForGroupDropping(FInventoryItem* p_InventoryItem)
+void SInventoryWidget::SetInventoryItemForGroupDropping(TSharedPtr<SInventoryItemWidget> p_ItemWidget)
 {
-	if (p_InventoryItem)
+	if (p_ItemWidget)
 	{
-		m_DroppingItemsCache.Emplace(p_InventoryItem);
+		m_DroppingItemsCacheNew.Emplace(p_ItemWidget);
+	}
+}
+
+
+
+void SInventoryWidget::RemoveInventoryItemFromGroupDropping(TSharedPtr<SInventoryItemWidget> p_ItemWidget)
+{
+	if (p_ItemWidget)
+	{
+		m_DroppingItemsCacheNew.Remove(p_ItemWidget);
 	}
 }
 
@@ -1274,6 +1148,8 @@ void SInventoryWidget::SetInventoryItemForGroupDropping(FInventoryItem* p_Invent
 
 void SInventoryWidget::SetItemsForGroupDrop()
 {
+	// old
+	/*
 	if (m_InventoryManager)
 	{
 		for (int32 i = 0; i < m_DroppingItemsCache.Num(); i++)
@@ -1283,6 +1159,21 @@ void SInventoryWidget::SetItemsForGroupDrop()
 
 			//m_InventoryManager->SetItemForGroupDrop(_ItemEntityId); // old
 			m_InventoryManager->SetItemForGroupDrop(_ItemEntity);
+		}
+
+		m_InventoryManager->DropItems();
+	}*/
+
+	if (m_InventoryManager)
+	{
+		for (int32 i = 0; i < m_DroppingItemsCacheNew.Num(); i++)
+		{
+			UPickupEntity* _ItemEntity = m_DroppingItemsCacheNew[i]->GET_ItemData();
+
+			if (_ItemEntity)
+			{
+				m_InventoryManager->SetItemForGroupDrop(_ItemEntity);
+			}
 		}
 
 		m_InventoryManager->DropItems();
@@ -1312,9 +1203,54 @@ FReply SInventoryWidget::OnKeyDown(const FGeometry& InGeometry, const FKeyEvent&
 }
 
 
+
 void SInventoryWidget::ResetFocus()
 {
 	FSlateApplication::Get().SetUserFocus(0, SharedThis(this));
 }
+
+
+
+void SInventoryWidget::MoveItemToPlayerInventory(TSharedPtr<SInventoryItemWidget> p_ItemWidget)
+{
+	/*if (m_InventoryManager && p_ItemEntity)
+	{
+		bool _bWasItemMoved = m_InventoryManager->MoveItemToPlayerInventory(p_ItemEntity);
+
+		if (_bWasItemMoved)
+		{
+
+		}
+	}*/
+
+
+	if (m_InventoryManager)
+	{
+		UPickupEntity* _ItemEntity = p_ItemWidget->GET_ItemData();
+
+		bool _bDoesPlayerInventoryHasEnoughRoom = m_InventoryManager->DoesPlayerInventoryHasRoomForNewItem(_ItemEntity->GET_InventorySpace());
+
+		if (_bDoesPlayerInventoryHasEnoughRoom)
+		{
+			/* Removing SInventoryItemWidget */
+			p_ItemWidget->FreeOccupiedTiles();
+			m_ItemsMap.FindAndRemoveChecked(_ItemEntity->GET_EntityId()); // Removes from TMap
+			m_Canvas->RemoveSlot(p_ItemWidget.ToSharedRef());             // Destroy SInventoryItemWidget
+
+
+			bool _bWasMovedToPlayerInventory = m_InventoryManager->MoveItemToPlayerInventory(_ItemEntity);
+
+			if (_bWasMovedToPlayerInventory)
+			{
+
+			}
+		}
+	}
+	else
+	{
+		UE_LOG(LogClass_SInventoryWidget, Warning, TEXT("I'm NULL !"));
+	}
+}
+
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
