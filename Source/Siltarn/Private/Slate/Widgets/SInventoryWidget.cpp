@@ -1,5 +1,5 @@
 #include "Slate/Widgets/SInventoryWidget.h"
-#include "Siltarn/Public/Slate/Widgets/SInventoryItemWidget.h"
+#include "Siltarn/Public/Slate/Widgets/SItemWidget.h"
 #include "Siltarn/Public/Slate/Widgets/SDebugWidget.h"
 #include "Siltarn/Public/Slate/Menus/SProfileMenu.h"
 #include "Siltarn/Public/Slate/Styles/SiltarnGeneralStyleContainer.h"
@@ -149,7 +149,7 @@ FInventoryItem* FTile::GET_Owner() const
 
 
 
-TSharedPtr<SInventoryItemWidget> FTile::GET_OwnerNew() const
+TSharedPtr<SItemWidget> FTile::GET_OwnerNew() const
 {
 	return s_ItemOwner;
 }
@@ -163,7 +163,7 @@ void FTile::SET_Owner(FInventoryItem* p_Item)
 
 
 
-void FTile::SET_OwnerNew(TSharedPtr<SInventoryItemWidget> p_ItemWidget)
+void FTile::SET_OwnerNew(TSharedPtr<SItemWidget> p_ItemWidget)
 {
 	s_ItemOwner = p_ItemWidget;
 }
@@ -499,7 +499,7 @@ void SInventoryWidget::BuildCrossAnchorsNew()
 
 
 
-TSharedPtr<SInventoryItemWidget> SInventoryWidget::ConstructItemWidget(UPickupEntity* p_ItemEntity, FTile* p_ControlTile, EInventoryItemWidgetLocation p_ItemWidgetLocation)
+TSharedPtr<SItemWidget> SInventoryWidget::ConstructItemWidget(UPickupEntity* p_ItemEntity, FTile* p_ControlTile, EInventoryItemWidgetLocation p_ItemWidgetLocation)
 {
 	if (!p_ItemEntity)
 	{
@@ -521,7 +521,7 @@ TSharedPtr<SInventoryItemWidget> SInventoryWidget::ConstructItemWidget(UPickupEn
 	const float _SlotSizeX = p_ItemEntity->GET_InventorySpace().X * m_TileSize;
 	const float _SlotSizeY = p_ItemEntity->GET_InventorySpace().Y * m_TileSize;
 
-	TSharedPtr<SInventoryItemWidget> _ItemWidget = nullptr             ;
+	TSharedPtr<SItemWidget> _ItemWidget = nullptr             ;
 	SCanvas::FSlot*                  _Slot       = nullptr             ;
 	FVector2D                        _ItemSize(_SlotSizeX, _SlotSizeY) ;
 	FVector2D                        _ItemPos(_SlotPosX, _SlotPosY)    ;
@@ -531,7 +531,7 @@ TSharedPtr<SInventoryItemWidget> SInventoryWidget::ConstructItemWidget(UPickupEn
 	.Position(_ItemPos)
 	.Size(_ItemSize)
 	[
-		SAssignNew(_ItemWidget, SInventoryItemWidget)
+		SAssignNew(_ItemWidget, SItemWidget)
 		.a_ItemData(p_ItemEntity)
 		.a_ItemSize(_ItemSize)
 		.a_InventoryOwner(this)
@@ -557,7 +557,7 @@ TSharedPtr<SInventoryItemWidget> SInventoryWidget::ConstructItemWidget(UPickupEn
 
 
 
-TSharedPtr<SInventoryItemWidget> SInventoryWidget::ConstructItemWidget(UPickupEntity* p_ItemEntity, EInventoryItemWidgetLocation p_ItemWidgetLocation)
+TSharedPtr<SItemWidget> SInventoryWidget::ConstructItemWidget(UPickupEntity* p_ItemEntity, EInventoryItemWidgetLocation p_ItemWidgetLocation)
 {
 	int32 _CTileIndex = TileCoordinatesToTileIndex(p_ItemEntity->GET_InventoryLocationTile());
 	FTile* _CTile = &m_Tiles[_CTileIndex];
@@ -910,7 +910,7 @@ FReply SInventoryWidget::OnDrop(const FGeometry& MyGeometry, const FDragDropEven
 
 
 
-bool SInventoryWidget::TryDroppingItemToTileNew(TSharedPtr<SInventoryItemWidget> p_ItemWidget, FTile* p_TargetTile)
+bool SInventoryWidget::TryDroppingItemToTileNew(TSharedPtr<SItemWidget> p_ItemWidget, FTile* p_TargetTile)
 {
 	bool _bIsTileAvailable = IsTileAvailableNew(p_ItemWidget, p_TargetTile);
 
@@ -954,7 +954,7 @@ bool SInventoryWidget::TryDroppingItemToTileNew(TSharedPtr<SInventoryItemWidget>
 	return false;
 }
 
-bool SInventoryWidget::IsTileAvailableNew(TSharedPtr<SInventoryItemWidget> p_ItemWidget, FTile* p_TargetTile)
+bool SInventoryWidget::IsTileAvailableNew(TSharedPtr<SItemWidget> p_ItemWidget, FTile* p_TargetTile)
 {
 	if (!p_ItemWidget.IsValid())
 	{
@@ -1031,7 +1031,7 @@ bool SInventoryWidget::IsTileAvailableNew(TSharedPtr<SInventoryItemWidget> p_Ite
 
 
 
-void SInventoryWidget::MoveItemCanvasSlotNew(TSharedPtr<SInventoryItemWidget> p_ItemWidget, const FVector2D& p_Location)
+void SInventoryWidget::MoveItemCanvasSlotNew(TSharedPtr<SItemWidget> p_ItemWidget, const FVector2D& p_Location)
 {
 	if (!p_ItemWidget.IsValid())
 	{
@@ -1126,7 +1126,7 @@ void SInventoryWidget::HideAllItemsSetForGroupDrop()
 
 
 
-void SInventoryWidget::SetInventoryItemForGroupDropping(TSharedPtr<SInventoryItemWidget> p_ItemWidget)
+void SInventoryWidget::SetInventoryItemForGroupDropping(TSharedPtr<SItemWidget> p_ItemWidget)
 {
 	if (p_ItemWidget)
 	{
@@ -1136,7 +1136,7 @@ void SInventoryWidget::SetInventoryItemForGroupDropping(TSharedPtr<SInventoryIte
 
 
 
-void SInventoryWidget::RemoveInventoryItemFromGroupDropping(TSharedPtr<SInventoryItemWidget> p_ItemWidget)
+void SInventoryWidget::RemoveInventoryItemFromGroupDropping(TSharedPtr<SItemWidget> p_ItemWidget)
 {
 	if (p_ItemWidget)
 	{
@@ -1211,7 +1211,7 @@ void SInventoryWidget::ResetFocus()
 
 
 
-void SInventoryWidget::MoveItemToPlayerInventory(TSharedPtr<SInventoryItemWidget> p_ItemWidget)
+void SInventoryWidget::MoveItemToPlayerInventory(TSharedPtr<SItemWidget> p_ItemWidget)
 {
 	/*if (m_InventoryManager && p_ItemEntity)
 	{

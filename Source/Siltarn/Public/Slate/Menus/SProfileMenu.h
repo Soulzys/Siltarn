@@ -9,7 +9,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogClass_SProfileMenu, Log, All);
 class AGameplayHUD            ;
 class SInventoryWidget        ;
 class SCharacterProfileWidget ;
-class SInventoryItemWidget    ;
+class SItemWidget    ;
 class UPickupEntity           ;
 class SCharacterProfileWidget ;
 class SInGamePlayerInventoryWidget;
@@ -45,7 +45,7 @@ public:
 	void Construct(const FArguments& p_InArgs);
 
 	bool DOES_InventoryHasRoomForItem(const FIntPoint& p_ItemSize);
-	bool MOVE_ItemToCharacterProfileMenu(SInventoryItemWidget* p_ItemWidget);
+	bool MOVE_ItemToCharacterProfileMenu(SItemWidget* p_ItemWidget);
 	FORCEINLINE TSharedPtr<SInGamePlayerInventoryWidget> GET_InventoryWidget() const { return m_InventoryWidget; }
 
 	void SET_InventoryManager(UInventoryManager* p_InventoryManager);

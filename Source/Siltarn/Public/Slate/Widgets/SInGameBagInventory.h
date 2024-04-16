@@ -16,7 +16,7 @@ public:
 	void Construct(const FArguments p_InArgs);
 	void LoadItemsWidgetsNew(TArray<UPickupEntity*>& p_Items);
 
-	void MoveItemToPlayerInventory(TSharedPtr<SInventoryItemWidget> p_ItemWidget);
+	void MoveItemToPlayerInventory(TSharedPtr<SItemWidget> p_ItemWidget);
 	void RemoveItemCanvasSlot(int64 p_ItemKey);
 
 	void SET_BagActor(AItemBagActor* p_BagActor);

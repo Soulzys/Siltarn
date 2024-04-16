@@ -16,7 +16,6 @@ public:
 
 	bool AddItemToInventoryNew(UPickupEntity* p_ItemEntity);
 	bool RemoveItemCanvasSlot(int64 p_InventoryItemId);
-	//bool RemoveItemsCanvasSlot();
 	bool RemoveItemsCanvasSlotNew();
 
 private:

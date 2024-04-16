@@ -1,7 +1,7 @@
 #include "Slate/Widgets/SCharacterProfileWidget.h"
 #include "Siltarn/Public/Slate/Styles/SiltarnGeneralStyleContainer.h"
 #include "Siltarn/Public/Slate/Styles/SiltarnStyleController.h"
-#include "Siltarn/Public/Slate/Widgets/SInventoryItemWidget.h"
+#include "Siltarn/Public/Slate/Widgets/SItemWidget.h"
 #include "Siltarn/Public/Interactables/EquipableEntity.h"
 #include "Siltarn/Public/Interactables/InteractibleEnums.h"
 
@@ -38,7 +38,7 @@ void SCharacterProfileWidget::Construct(const FArguments& p_InArgs)
 			.BorderImage(&_GeneralStyle.m_DebuggingRed_SlateBrush)
 			.Padding(0)*/
 
-			SAssignNew(m_HeadItemWidget, SInventoryItemWidget)
+			SAssignNew(m_HeadItemWidget, SItemWidget)
 		]
 
 		// Chest
@@ -75,7 +75,7 @@ void SCharacterProfileWidget::Construct(const FArguments& p_InArgs)
 			.BorderImage(&_GeneralStyle.m_DebuggingRed_SlateBrush)
 			.Padding(0)*/
 
-			SAssignNew(m_RightHandItemWidget, SInventoryItemWidget)
+			SAssignNew(m_RightHandItemWidget, SItemWidget)
 		]
 
 		// Left Hand
@@ -183,7 +183,7 @@ void SCharacterProfileWidget::COMPUTE_SlotsSizes()
 	m_BagSlotSize       = FVector2D(_TileSize * 2.0f                    );
 }
 
-bool SCharacterProfileWidget::PLACE_ItemInSlot(SInventoryItemWidget* p_ItemWidget)
+bool SCharacterProfileWidget::PLACE_ItemInSlot(SItemWidget* p_ItemWidget)
 {
 	if (p_ItemWidget == nullptr)
 	{
@@ -213,7 +213,7 @@ bool SCharacterProfileWidget::PLACE_ItemInSlot(SInventoryItemWidget* p_ItemWidge
 	return false;
 }
 
-void SCharacterProfileWidget::UPDATE_HeadItemWidget(SInventoryItemWidget* p_ItemWidget)
+void SCharacterProfileWidget::UPDATE_HeadItemWidget(SItemWidget* p_ItemWidget)
 {
 	if (m_HeadItemWidget.IsValid() && p_ItemWidget)
 	{
@@ -222,7 +222,7 @@ void SCharacterProfileWidget::UPDATE_HeadItemWidget(SInventoryItemWidget* p_Item
 	}
 }
 
-void SCharacterProfileWidget::UPDATE_RightHandWidget(SInventoryItemWidget* p_ItemWidget)
+void SCharacterProfileWidget::UPDATE_RightHandWidget(SItemWidget* p_ItemWidget)
 {
 	if (m_RightHandItemWidget.IsValid() && p_ItemWidget)
 	{

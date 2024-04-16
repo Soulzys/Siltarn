@@ -1,5 +1,5 @@
 #include "Slate/Widgets/SInGamePlayerInventoryWidget.h"
-#include "Siltarn/Public/Slate/Widgets/SInventoryItemWidget.h"
+#include "Siltarn/Public/Slate/Widgets/SItemWidget.h"
 #include "Siltarn/Public/Interactables/PickupEntity.h"
 
 DEFINE_LOG_CATEGORY(LogClass_SInGamePlayerInventoryWidget);
@@ -61,7 +61,7 @@ bool SInGamePlayerInventoryWidget::AddItemToInventoryNew(UPickupEntity* p_ItemEn
 
 	if (_NewItemControlTile && !_NewItemControlTile->IS_Occupied())
 	{
-		TSharedPtr<SInventoryItemWidget> _ItemWidget = ConstructItemWidget(p_ItemEntity, _NewItemControlTile, EInventoryItemWidgetLocation::PLAYER_INVENTORY);
+		TSharedPtr<SItemWidget> _ItemWidget = ConstructItemWidget(p_ItemEntity, _NewItemControlTile, EInventoryItemWidgetLocation::PLAYER_INVENTORY);
 
 		if (_ItemWidget.IsValid())
 		{
@@ -83,7 +83,7 @@ bool SInGamePlayerInventoryWidget::RemoveItemCanvasSlot(int64 p_InventoryItemId)
 	if (p_InventoryItemId >= 0 && m_Canvas)
 	{
 		//FInventoryItem* _InventoryItem = m_InventoryItemsMapNew.FindAndRemoveChecked(p_InventoryItemId); // old
-		TSharedPtr<SInventoryItemWidget> _ItemWidget = m_ItemsMap.FindAndRemoveChecked(p_InventoryItemId); // new
+		TSharedPtr<SItemWidget> _ItemWidget = m_ItemsMap.FindAndRemoveChecked(p_InventoryItemId); // new
 
 		// new
 		if (_ItemWidget)
@@ -110,52 +110,11 @@ bool SInGamePlayerInventoryWidget::RemoveItemCanvasSlot(int64 p_InventoryItemId)
 
 
 
-/*bool SInGamePlayerInventoryWidget::RemoveItemsCanvasSlot()
-{
-	for (int32 i = 0; i < m_DroppingItemsCache.Num(); i++)
-	{
-		FInventoryItem* _InventoryItem = m_DroppingItemsCache[i];
-
-		if (_InventoryItem)
-		{
-			_InventoryItem->FreeOccupiedTiles();
-			//m_DroppingItemsCache[i] = nullptr;
-
-			int64 _Key = _InventoryItem->GET_UniqueId();
-
-			//m_DroppingItemsCache.RemoveAt(i);
-			//_InventoryItem->GET_ItemWidget()->Dest
-			// Luciole 24/03/2024 || We sometimes get a TSharedPtr error coming from the line below... Need to investigate ASAP
-			m_Canvas->RemoveSlot(_InventoryItem->GET_ItemWidget().ToSharedRef());
-			delete _InventoryItem;
-			m_InventoryItemsMapNew.FindAndRemoveChecked(_Key);
-
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	/*for (int32 i = 0; i < m_DroppingItemsCache.Num(); i++)
-	{
-		UE_LOG(LogClass_SInGamePlayerInventoryWidget, Error, TEXT("Checking checking in inventory... (%d)"), i);
-		delete m_DroppingItemsCache[i];
-	}*/
-
-	// Luciole 15/03/2024 || Probably should put this into its own function.
-	/*m_DroppingItemsCache.Empty();
-
-	return true;
-}*/
-
-
-
 bool SInGamePlayerInventoryWidget::RemoveItemsCanvasSlotNew()
 {
 	for (int32 i = 0; i < m_DroppingItemsCacheNew.Num(); i++)
 	{
-		TSharedPtr<SInventoryItemWidget> _ItemWidget = m_DroppingItemsCacheNew[i];
+		TSharedPtr<SItemWidget> _ItemWidget = m_DroppingItemsCacheNew[i];
 
 		if (_ItemWidget)
 		{

@@ -1,6 +1,6 @@
 #include "Slate/Widgets/SInGameBagInventory.h"
 #include "Siltarn/Public/Interactables/PickupEntity.h"
-#include "Siltarn/Public/Slate/Widgets/SInventoryItemWidget.h"
+#include "Siltarn/Public/Slate/Widgets/SItemWidget.h"
 #include "Siltarn/Public/Inventory/InventoryManager.h"
 #include "Siltarn/Public/Interactables/ItemBagActor.h"
 
@@ -38,7 +38,7 @@ void SInGameBagInventory::LoadItemsWidgetsNew(TArray<UPickupEntity*>& p_Items)
 
 		if (_ItemEntity)
 		{
-			TSharedPtr<SInventoryItemWidget> _ItemWidget = ConstructItemWidget(_ItemEntity, EInventoryItemWidgetLocation::EXTERNAL_INVENTORY);
+			TSharedPtr<SItemWidget> _ItemWidget = ConstructItemWidget(_ItemEntity, EInventoryItemWidgetLocation::EXTERNAL_INVENTORY);
 
 			if (_ItemWidget)
 			{
@@ -50,7 +50,7 @@ void SInGameBagInventory::LoadItemsWidgetsNew(TArray<UPickupEntity*>& p_Items)
 
 
 
-void SInGameBagInventory::MoveItemToPlayerInventory(TSharedPtr<SInventoryItemWidget> p_ItemWidget)
+void SInGameBagInventory::MoveItemToPlayerInventory(TSharedPtr<SItemWidget> p_ItemWidget)
 {
 	if (m_InventoryManager)
 	{

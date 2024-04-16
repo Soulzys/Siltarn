@@ -39,12 +39,12 @@ enum class EInventoryItemWidgetState : uint8
 // The variables aboved mentioned are never used and therefore should be removed. 
 // In SInventoryWidget::OnDrop() where FInventoryItemDragDrop operation is used, only the UPickupEntity (a_ItemData) and the dragged item ref are used. 
 
-class SILTARN_API SInventoryItemWidget : public SCompoundWidget
+class SILTARN_API SItemWidget : public SCompoundWidget
 {
 
 public:
 
-	SLATE_BEGIN_ARGS(SInventoryItemWidget) : _a_ItemData       (nullptr)         , 
+	SLATE_BEGIN_ARGS(SItemWidget) : _a_ItemData       (nullptr)         ,
 											 _a_Tile           (nullptr)         , 
 											 _a_ItemSize       (FVector2D(0.0f)) , 
 											 _a_InventoryOwner (nullptr)         ,
@@ -69,8 +69,8 @@ public:
 
 public:
 
-	SInventoryItemWidget();
-	~SInventoryItemWidget();
+	SItemWidget();
+	~SItemWidget();
 
 	virtual void   OnMouseEnter         (const FGeometry& MyGeometry, const FPointerEvent& MouseEvent) override;
 	virtual void   OnMouseLeave         (const FPointerEvent& MouseEvent) override;
@@ -89,7 +89,7 @@ public:
 	void AssignTiles(TArray<FTile>& p_InventoryTiles, TArray<int32>& p_OccupiedTilesIndexes);
 	void FreeOccupiedTiles();
 
-	void UPDATE_Widget(SInventoryItemWidget* p_ItemWidget);
+	void UPDATE_Widget(SItemWidget* p_ItemWidget);
 
 	FORCEINLINE UPickupEntity* GET_ItemData() const { return m_ItemData; }
 	FORCEINLINE SCanvas::FSlot* GET_ItemCanvasSlot() const { return m_ItemCanvasSlot; }
@@ -138,12 +138,12 @@ private:
 
 private:
 
-	friend bool operator==(const SInventoryItemWidget& p_A, const SInventoryItemWidget& p_B)
+	friend bool operator==(const SItemWidget& p_A, const SItemWidget& p_B)
 	{
 		return (p_A.m_OccupiedTiles[0] == p_B.m_OccupiedTiles[0]);
 	}
 
-	friend bool operator!=(const SInventoryItemWidget& p_A, const SInventoryItemWidget& p_B)
+	friend bool operator!=(const SItemWidget& p_A, const SItemWidget& p_B)
 	{
 		return !(p_A == p_B);
 	}
@@ -177,7 +177,7 @@ public:
 
 	static TSharedRef<FInventoryItemDragDrop> CREATE_SingleItemDragOperation
 	(
-		TSharedPtr<SInventoryItemWidget> p_DraggedItem           , 
+		TSharedPtr<SItemWidget> p_DraggedItem           ,
 		const float           p_ScreenToViewportRatio , 
 		const FVector2D&      p_WidgetSize            , 
 		UPickupEntity*        p_ItemEntity            ,
@@ -197,14 +197,14 @@ public:
 	FORCEINLINE FTile*                  GET_Tile()                   const { return m_Tile                                           ; }
 	FORCEINLINE FInventoryItem*         GET_InventoryItemClass()     const { return m_InventoryItemClass                             ; }
 	FORCEINLINE bool                    IS_SingleItemDragOperation() const { return m_bIsSingleItemDrag                              ; }
-	FORCEINLINE TSharedPtr<SInventoryItemWidget> GET_ItemWidget() const { return m_DraggedItem; }
+	FORCEINLINE TSharedPtr<SItemWidget> GET_ItemWidget() const { return m_DraggedItem; }
 
 private:
 
 	FSlateBrush             m_IconBrush                    ;
 	float                   m_ScreenToViewportRatio        ;
 	FVector2D               m_DecoratorSize                ;
-	TSharedPtr<SInventoryItemWidget>   m_DraggedItem        = nullptr ;
+	TSharedPtr<SItemWidget>   m_DraggedItem        = nullptr ;
 	UPickupEntity*          m_ItemEntity         = nullptr ;
 	FTile*                  m_Tile               = nullptr ;
 	FInventoryItem*         m_InventoryItemClass = nullptr ;

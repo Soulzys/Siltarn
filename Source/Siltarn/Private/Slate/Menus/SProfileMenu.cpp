@@ -1,6 +1,6 @@
 #include "Slate/Menus/SProfileMenu.h"
 #include "Siltarn/Public/Slate/Widgets/SInventoryWidget.h"
-#include "Siltarn/Public/Slate/Widgets/SInventoryItemWidget.h"
+#include "Siltarn/Public/Slate/Widgets/SItemWidget.h"
 #include "Siltarn/Public/Slate/Widgets/SCharacterProfileWidget.h"
 #include "Siltarn/Public/Slate/Widgets/SInGamePlayerInventoryWidget.h"
 #include "Siltarn/Public/Slate/Widgets/SInGameBagInventory.h"
@@ -174,7 +174,7 @@ bool SProfileMenu::DOES_InventoryHasRoomForItem(const FIntPoint& p_ItemSize)
 
 
 
-bool SProfileMenu::MOVE_ItemToCharacterProfileMenu(SInventoryItemWidget* p_ItemWidget)
+bool SProfileMenu::MOVE_ItemToCharacterProfileMenu(SItemWidget* p_ItemWidget)
 {
 	if (m_CharacterProfileWidget && p_ItemWidget)
 	{

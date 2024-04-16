@@ -1,4 +1,4 @@
-#include "Slate/Widgets/SInventoryItemWidget.h"
+#include "Slate/Widgets/SItemWidget.h"
 #include "Siltarn/Public/Interactables/PickupEntity.h"
 #include "Siltarn/Public/Interactables/EquipableEntity.h"
 #include "Siltarn/Public/Interactables/NonEquipableEntity.h"
@@ -12,7 +12,7 @@ DEFINE_LOG_CATEGORY(LogClass_FItemTooltip           );
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
-SInventoryItemWidget::SInventoryItemWidget()
+SItemWidget::SItemWidget()
 {
 	m_bIsInInventory          = true  ;
 	m_bIsSelectedForGroupDrop = false ;
@@ -23,7 +23,7 @@ SInventoryItemWidget::SInventoryItemWidget()
 	UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("I was created !"));
 }
 
-SInventoryItemWidget::~SInventoryItemWidget()
+SItemWidget::~SItemWidget()
 {
 	if (!m_OccupiedTiles.IsEmpty())
 	{
@@ -38,7 +38,7 @@ SInventoryItemWidget::~SInventoryItemWidget()
 	UE_LOG(LogClass_SInventoryItemWidget, Log, TEXT("I was destroyed !"));
 }
 
-void SInventoryItemWidget::Construct(const FArguments& p_InArgs)
+void SItemWidget::Construct(const FArguments& p_InArgs)
 {
 	m_Tile            = p_InArgs._a_Tile; // Luciole ! We are not using m_Tile anymore. However, the game crashed when dealing with two items in the inventory. Need to investigate. Once it is done, remove m_Tile from here.
 	m_ItemSize        = p_InArgs._a_ItemSize;
@@ -85,7 +85,7 @@ void SInventoryItemWidget::Construct(const FArguments& p_InArgs)
 	];
 }
 
-void SInventoryItemWidget::OnMouseEnter(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
+void SItemWidget::OnMouseEnter(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
 	if (m_BackgroundBorder == nullptr)
 	{
@@ -109,7 +109,7 @@ void SInventoryItemWidget::OnMouseEnter(const FGeometry& MyGeometry, const FPoin
 	FSlateApplication::Get().SetUserFocus(0, SharedThis(this), EFocusCause::SetDirectly);
 }
 
-void SInventoryItemWidget::OnMouseLeave(const FPointerEvent& MouseEvent)
+void SItemWidget::OnMouseLeave(const FPointerEvent& MouseEvent)
 {
 	if (m_BackgroundBorder == nullptr)
 	{
@@ -138,7 +138,7 @@ void SInventoryItemWidget::OnMouseLeave(const FPointerEvent& MouseEvent)
 	m_InventoryOwner->ResetFocus();
 }
 
-FReply SInventoryItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
+FReply SItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
 	// Left click -> drag 
 	if (MouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
@@ -171,7 +171,7 @@ FReply SInventoryItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, cons
 	return FReply::Unhandled();
 }
 
-void SInventoryItemWidget::RightButtonClicked_InPlayerInventory(bool p_bIsLeftShiftDown)
+void SItemWidget::RightButtonClicked_InPlayerInventory(bool p_bIsLeftShiftDown)
 {
 	if (!m_InventoryOwner)
 	{
@@ -229,7 +229,7 @@ void SInventoryItemWidget::RightButtonClicked_InPlayerInventory(bool p_bIsLeftSh
 
 
 
-void SInventoryItemWidget::RightButtonClicked_InExternalInventory()
+void SItemWidget::RightButtonClicked_InExternalInventory()
 {
 	// Move item to player inventory
 	if (m_InventoryOwner)
@@ -250,7 +250,7 @@ void SInventoryItemWidget::RightButtonClicked_InExternalInventory()
 
 
 
-FReply SInventoryItemWidget::OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
+FReply SItemWidget::OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
 {
 	if (InKeyEvent.GetKey() == EKeys::I || InKeyEvent.GetKey() == EKeys::Escape)
 	{
@@ -265,7 +265,7 @@ FReply SInventoryItemWidget::OnKeyDown(const FGeometry& MyGeometry, const FKeyEv
 
 
 
-FReply SInventoryItemWidget::OnDragDetected(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
+FReply SItemWidget::OnDragDetected(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
 	if (MouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
 	{
@@ -314,7 +314,7 @@ FReply SInventoryItemWidget::OnDragDetected(const FGeometry& MyGeometry, const F
 
 
 
-float SInventoryItemWidget::GET_ScreenToViewportRatio() const
+float SItemWidget::GET_ScreenToViewportRatio() const
 {
 	FVector2D _ViewportSize;
 
@@ -352,14 +352,14 @@ float SInventoryItemWidget::GET_ScreenToViewportRatio() const
 
 
 
-void SInventoryItemWidget::UPDATE_Tile(FTile& p_NewTile)
+void SItemWidget::UPDATE_Tile(FTile& p_NewTile)
 {
 	m_Tile = &p_NewTile;
 }
 
 
 
-void SInventoryItemWidget::AssignTiles(TArray<int32>& p_OccupiedTiles)
+void SItemWidget::AssignTiles(TArray<int32>& p_OccupiedTiles)
 {
 	if (p_OccupiedTiles.IsEmpty())
 	{
@@ -372,7 +372,7 @@ void SInventoryItemWidget::AssignTiles(TArray<int32>& p_OccupiedTiles)
 
 
 
-void SInventoryItemWidget::AssignTiles(TArray<FTile>& p_InventoryTiles, TArray<int32>& p_OccupiedTilesIndexes)
+void SItemWidget::AssignTiles(TArray<FTile>& p_InventoryTiles, TArray<int32>& p_OccupiedTilesIndexes)
 {
 	for (int32 i = 0; i < p_OccupiedTilesIndexes.Num(); i++)
 	{
@@ -388,7 +388,7 @@ void SInventoryItemWidget::AssignTiles(TArray<FTile>& p_InventoryTiles, TArray<i
 
 
 
-void SInventoryItemWidget::FreeOccupiedTiles()
+void SItemWidget::FreeOccupiedTiles()
 {
 	for (FTile* _Tile : m_OccupiedTiles)
 	{
@@ -401,7 +401,7 @@ void SInventoryItemWidget::FreeOccupiedTiles()
 
 
 
-void SInventoryItemWidget::UPDATE_Widget(SInventoryItemWidget* p_ItemWidget)
+void SItemWidget::UPDATE_Widget(SItemWidget* p_ItemWidget)
 {
 	m_IconImage = p_ItemWidget->m_IconImage ;
 	m_ItemData  = p_ItemWidget->m_ItemData  ;
@@ -411,14 +411,14 @@ void SInventoryItemWidget::UPDATE_Widget(SInventoryItemWidget* p_ItemWidget)
 
 
 
-void SInventoryItemWidget::SET_InventoryItemLocation(EInventoryItemWidgetLocation p_Location)
+void SItemWidget::SET_InventoryItemLocation(EInventoryItemWidgetLocation p_Location)
 {
 	m_ItemWidgetLocation = p_Location;
 }
 
 
 
-void SInventoryItemWidget::SET_ItemCanvasSlot(SCanvas::FSlot* p_ItemCanvasSlot)
+void SItemWidget::SET_ItemCanvasSlot(SCanvas::FSlot* p_ItemCanvasSlot)
 {
 	m_ItemCanvasSlot = p_ItemCanvasSlot;
 }
@@ -468,7 +468,7 @@ void FInventoryItemDragDrop::OnDragged(const class FDragDropEvent& DragDropEvent
 
 TSharedRef<FInventoryItemDragDrop> FInventoryItemDragDrop::CREATE_SingleItemDragOperation
 (
-	TSharedPtr<SInventoryItemWidget> p_DraggedItem           , 
+	TSharedPtr<SItemWidget> p_DraggedItem           ,
 	const float           p_ScreenToViewportRatio , 
 	const FVector2D&      p_WidgetSize            , 
 	UPickupEntity*        p_ItemEntity            ,

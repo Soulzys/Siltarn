@@ -4,7 +4,7 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogClass_SCharacterProfileWidget, Log, All);
 
-class SInventoryItemWidget;
+class SItemWidget;
 
 class SILTARN_API SCharacterProfileWidget : public SCompoundWidget
 {
@@ -24,14 +24,14 @@ public:
 
 	void Construct(const FArguments& p_InArgs);
 
-	bool PLACE_ItemInSlot(SInventoryItemWidget* p_ItemWidget);
+	bool PLACE_ItemInSlot(SItemWidget* p_ItemWidget);
 
 private:
 
 	void COMPUTE_SlotsSizes();
 
-	void UPDATE_HeadItemWidget(SInventoryItemWidget* p_ItemWidget);
-	void UPDATE_RightHandWidget(SInventoryItemWidget* p_ItemWidget);
+	void UPDATE_HeadItemWidget(SItemWidget* p_ItemWidget);
+	void UPDATE_RightHandWidget(SItemWidget* p_ItemWidget);
 
 private:
 
@@ -40,8 +40,8 @@ private:
 	SCanvas::FSlot* m_PantsSlot = nullptr;
 	SCanvas::FSlot* m_NeckSlot  = nullptr;
 
-	TSharedPtr<SInventoryItemWidget> m_HeadItemWidget = nullptr;
-	TSharedPtr<SInventoryItemWidget> m_RightHandItemWidget = nullptr;
+	TSharedPtr<SItemWidget> m_HeadItemWidget = nullptr;
+	TSharedPtr<SItemWidget> m_RightHandItemWidget = nullptr;
 
 	FVector2D m_HeadSlotSize      ; 
 	FVector2D m_ChestSlotSize     ;
