@@ -1,6 +1,7 @@
 #include "Slate/Widgets/SPlayerInventoryWidget.h"
 #include "Siltarn/Public/Slate/Widgets/SItemWidget.h"
 #include "Siltarn/Public/Interactables/PickupEntity.h"
+#include "Siltarn/Public/Inventory/InventoryManager.h"
 
 DEFINE_LOG_CATEGORY(LogClass_SPlayerInventoryWidget);
 
@@ -14,19 +15,7 @@ SPlayerInventoryWidget::SPlayerInventoryWidget()
 
 SPlayerInventoryWidget::~SPlayerInventoryWidget()
 {
-	/*for (auto _it : m_InventoryItemsMapNew)
-	{
-		FInventoryItem* _InventoryItem = _it.Value;
-
-		if (_InventoryItem)
-		{
-			// Not sure if this is useful. All SCanvas FSlot are probably automatically removed when we close the game anyway... 
-			m_Canvas->RemoveSlot(_InventoryItem->GET_ItemWidget().ToSharedRef()); 
-			delete _InventoryItem;
-		}		
-	}*/
-
-	m_DroppingItemsCache.Empty();
+	m_DroppingItemsCacheNew.Empty();
 	m_InventoryItemsMapNew.Empty();
 
 	UE_LOG(LogClass_SPlayerInventoryWidget, Error, TEXT("I was destroyed !"));
@@ -61,7 +50,7 @@ bool SPlayerInventoryWidget::AddItemToInventoryNew(UPickupEntity* p_ItemEntity)
 
 	if (_NewItemControlTile && !_NewItemControlTile->IS_Occupied())
 	{
-		TSharedPtr<SItemWidget> _ItemWidget = ConstructItemWidget(p_ItemEntity, _NewItemControlTile, EInventoryItemWidgetLocation::PLAYER_INVENTORY);
+		TSharedPtr<SItemWidget> _ItemWidget = ConstructItemWidget(p_ItemEntity, _NewItemControlTile, EItemWidgetLocation::PLAYER_INVENTORY);
 
 		if (_ItemWidget.IsValid())
 		{
@@ -132,4 +121,54 @@ bool SPlayerInventoryWidget::RemoveItemsCanvasSlotNew()
 	m_DroppingItemsCacheNew.Empty();
 
 	return true;
+}
+
+
+
+void SPlayerInventoryWidget::SetItemForGroupDropping(TSharedPtr<SItemWidget> p_ItemWidget)
+{
+	if (p_ItemWidget)
+	{
+		m_DroppingItemsCacheNew.Emplace(p_ItemWidget);
+	}
+}
+
+
+
+void SPlayerInventoryWidget::RemoveItemFromGroupDropping(TSharedPtr<SItemWidget> p_ItemWidget)
+{
+	if (p_ItemWidget)
+	{
+		m_DroppingItemsCacheNew.Remove(p_ItemWidget);
+	}
+}
+
+
+
+void SPlayerInventoryWidget::HideItemsSetForGroupDrop()
+{
+	for (auto _ItemWidget : m_DroppingItemsCacheNew)
+	{
+		_ItemWidget->SetVisibility(EVisibility::Hidden);
+	}
+}
+
+
+
+void SPlayerInventoryWidget::SetItemsForGroupDrop()
+{
+	if (m_InventoryManager)
+	{
+		for (int32 i = 0; i < m_DroppingItemsCacheNew.Num(); i++)
+		{
+			UPickupEntity* _ItemEntity = m_DroppingItemsCacheNew[i]->GET_ItemData();
+
+			if (_ItemEntity)
+			{
+				m_InventoryManager->SetItemForGroupDrop(_ItemEntity);
+			}
+		}
+
+		m_InventoryManager->DropItems();
+	}
 }

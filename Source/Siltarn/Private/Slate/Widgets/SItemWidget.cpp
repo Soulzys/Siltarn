@@ -3,7 +3,8 @@
 #include "Siltarn/Public/Interactables/EquipableEntity.h"
 #include "Siltarn/Public/Interactables/NonEquipableEntity.h"
 #include "Siltarn/Public/Slate/Widgets/SInventoryWidget.h"
-#include "Siltarn/Public/Slate/Widgets/SInGameBagInventory.h"
+#include "Siltarn/Public/Slate/Widgets/SExternalInventoryWidget.h"
+#include "Siltarn/Public/Slate/Widgets/SPlayerInventoryWidget.h"
 #include "Styling/CoreStyle.h"
 
 DEFINE_LOG_CATEGORY(LogClass_SInventoryItemWidget   );
@@ -17,8 +18,8 @@ SItemWidget::SItemWidget()
 	m_bIsInInventory          = true  ;
 	m_bIsSelectedForGroupDrop = false ;
 
-	m_ItemWidgetState    = EInventoryItemWidgetState   ::DEFAULT ;
-	m_ItemWidgetLocation = EInventoryItemWidgetLocation::UNKNOWN ;
+	m_ItemWidgetState    = EItemWidgetState   ::DEFAULT ;
+	m_ItemWidgetLocation = EItemWidgetLocation::UNKNOWN ;
 
 	UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("I was created !"));
 }
@@ -29,7 +30,7 @@ SItemWidget::~SItemWidget()
 	{
 		for (auto _Tile : m_OccupiedTiles)
 		{
-			_Tile->SET_OwnerNew(nullptr);
+			_Tile->SET_Owner(nullptr);
 		}
 
 		m_OccupiedTiles.Empty();
@@ -155,13 +156,13 @@ FReply SItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, const FPointe
 
 	if (MouseEvent.GetEffectingButton() == EKeys::RightMouseButton)
 	{
-		if (m_ItemWidgetLocation == EInventoryItemWidgetLocation::PLAYER_INVENTORY)
+		if (m_ItemWidgetLocation == EItemWidgetLocation::PLAYER_INVENTORY)
 		{
 			RightButtonClicked_InPlayerInventory(MouseEvent.IsLeftShiftDown());
 			return FReply::Handled();
 		}
 
-		if (m_ItemWidgetLocation == EInventoryItemWidgetLocation::EXTERNAL_INVENTORY)
+		if (m_ItemWidgetLocation == EItemWidgetLocation::EXTERNAL_INVENTORY)
 		{
 			RightButtonClicked_InExternalInventory();
 			return FReply::Handled();
@@ -198,9 +199,19 @@ void SItemWidget::RightButtonClicked_InPlayerInventory(bool p_bIsLeftShiftDown)
 			m_BackgroundBorder->SetBorderBackgroundColor(m_ItemBackgroundColor);
 
 			//m_InventoryOwner->SetInventoryItemForGroupDropping(m_InventoryItemClass); old
-			m_InventoryOwner->SetInventoryItemForGroupDropping(SharedThis(this));
-			m_ItemWidgetState = EInventoryItemWidgetState::SET_FOR_GROUP_DROP;
-			m_bIsSelectedForGroupDrop = true;
+
+			SPlayerInventoryWidget* _PlayerInventory = static_cast<SPlayerInventoryWidget*>(m_InventoryOwner);
+
+			if (_PlayerInventory)
+			{
+				_PlayerInventory->SetItemForGroupDropping(SharedThis(this));
+				m_ItemWidgetState = EItemWidgetState::SET_FOR_GROUP_DROP;
+				m_bIsSelectedForGroupDrop = true;
+			}
+
+			/*m_InventoryOwner->SetInventoryItemForGroupDropping(SharedThis(this));
+			m_ItemWidgetState = EItemWidgetState::SET_FOR_GROUP_DROP;
+			m_bIsSelectedForGroupDrop = true;*/
 		}
 		else
 		{
@@ -208,10 +219,19 @@ void SItemWidget::RightButtonClicked_InPlayerInventory(bool p_bIsLeftShiftDown)
 			m_ItemBackgroundColor.A = 0.25f;
 			m_BackgroundBorder->SetBorderBackgroundColor(m_ItemBackgroundColor);
 
+			SPlayerInventoryWidget* _PlayerInventory = static_cast<SPlayerInventoryWidget*>(m_InventoryOwner);
+
+			if (_PlayerInventory)
+			{
+				_PlayerInventory->RemoveItemFromGroupDropping(SharedThis(this));
+				m_ItemWidgetState = EItemWidgetState::SET_FOR_GROUP_DROP;
+				m_bIsSelectedForGroupDrop = true;
+			}
+
 			//m_InventoryOwner->RemoveInventoryItemFromGroupDropping(m_InventoryItemClass); old
-			m_InventoryOwner->RemoveInventoryItemFromGroupDropping(SharedThis(this));
-			m_ItemWidgetState = EInventoryItemWidgetState::DEFAULT;
-			m_bIsSelectedForGroupDrop = false;
+			//m_InventoryOwner->RemoveInventoryItemFromGroupDropping(SharedThis(this));
+			//m_ItemWidgetState = EItemWidgetState::DEFAULT;
+			//m_bIsSelectedForGroupDrop = false;
 		}
 	}
 	else
@@ -235,7 +255,7 @@ void SItemWidget::RightButtonClicked_InExternalInventory()
 	if (m_InventoryOwner)
 	{
 		//SInGameBagInventory* _BagInventory = Cast<SInGameBagInventory>(m_InventoryOwner);
-		SInGameBagInventory* _BagInventory = static_cast<SInGameBagInventory*>(m_InventoryOwner);
+		SExternalInventoryWidget* _BagInventory = static_cast<SExternalInventoryWidget*>(m_InventoryOwner);
 
 		if (_BagInventory)
 		{
@@ -269,7 +289,7 @@ FReply SItemWidget::OnDragDetected(const FGeometry& MyGeometry, const FPointerEv
 {
 	if (MouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
 	{
-		m_ItemWidgetState = EInventoryItemWidgetState::DRAGGED;
+		m_ItemWidgetState = EItemWidgetState::DRAGGED;
 
 		const float _Ratio = GET_ScreenToViewportRatio();
 		FVector2D _MousePositionLocal = MyGeometry.AbsoluteToLocal(MouseEvent.GetScreenSpacePosition());
@@ -302,9 +322,17 @@ FReply SItemWidget::OnDragDetected(const FGeometry& MyGeometry, const FPointerEv
 					&m_GeneralStyle.m_ItemBagIcon_SlateBrush
 				);
 
-				m_InventoryOwner->HideAllItemsSetForGroupDrop();
+				SPlayerInventoryWidget* _PlayerInventory = static_cast<SPlayerInventoryWidget*>(m_InventoryOwner);
 
-				return FReply::Handled().BeginDragDrop(_Operation);
+				if (_PlayerInventory)
+				{
+					_PlayerInventory->HideItemsSetForGroupDrop();
+
+					return FReply::Handled().BeginDragDrop(_Operation);
+				}
+
+				//m_InventoryOwner->HideAllItemsSetForGroupDrop();
+
 			}
 		}		
 	}
@@ -380,7 +408,7 @@ void SItemWidget::AssignTiles(TArray<FTile>& p_InventoryTiles, TArray<int32>& p_
 
 		if (_TilePtr)
 		{
-			_TilePtr->SET_OwnerNew(SharedThis(this));
+			_TilePtr->SET_Owner(SharedThis(this));
 			m_OccupiedTiles.Emplace(_TilePtr);
 		}
 	}
@@ -392,7 +420,7 @@ void SItemWidget::FreeOccupiedTiles()
 {
 	for (FTile* _Tile : m_OccupiedTiles)
 	{
-		_Tile->SET_OwnerNew(nullptr);
+		_Tile->SET_Owner(nullptr);
 		UE_LOG(LogClass_SInventoryItemWidget, Log, TEXT("FTile[%d] has been freed !"), _Tile->GET_TileIndex());
 	}
 
@@ -411,7 +439,7 @@ void SItemWidget::UPDATE_Widget(SItemWidget* p_ItemWidget)
 
 
 
-void SItemWidget::SET_InventoryItemLocation(EInventoryItemWidgetLocation p_Location)
+void SItemWidget::SET_InventoryItemLocation(EItemWidgetLocation p_Location)
 {
 	m_ItemWidgetLocation = p_Location;
 }

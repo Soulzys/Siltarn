@@ -1,4 +1,4 @@
-#include "Slate/Widgets/SInGameBagInventory.h"
+#include "Slate/Widgets/SExternalInventoryWidget.h"
 #include "Siltarn/Public/Interactables/PickupEntity.h"
 #include "Siltarn/Public/Slate/Widgets/SItemWidget.h"
 #include "Siltarn/Public/Inventory/InventoryManager.h"
@@ -6,7 +6,7 @@
 
 DEFINE_LOG_CATEGORY(LogClass_SInGameBagInventory);
 
-SInGameBagInventory::~SInGameBagInventory()
+SExternalInventoryWidget::~SExternalInventoryWidget()
 {
 	/*for (auto _it : m_InventoryItemsMap)
 	{
@@ -23,14 +23,14 @@ SInGameBagInventory::~SInGameBagInventory()
 
 
 
-void SInGameBagInventory::Construct(const FArguments p_InArgs)
+void SExternalInventoryWidget::Construct(const FArguments p_InArgs)
 {
 	SInventoryWidget::Construct(p_InArgs);
 }
 
 
 
-void SInGameBagInventory::LoadItemsWidgetsNew(TArray<UPickupEntity*>& p_Items)
+void SExternalInventoryWidget::LoadItemsWidgetsNew(TArray<UPickupEntity*>& p_Items)
 {
 	for (int32 i = 0; i < p_Items.Num(); i++)
 	{
@@ -38,7 +38,7 @@ void SInGameBagInventory::LoadItemsWidgetsNew(TArray<UPickupEntity*>& p_Items)
 
 		if (_ItemEntity)
 		{
-			TSharedPtr<SItemWidget> _ItemWidget = ConstructItemWidget(_ItemEntity, EInventoryItemWidgetLocation::EXTERNAL_INVENTORY);
+			TSharedPtr<SItemWidget> _ItemWidget = ConstructItemWidget(_ItemEntity, EItemWidgetLocation::EXTERNAL_INVENTORY);
 
 			if (_ItemWidget)
 			{
@@ -50,7 +50,7 @@ void SInGameBagInventory::LoadItemsWidgetsNew(TArray<UPickupEntity*>& p_Items)
 
 
 
-void SInGameBagInventory::MoveItemToPlayerInventory(TSharedPtr<SItemWidget> p_ItemWidget)
+void SExternalInventoryWidget::MoveItemToPlayerInventory(TSharedPtr<SItemWidget> p_ItemWidget)
 {
 	if (m_InventoryManager)
 	{
@@ -81,7 +81,7 @@ void SInGameBagInventory::MoveItemToPlayerInventory(TSharedPtr<SItemWidget> p_It
 
 
 
-void SInGameBagInventory::RemoveItemCanvasSlot(int64 p_ItemKey)
+void SExternalInventoryWidget::RemoveItemCanvasSlot(int64 p_ItemKey)
 {
 	if (p_ItemKey >= 0 && m_Canvas)
 	{
@@ -91,7 +91,7 @@ void SInGameBagInventory::RemoveItemCanvasSlot(int64 p_ItemKey)
 
 
 
-void SInGameBagInventory::SET_BagActor(AItemBagActor* p_BagActor)
+void SExternalInventoryWidget::SET_BagActor(AItemBagActor* p_BagActor)
 {
 	m_BagActor = p_BagActor;
 }

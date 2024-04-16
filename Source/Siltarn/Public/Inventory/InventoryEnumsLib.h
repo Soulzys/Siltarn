@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 
 UENUM()
-enum class EInventoryItemWidgetLocation : uint8
+enum class EItemWidgetLocation : uint8
 {
 	PLAYER_INVENTORY   = 0,
 	EQUIPPED           = 1,

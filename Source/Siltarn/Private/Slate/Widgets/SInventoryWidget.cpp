@@ -142,28 +142,14 @@ bool FTile::IS_Occupied()
 
 
 
-FInventoryItem* FTile::GET_Owner() const
-{
-	return s_Owner;
-}
-
-
-
-TSharedPtr<SItemWidget> FTile::GET_OwnerNew() const
+TSharedPtr<SItemWidget> FTile::GET_Owner() const
 {
 	return s_ItemOwner;
 }
 
 
 
-void FTile::SET_Owner(FInventoryItem* p_Item)
-{
-	s_Owner = p_Item;
-}
-
-
-
-void FTile::SET_OwnerNew(TSharedPtr<SItemWidget> p_ItemWidget)
+void FTile::SET_Owner(TSharedPtr<SItemWidget> p_ItemWidget)
 {
 	s_ItemOwner = p_ItemWidget;
 }
@@ -264,19 +250,6 @@ SInventoryWidget::SInventoryWidget()
 
 SInventoryWidget::~SInventoryWidget()
 {
-	for (auto _it : m_TilesNew)
-	{
-		delete _it;
-	}
-
-	for (auto _it : m_CrossAnchorsNew)
-	{
-		delete _it;
-	}
-
-	m_TilesNew.Empty();
-	m_CrossAnchorsNew.Empty();
-
 	m_InstanceCount--;
 	UE_LOG(LogClass_SInventoryWidget, Log, TEXT("An instance was destroyed ! || Instance count : %d"), m_InstanceCount);
 }
@@ -433,26 +406,6 @@ void SInventoryWidget::DestroyTiles()
 
 
 
-void SInventoryWidget::BuildTilesNew()
-{
-	int32 _IterationCount = 0;
-
-	for (int32 i = 0; i < m_NumberOfRows; i++)
-	{
-		for (int32 j = 0; j < m_NumberOfColumns; j++)
-		{
-			FTile* _NewTile = new FTile(FIntPoint(j, i), _IterationCount);
-			m_TilesNew.Emplace (_NewTile);
-
-			_IterationCount++;
-		}
-	}
-
-	UE_LOG(LogClass_SInventoryWidget, Log, TEXT("BUILD_Tiles() : Number of tiles built : %d"), _IterationCount);
-}
-
-
-
 void SInventoryWidget::BUILD_CrossAnchors()
 {
 	int32 _IterationCount = 0;
@@ -479,27 +432,8 @@ void SInventoryWidget::DestroyCrossAnchors()
 }
 
 
-void SInventoryWidget::BuildCrossAnchorsNew()
-{
-	int32 _IterationCount = 0;
 
-	for (int32 i = 1; i < m_NumberOfRows; i++)
-	{
-		for (int32 j = 1; j < m_NumberOfColumns; j++)
-		{
-			FCrossAnchor* _NewCross = new FCrossAnchor(FIntPoint(j, i), _IterationCount);
-			m_CrossAnchorsNew.Emplace(_NewCross);
-
-			_IterationCount++;
-		}
-	}
-
-	UE_LOG(LogClass_SInventoryWidget, Log, TEXT("BUILD_CrossAnchors() : Number of FCrossAnchors built : %d"), _IterationCount);
-}
-
-
-
-TSharedPtr<SItemWidget> SInventoryWidget::ConstructItemWidget(UPickupEntity* p_ItemEntity, FTile* p_ControlTile, EInventoryItemWidgetLocation p_ItemWidgetLocation)
+TSharedPtr<SItemWidget> SInventoryWidget::ConstructItemWidget(UPickupEntity* p_ItemEntity, FTile* p_ControlTile, EItemWidgetLocation p_ItemWidgetLocation)
 {
 	if (!p_ItemEntity)
 	{
@@ -557,7 +491,7 @@ TSharedPtr<SItemWidget> SInventoryWidget::ConstructItemWidget(UPickupEntity* p_I
 
 
 
-TSharedPtr<SItemWidget> SInventoryWidget::ConstructItemWidget(UPickupEntity* p_ItemEntity, EInventoryItemWidgetLocation p_ItemWidgetLocation)
+TSharedPtr<SItemWidget> SInventoryWidget::ConstructItemWidget(UPickupEntity* p_ItemEntity, EItemWidgetLocation p_ItemWidgetLocation)
 {
 	int32 _CTileIndex = TileCoordinatesToTileIndex(p_ItemEntity->GET_InventoryLocationTile());
 	FTile* _CTile = &m_Tiles[_CTileIndex];
@@ -995,7 +929,7 @@ bool SInventoryWidget::IsTileAvailableNew(TSharedPtr<SItemWidget> p_ItemWidget, 
 
 			if (m_Tiles[_TileIndex].IS_Occupied())
 			{
-				if (*m_Tiles[_TileIndex].GET_OwnerNew() != *p_ItemWidget.Get())
+				if (*m_Tiles[_TileIndex].GET_Owner() != *p_ItemWidget.Get())
 				{
 					UE_LOG(LogClass_SInventoryWidget, Warning, TEXT("IS_TileAvailable() : FTile occupied case. (Checking for FTile %d"), _TileIndex);
 					CleanCachedTilesIndexes();
@@ -1094,90 +1028,6 @@ void SInventoryWidget::CleanCachedTilesIndexes()
 {
 	m_CachedTileIndex = -1;
 	m_CachedTilesIndexes.Empty();
-}
-
-
-
-void SInventoryWidget::HideAllItemsSetForGroupDrop()
-{
-	/*for (int32 i = 0; i < m_ItemsSelectedForGroupDrop.Num(); i++)
-	{
-		FInventoryItem* _ItemPtr = *m_InventoryItemsMap.Find(m_ItemsSelectedForGroupDrop[i]);
-
-		if (_ItemPtr)
-		{
-			_ItemPtr->GET_ItemWidget()->SetVisibility(EVisibility::Hidden);
-		}
-	}*/
-
-	/* old
-	for (auto _InventoryItem : m_DroppingItemsCache)
-	{
-		_InventoryItem->GET_ItemWidget()->SetVisibility(EVisibility::Hidden);
-	}
-	*/
-
-	// new
-	for (auto _ItemWidget : m_DroppingItemsCacheNew)
-	{
-		_ItemWidget->SetVisibility(EVisibility::Hidden);
-	}
-}
-
-
-
-void SInventoryWidget::SetInventoryItemForGroupDropping(TSharedPtr<SItemWidget> p_ItemWidget)
-{
-	if (p_ItemWidget)
-	{
-		m_DroppingItemsCacheNew.Emplace(p_ItemWidget);
-	}
-}
-
-
-
-void SInventoryWidget::RemoveInventoryItemFromGroupDropping(TSharedPtr<SItemWidget> p_ItemWidget)
-{
-	if (p_ItemWidget)
-	{
-		m_DroppingItemsCacheNew.Remove(p_ItemWidget);
-	}
-}
-
-
-
-void SInventoryWidget::SetItemsForGroupDrop()
-{
-	// old
-	/*
-	if (m_InventoryManager)
-	{
-		for (int32 i = 0; i < m_DroppingItemsCache.Num(); i++)
-		{
-			//int32 _ItemEntityId = m_DroppingItemsCache[i]->GET_UniqueId(); // old
-			UPickupEntity* _ItemEntity = m_DroppingItemsCache[i]->GET_ItemWidget()->GET_ItemData();
-
-			//m_InventoryManager->SetItemForGroupDrop(_ItemEntityId); // old
-			m_InventoryManager->SetItemForGroupDrop(_ItemEntity);
-		}
-
-		m_InventoryManager->DropItems();
-	}*/
-
-	if (m_InventoryManager)
-	{
-		for (int32 i = 0; i < m_DroppingItemsCacheNew.Num(); i++)
-		{
-			UPickupEntity* _ItemEntity = m_DroppingItemsCacheNew[i]->GET_ItemData();
-
-			if (_ItemEntity)
-			{
-				m_InventoryManager->SetItemForGroupDrop(_ItemEntity);
-			}
-		}
-
-		m_InventoryManager->DropItems();
-	}
 }
 
 

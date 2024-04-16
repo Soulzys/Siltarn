@@ -62,8 +62,7 @@ struct SILTARN_API FTile
 	/*
 		If p_item is a nullptr, it means the FTile has been freed.
 	*/
-	void SET_Owner(class FInventoryItem* p_Item);
-	void SET_OwnerNew(TSharedPtr<SItemWidget> p_ItemWidget); // new
+	void SET_Owner(TSharedPtr<SItemWidget> p_ItemWidget); // new
 
 	/*
 		Returns null if unoccupied. 
@@ -74,8 +73,7 @@ struct SILTARN_API FTile
 	/*
 		Used to check whether the FTile is occupied or not. If s_Owner is not NULL, it means the FTile is occupied. 
 	*/
-	class FInventoryItem* GET_Owner() const;
-	TSharedPtr<SItemWidget> GET_OwnerNew() const;
+	TSharedPtr<SItemWidget> GET_Owner() const;
 
 public:
 
@@ -174,12 +172,7 @@ public:
 
 	void DEBUG_DisplayTilesStatusThroughUELogs();
 
-	void HideAllItemsSetForGroupDrop();
-
 	// Group dropping
-	void SetInventoryItemForGroupDropping(TSharedPtr<SItemWidget> p_ItemWidget); // new 
-	void RemoveInventoryItemFromGroupDropping(TSharedPtr<SItemWidget> p_ItemWidget); // new
-	void SetItemsForGroupDrop();
 	void SET_InventoryManager(UInventoryManager* p_InventoryManager);
 
 	static int32 TileCoordinatesToTileIndexStatic(const FIntPoint& p_Coordinates, int32 p_NumberOfColumns);
@@ -196,14 +189,12 @@ protected:
 	void COMPUTE_HorizontalLines();
 	void COMPUTE_VerticalLines();
 	void ClearVerticalAndHorizontalLines();
-	void BUILD_Tiles(); // old
-	void BuildTilesNew(); // new
-	void BUILD_CrossAnchors(); // old
-	void BuildCrossAnchorsNew(); // new
+	void BUILD_Tiles();
+	void BUILD_CrossAnchors();
 	void DestroyTiles();
 	void DestroyCrossAnchors();
-	TSharedPtr<SItemWidget> ConstructItemWidget(UPickupEntity* p_ItemEntity, FTile* p_ControlTile, EInventoryItemWidgetLocation p_ItemWidgetLocation);
-	TSharedPtr<SItemWidget> ConstructItemWidget(UPickupEntity* p_ItemEntity, EInventoryItemWidgetLocation p_ItemWidgetLocation);
+	TSharedPtr<SItemWidget> ConstructItemWidget(UPickupEntity* p_ItemEntity, FTile* p_ControlTile, EItemWidgetLocation p_ItemWidgetLocation);
+	TSharedPtr<SItemWidget> ConstructItemWidget(UPickupEntity* p_ItemEntity, EItemWidgetLocation p_ItemWidgetLocation);
 
 	/*
 		Used when dragging & dropping item within the inventory. Called in OnDrop().
@@ -271,21 +262,13 @@ protected:
 		Luciole 10/03/2024 || We should probably use * or &
 	*/
 	TArray<FTile> m_Tiles;
-	TArray<FTile*> m_TilesNew;
 
 	/*
 		Every FCrossAnchor in the SInventory is stored here.
 		They are created and added to the TArray in BUILD_CrossAnchors()
 	*/
 	TArray<FCrossAnchor> m_CrossAnchors;
-	TArray<FCrossAnchor*> m_CrossAnchorsNew;
 
-	/*
-		Contains all the items in the inventory and their respective occupying FTile
-	*/
-	TMap<int32, FInventoryItem*> m_InventoryItemsMap;
-	TArray<FInventoryItem*> m_DroppingItemsCache; // old
-	TArray<TSharedPtr<SItemWidget>> m_DroppingItemsCacheNew;
 
 	// Slate stuff
 	//
@@ -294,14 +277,6 @@ protected:
 	TSharedPtr<SBorder>          m_BorderTest   = nullptr   ;		
 	SProfileMenu*                m_ParentWidget = nullptr   ;
 	FLinearColor                 m_InventoryBackgroundColor ;
-
-
-	/*
-		Use when SHIFT + clicking one or several items in order to drop them together in an AItemBag
-	*/
-	TArray<FTile*> m_DroppingItemsGroup;
-	//TArray<UPickupEntity*> m_DroppingItemDataGroup; // There must be another way to do this. We shouldn't need two arrays for this task.
-
 
 
 	/*
@@ -314,28 +289,10 @@ protected:
 	TArray<int32> m_CachedTilesIndexes; // Refers to all the FTile that will be occupied by the item once it is added to the inventory
 
 
-	/*
-		Used to compute a new unique id for every item added to the inventory
-	*/
-	TArray<int32> m_ItemsId;
-
-
-
-	TArray<int32> m_ItemsSelectedForGroupDrop;
-
-
-
 	UInventoryManager* m_InventoryManager = nullptr;
 
 
-
-
-
-
-
-
-
-	// All item widgets are stored here (new !)
+	// All item widgets are stored here
 	TMap<int64, TSharedPtr<SItemWidget>> m_ItemsMap;
 
 

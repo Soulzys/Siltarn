@@ -22,7 +22,7 @@ class UPickupEntity;
 class FInventoryItem;
 
 UENUM()
-enum class EInventoryItemWidgetState : uint8
+enum class EItemWidgetState : uint8
 {
 	DEFAULT            = 0, 
 	DRAGGED            = 1,
@@ -49,7 +49,7 @@ public:
 											 _a_ItemSize       (FVector2D(0.0f)) , 
 											 _a_InventoryOwner (nullptr)         ,
 											 _a_InventoryItemId(-1), 
-											 _a_InventoryItemWidgetLocation(EInventoryItemWidgetLocation::UNKNOWN)
+											 _a_InventoryItemWidgetLocation(EItemWidgetLocation::UNKNOWN)
 											 {}
 
 	SLATE_ARGUMENT(UPickupEntity*   , a_ItemData        )
@@ -58,7 +58,7 @@ public:
 	SLATE_ARGUMENT(SInventoryWidget*, a_InventoryOwner  )
 	SLATE_ARGUMENT(int32            , a_InventoryItemId )
 	SLATE_ARGUMENT(FInventoryItem*, a_InventoryItemClass) // new
-	SLATE_ARGUMENT(EInventoryItemWidgetLocation, a_InventoryItemWidgetLocation)
+	SLATE_ARGUMENT(EItemWidgetLocation, a_InventoryItemWidgetLocation)
 
 
 	// New (08/04/2024)
@@ -94,7 +94,7 @@ public:
 	FORCEINLINE UPickupEntity* GET_ItemData() const { return m_ItemData; }
 	FORCEINLINE SCanvas::FSlot* GET_ItemCanvasSlot() const { return m_ItemCanvasSlot; }
 
-	void SET_InventoryItemLocation(EInventoryItemWidgetLocation p_Location);
+	void SET_InventoryItemLocation(EItemWidgetLocation p_Location);
 	void SET_ItemCanvasSlot(SCanvas::FSlot* p_ItemCanvasSlot);
 
 
@@ -122,8 +122,8 @@ private:
 	bool m_bIsInInventory;
 	bool m_bIsSelectedForGroupDrop;
 
-	EInventoryItemWidgetState    m_ItemWidgetState    ;
-	EInventoryItemWidgetLocation m_ItemWidgetLocation ;
+	EItemWidgetState    m_ItemWidgetState    ;
+	EItemWidgetLocation m_ItemWidgetLocation ;
 
 	// new
 	int64 m_ItemId;

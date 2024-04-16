@@ -11,7 +11,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogClass_FBagTile, Log, All);
 
 
 class UPickupEntity;
-class SInGameBagInventory;
+class SExternalInventoryWidget;
 
 /*
 	Luciole 25/03/2024
@@ -49,7 +49,7 @@ public:
 	void DEBUG_ListAllTilesMap();
 	void DEBUG_ListAllUnoccupiedTilesMap();
 	void DEBUG_ListAllItemEntitiesCoordinates();
-	void SET_BagWidgetReference(TSharedPtr<SInGameBagInventory> p_BagWidget);
+	void SET_BagWidgetReference(TSharedPtr<SExternalInventoryWidget> p_BagWidget);
 	bool LoadBag(UPickupEntity* p_ItemEntity);
 	bool LoadBag(TArray<UPickupEntity*>& p_ItemEntities);
 	void RemoveItem(UPickupEntity* p_ItemEntity);
@@ -93,7 +93,7 @@ private:
 	UPROPERTY()
 	TArray<UPickupEntity*> m_ItemsPlacementQueue;
 
-	TSharedPtr<SInGameBagInventory> m_BagInventory = nullptr;
+	TSharedPtr<SExternalInventoryWidget> m_BagInventory = nullptr;
 
 
 

@@ -13,7 +13,7 @@ class SItemWidget    ;
 class UPickupEntity           ;
 class SCharacterProfileWidget ;
 class SPlayerInventoryWidget;
-class SInGameBagInventory;
+class SExternalInventoryWidget;
 class UInventoryManager;
 class AItemBagActor;
 
@@ -46,7 +46,7 @@ public:
 
 	bool DOES_InventoryHasRoomForItem(const FIntPoint& p_ItemSize);
 	bool MOVE_ItemToCharacterProfileMenu(SItemWidget* p_ItemWidget);
-	FORCEINLINE TSharedPtr<SPlayerInventoryWidget> GET_InventoryWidget() const { return m_InventoryWidget; }
+	FORCEINLINE TSharedPtr<SPlayerInventoryWidget> GET_InventoryWidget() const { return m_PlayerInventoryWidget; }
 
 	void SET_InventoryManager(UInventoryManager* p_InventoryManager);
 
@@ -66,8 +66,8 @@ private:
 
 	TWeakObjectPtr<AGameplayHUD> m_HUDOwner = nullptr;
 
-	TSharedPtr<SPlayerInventoryWidget> m_InventoryWidget = nullptr;
-	TSharedPtr<SInGameBagInventory> m_ExternalInventoryWidget = nullptr;
+	TSharedPtr<SPlayerInventoryWidget> m_PlayerInventoryWidget = nullptr;
+	TSharedPtr<SExternalInventoryWidget> m_ExternalInventoryWidget = nullptr;
 
 	TSharedPtr<SCharacterProfileWidget> m_CharacterProfileWidget = nullptr;
 

@@ -1,7 +1,7 @@
 #include "Interactables/ItemBagActor.h"
 #include "Siltarn/Public/Interactables/PickupEntity.h"
 #include "Siltarn/Public/Characters/SiltarnPlayerController.h"
-#include "Siltarn/Public/Slate/Widgets/SInGameBagInventory.h"
+#include "Siltarn/Public/Slate/Widgets/SExternalInventoryWidget.h"
 
 DEFINE_LOG_CATEGORY(LogClass_AItemBagActor);
 DEFINE_LOG_CATEGORY(LogClass_FBagTile);
@@ -508,7 +508,7 @@ void AItemBagActor::DEBUG_ListAllItemEntitiesCoordinates()
 	}
 }
 
-void AItemBagActor::SET_BagWidgetReference(TSharedPtr<SInGameBagInventory> p_BagWidget)
+void AItemBagActor::SET_BagWidgetReference(TSharedPtr<SExternalInventoryWidget> p_BagWidget)
 {
 	if (!p_BagWidget)
 	{

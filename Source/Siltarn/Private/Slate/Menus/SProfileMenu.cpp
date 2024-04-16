@@ -3,7 +3,7 @@
 #include "Siltarn/Public/Slate/Widgets/SItemWidget.h"
 #include "Siltarn/Public/Slate/Widgets/SCharacterProfileWidget.h"
 #include "Siltarn/Public/Slate/Widgets/SPlayerInventoryWidget.h"
-#include "Siltarn/Public/Slate/Widgets/SInGameBagInventory.h"
+#include "Siltarn/Public/Slate/Widgets/SExternalInventoryWidget.h"
 #include "Siltarn/Public/Interactables/PickupEntity.h"
 #include "Siltarn/Public/Characters/SiltarnPlayerController.h"
 #include "Siltarn/Public/Inventory/InventoryManager.h"
@@ -46,7 +46,7 @@ void SProfileMenu::Construct(const FArguments& p_InArgs)
 					.BorderImage(&m_GeneralStyle.m_DebuggingYellow_SlateBrush)
 					.Padding(0)
 					[*/
-						SAssignNew(m_ExternalInventoryWidget, SInGameBagInventory)
+						SAssignNew(m_ExternalInventoryWidget, SExternalInventoryWidget)
 						.a_HUDOwner(m_HUDOwner)
 						.a_NumberOfColumns(m_ExternalInventoryNumberOfColumns)
 						.a_NumberOfRows(m_ExternalInventoryNumberOfRows)
@@ -108,7 +108,7 @@ void SProfileMenu::Construct(const FArguments& p_InArgs)
 						.HeightOverride(m_PlayerInventoryNumberOfRows    * m_TileSize)
 						[
 							//SAssignNew(m_InventoryWidget, SInventoryWidget)
-							SAssignNew(m_InventoryWidget, SPlayerInventoryWidget)
+							SAssignNew(m_PlayerInventoryWidget, SPlayerInventoryWidget)
 							.a_NumberOfColumns(m_PlayerInventoryNumberOfColumns)
 							.a_NumberOfRows   (m_PlayerInventoryNumberOfRows   )
 							.a_TileSize       (m_TileSize       )
@@ -152,9 +152,9 @@ FReply SProfileMenu::OnDrop(const FGeometry& InGeometry, const FDragDropEvent& I
 		}
 		else
 		{
-			if (m_InventoryWidget)
+			if (m_PlayerInventoryWidget)
 			{
-				m_InventoryWidget->SetItemsForGroupDrop();
+				m_PlayerInventoryWidget->SetItemsForGroupDrop();
 				return FReply::Handled();
 			}
 		}
@@ -169,7 +169,7 @@ END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
 bool SProfileMenu::DOES_InventoryHasRoomForItem(const FIntPoint& p_ItemSize)
 {
-	return m_InventoryWidget->IsThereRoomInInventory(p_ItemSize);
+	return m_PlayerInventoryWidget->IsThereRoomInInventory(p_ItemSize);
 }
 
 

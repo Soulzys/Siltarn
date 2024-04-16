@@ -2,7 +2,7 @@
 #include "Engine/Canvas.h"
 #include "Engine/Texture2D.h"
 #include "Siltarn/Public/Slate/Widgets/SGameMessageWidget.h"
-#include "Siltarn/Public/Slate/Widgets/SInGameBagInventory.h"
+#include "Siltarn/Public/Slate/Widgets/SExternalInventoryWidget.h"
 #include "Siltarn/Public/Slate/Menus/SProfileMenu.h"
 #include "Siltarn/Public/Slate/Menus/SInGameMenu.h"
 #include "Siltarn/Public/Slate/Menus/SEchapMenu.h"

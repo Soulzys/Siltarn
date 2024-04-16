@@ -7,11 +7,11 @@ DECLARE_LOG_CATEGORY_EXTERN(LogClass_SInGameBagInventory, Log, All);
 
 class AItemBagActor;
 
-class SILTARN_API SInGameBagInventory : public SInventoryWidget
+class SILTARN_API SExternalInventoryWidget : public SInventoryWidget
 {
 public:
 
-	~SInGameBagInventory();
+	~SExternalInventoryWidget();
 
 	void Construct(const FArguments p_InArgs);
 	void LoadItemsWidgetsNew(TArray<UPickupEntity*>& p_Items);
