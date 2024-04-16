@@ -2,7 +2,6 @@
 #include "Engine/Canvas.h"
 #include "Engine/Texture2D.h"
 #include "Siltarn/Public/Slate/Widgets/SGameMessageWidget.h"
-#include "Siltarn/Public/Slate/Widgets/SInventoryBagWidget.h"
 #include "Siltarn/Public/Slate/Widgets/SInGameBagInventory.h"
 #include "Siltarn/Public/Slate/Menus/SProfileMenu.h"
 #include "Siltarn/Public/Slate/Menus/SInGameMenu.h"
@@ -52,7 +51,6 @@ void AGameplayHUD::PostInitializeComponents()
 		SAssignNew(m_GameMessageWidget, SGameMessageWidget).a_HUDOwner(this);
 		SAssignNew(m_InGameMenu, SInGameMenu).a_HUDOwner(this);
 		SAssignNew(m_EscapeMenu, SEchapMenu).a_HUDOwner(this);
-		SAssignNew(m_InventoryBagWidget, SInventoryBagWidget);
 
 
 		bool _bWidgets = m_ProfileMenu       &&
@@ -66,13 +64,11 @@ void AGameplayHUD::PostInitializeComponents()
 			GEngine->GameViewport->AddViewportWidgetContent(SNew(SWeakWidget).PossiblyNullContent(m_GameMessageWidget   .ToSharedRef())) ;
 			GEngine->GameViewport->AddViewportWidgetContent(SNew(SWeakWidget).PossiblyNullContent(m_InGameMenu          .ToSharedRef())) ;
 			GEngine->GameViewport->AddViewportWidgetContent(SNew(SWeakWidget).PossiblyNullContent(m_EscapeMenu          .ToSharedRef())) ;
-			GEngine->GameViewport->AddViewportWidgetContent(SNew(SWeakWidget).PossiblyNullContent(m_InventoryBagWidget  .ToSharedRef())) ;
 
 			m_ProfileMenu        ->SetVisibility(EVisibility::Collapsed) ;
 			m_GameMessageWidget  ->SetVisibility(EVisibility::Collapsed) ;
 			m_InGameMenu         ->SetVisibility(EVisibility::Collapsed) ;
 			m_EscapeMenu         ->SetVisibility(EVisibility::Collapsed) ;
-			m_InventoryBagWidget ->SetVisibility(EVisibility::Collapsed) ;
 		}
 		else
 		{
@@ -179,20 +175,7 @@ void AGameplayHUD::OPEN_ItemBag(AItemBagActor* p_BagActor, const FIntPoint& p_In
 
 
 
-TSharedPtr<SInGameBagInventory> AGameplayHUD::GET_InGameBagInventory() const
-{
-	if (!m_InventoryBagWidget.IsValid())
-	{
-		UE_LOG(LogClass_AGameplayHUD, Error, TEXT("GET_InGameBagInventory() : m_InventoryBagWidget is NULL !"));
-		return nullptr;
-	}
-
-	return m_InventoryBagWidget->GET_InventoryWidget();
-}
-
-
-
-TSharedPtr<SInGamePlayerInventoryWidget> AGameplayHUD::GET_InGamePlayerInventoryWidget() const
+TSharedPtr<SPlayerInventoryWidget> AGameplayHUD::GET_InGamePlayerInventoryWidget() const
 {
 	return m_ProfileMenu->GET_InventoryWidget();
 }

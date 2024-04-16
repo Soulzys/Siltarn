@@ -3,16 +3,16 @@
 #include "Siltarn/Public/Slate/Widgets/SInventoryWidget.h"
 #include "SlateBasics.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogClass_SInGamePlayerInventoryWidget, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogClass_SPlayerInventoryWidget, Log, All);
 
 class UPickupEntity;
 
-class SILTARN_API SInGamePlayerInventoryWidget : public SInventoryWidget
+class SILTARN_API SPlayerInventoryWidget : public SInventoryWidget
 {
 public:
 
-	SInGamePlayerInventoryWidget();
-	~SInGamePlayerInventoryWidget();
+	SPlayerInventoryWidget();
+	~SPlayerInventoryWidget();
 
 	bool AddItemToInventoryNew(UPickupEntity* p_ItemEntity);
 	bool RemoveItemCanvasSlot(int64 p_InventoryItemId);

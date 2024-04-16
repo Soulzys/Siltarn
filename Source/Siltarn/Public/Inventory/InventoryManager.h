@@ -7,7 +7,7 @@
 DECLARE_LOG_CATEGORY_EXTERN(LogClass_UInventoryManager, Log, All);
 
 class UPickupEntity;
-class SInGamePlayerInventoryWidget;
+class SPlayerInventoryWidget;
 class ASiltarnPlayerController;
 
 /*
@@ -35,7 +35,7 @@ public:
 	void SetItemForGroupDrop(UPickupEntity* p_ItemEntity); // New
 	bool MoveItemToPlayerInventory(UPickupEntity* p_ItemEntity);
 
-	void SET_InventoryWidget(TSharedPtr<SInGamePlayerInventoryWidget> p_InventoryWidget);
+	void SET_InventoryWidget(TSharedPtr<SPlayerInventoryWidget> p_InventoryWidget);
 	void SET_SiltarnPlayerController(ASiltarnPlayerController* p_Controller);
 
 	void DEBUG_DisplayAllItemsName() const;
@@ -57,6 +57,6 @@ private:
 	TSubclassOf<class AItemBagActor> m_BagClass;
 
 	// I don't think we need UPROPERTY() for these two but if something gets funny, we may need to investigate the issue from here
-	TSharedPtr<SInGamePlayerInventoryWidget> m_PlayerInventoryWidget = nullptr;
+	TSharedPtr<SPlayerInventoryWidget> m_PlayerInventoryWidget = nullptr;
 	ASiltarnPlayerController* m_SiltarnController = nullptr;
 };

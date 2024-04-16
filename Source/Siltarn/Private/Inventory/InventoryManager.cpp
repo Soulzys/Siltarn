@@ -1,5 +1,5 @@
 #include "Inventory/InventoryManager.h"
-#include "Siltarn/Public/Slate/Widgets/SInGamePlayerInventoryWidget.h"
+#include "Siltarn/Public/Slate/Widgets/SPlayerInventoryWidget.h"
 #include "Siltarn/Public/Characters/SiltarnPlayerController.h"
 #include "Siltarn/Public/Interactables/PickupEntity.h"
 #include "Siltarn/Public/Interactables/ItemBagActor.h"
@@ -15,7 +15,7 @@ UInventoryManager::UInventoryManager()
 	m_BagClass = _ItemBagActorBPClass.Class;
 }
 
-void UInventoryManager::SET_InventoryWidget(TSharedPtr<SInGamePlayerInventoryWidget> p_InventoryWidget)
+void UInventoryManager::SET_InventoryWidget(TSharedPtr<SPlayerInventoryWidget> p_InventoryWidget)
 {
 	if (!p_InventoryWidget.IsValid())
 	{

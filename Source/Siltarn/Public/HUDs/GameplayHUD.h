@@ -13,9 +13,8 @@ class SProfileMenu;
 class SGameMessageWidget;
 class SInGameMenu;
 class SEchapMenu;
-class SInventoryBagWidget;
 class SInGameBagInventory;
-class SInGamePlayerInventoryWidget;
+class SPlayerInventoryWidget;
 class UInteractableEntity;
 class UPickupEntity;
 class AItemBagActor;
@@ -53,7 +52,7 @@ public:
 	void OPEN_ItemBag(AItemBagActor* p_BagActor, const FIntPoint& p_InventorySize, TArray<UPickupEntity*>& p_Items);
 
 	TSharedPtr<SInGameBagInventory> GET_InGameBagInventory() const;
-	TSharedPtr<SInGamePlayerInventoryWidget> GET_InGamePlayerInventoryWidget() const;
+	TSharedPtr<SPlayerInventoryWidget> GET_InGamePlayerInventoryWidget() const;
 
 	void SET_InventoryManager(class UInventoryManager* p_InventoryManager) const;
 
@@ -102,7 +101,6 @@ private:
 	TSharedPtr<SGameMessageWidget > m_GameMessageWidget   = nullptr ;
 	TSharedPtr<SInGameMenu        > m_InGameMenu          = nullptr ;
 	TSharedPtr<SEchapMenu         > m_EscapeMenu          = nullptr ;
-	TSharedPtr<SInventoryBagWidget> m_InventoryBagWidget  = nullptr ;
 
 	bool m_bIsInventoryWidgetOpen;
 	bool m_bIsEchapMenuOpen;

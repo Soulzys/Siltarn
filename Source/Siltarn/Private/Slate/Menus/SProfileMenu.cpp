@@ -2,7 +2,7 @@
 #include "Siltarn/Public/Slate/Widgets/SInventoryWidget.h"
 #include "Siltarn/Public/Slate/Widgets/SItemWidget.h"
 #include "Siltarn/Public/Slate/Widgets/SCharacterProfileWidget.h"
-#include "Siltarn/Public/Slate/Widgets/SInGamePlayerInventoryWidget.h"
+#include "Siltarn/Public/Slate/Widgets/SPlayerInventoryWidget.h"
 #include "Siltarn/Public/Slate/Widgets/SInGameBagInventory.h"
 #include "Siltarn/Public/Interactables/PickupEntity.h"
 #include "Siltarn/Public/Characters/SiltarnPlayerController.h"
@@ -108,7 +108,7 @@ void SProfileMenu::Construct(const FArguments& p_InArgs)
 						.HeightOverride(m_PlayerInventoryNumberOfRows    * m_TileSize)
 						[
 							//SAssignNew(m_InventoryWidget, SInventoryWidget)
-							SAssignNew(m_InventoryWidget, SInGamePlayerInventoryWidget)
+							SAssignNew(m_InventoryWidget, SPlayerInventoryWidget)
 							.a_NumberOfColumns(m_PlayerInventoryNumberOfColumns)
 							.a_NumberOfRows   (m_PlayerInventoryNumberOfRows   )
 							.a_TileSize       (m_TileSize       )

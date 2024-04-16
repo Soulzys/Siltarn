@@ -1,18 +1,18 @@
-#include "Slate/Widgets/SInGamePlayerInventoryWidget.h"
+#include "Slate/Widgets/SPlayerInventoryWidget.h"
 #include "Siltarn/Public/Slate/Widgets/SItemWidget.h"
 #include "Siltarn/Public/Interactables/PickupEntity.h"
 
-DEFINE_LOG_CATEGORY(LogClass_SInGamePlayerInventoryWidget);
+DEFINE_LOG_CATEGORY(LogClass_SPlayerInventoryWidget);
 
 
-SInGamePlayerInventoryWidget::SInGamePlayerInventoryWidget()
+SPlayerInventoryWidget::SPlayerInventoryWidget()
 {
-	UE_LOG(LogClass_SInGamePlayerInventoryWidget, Error, TEXT("I was constructed !"));
+	UE_LOG(LogClass_SPlayerInventoryWidget, Error, TEXT("I was constructed !"));
 }
 
 
 
-SInGamePlayerInventoryWidget::~SInGamePlayerInventoryWidget()
+SPlayerInventoryWidget::~SPlayerInventoryWidget()
 {
 	/*for (auto _it : m_InventoryItemsMapNew)
 	{
@@ -29,30 +29,30 @@ SInGamePlayerInventoryWidget::~SInGamePlayerInventoryWidget()
 	m_DroppingItemsCache.Empty();
 	m_InventoryItemsMapNew.Empty();
 
-	UE_LOG(LogClass_SInGamePlayerInventoryWidget, Error, TEXT("I was destroyed !"));
+	UE_LOG(LogClass_SPlayerInventoryWidget, Error, TEXT("I was destroyed !"));
 }
 
 
 
-bool SInGamePlayerInventoryWidget::AddItemToInventoryNew(UPickupEntity* p_ItemEntity)
+bool SPlayerInventoryWidget::AddItemToInventoryNew(UPickupEntity* p_ItemEntity)
 {
 	if (!p_ItemEntity)
 	{
-		UE_LOG(LogClass_SInGamePlayerInventoryWidget, Error, TEXT("AddItemToInventoryNew() : p_ItemEntity is NULL !"));
+		UE_LOG(LogClass_SPlayerInventoryWidget, Error, TEXT("AddItemToInventoryNew() : p_ItemEntity is NULL !"));
 		CleanCachedTilesIndexes();
 		return false;
 	}
 
 	if (m_CachedTileIndex < 0 || m_CachedTileIndex >= m_Tiles.Num())
 	{
-		UE_LOG(LogClass_SInGamePlayerInventoryWidget, Error, TEXT("AddItemToInventoryNew() : there is an issue with m_CachedTileIndex !"));
+		UE_LOG(LogClass_SPlayerInventoryWidget, Error, TEXT("AddItemToInventoryNew() : there is an issue with m_CachedTileIndex !"));
 		CleanCachedTilesIndexes();
 		return false;
 	}
 
 	if (m_CachedTilesIndexes.IsEmpty())
 	{
-		UE_LOG(LogClass_SInGamePlayerInventoryWidget, Error, TEXT("AddItemToInventoryNew() : Could not retrieved the cached FTiles !"));
+		UE_LOG(LogClass_SPlayerInventoryWidget, Error, TEXT("AddItemToInventoryNew() : Could not retrieved the cached FTiles !"));
 		return false;
 	}
 
@@ -78,7 +78,7 @@ bool SInGamePlayerInventoryWidget::AddItemToInventoryNew(UPickupEntity* p_ItemEn
 
 
 
-bool SInGamePlayerInventoryWidget::RemoveItemCanvasSlot(int64 p_InventoryItemId)
+bool SPlayerInventoryWidget::RemoveItemCanvasSlot(int64 p_InventoryItemId)
 {
 	if (p_InventoryItemId >= 0 && m_Canvas)
 	{
@@ -110,7 +110,7 @@ bool SInGamePlayerInventoryWidget::RemoveItemCanvasSlot(int64 p_InventoryItemId)
 
 
 
-bool SInGamePlayerInventoryWidget::RemoveItemsCanvasSlotNew()
+bool SPlayerInventoryWidget::RemoveItemsCanvasSlotNew()
 {
 	for (int32 i = 0; i < m_DroppingItemsCacheNew.Num(); i++)
 	{
