@@ -83,6 +83,7 @@ private:
 	// New actions format
 	void Action_EchapKey_Pressed();
 	void Action_OpenCharacterProfileWidget_Pressed();
+	void Action_TestDatabase_Pressed();
 
 	void SWITCH_Camera(float p_DeltaTime);
 	void TRACE_LineForward();

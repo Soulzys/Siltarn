@@ -130,6 +130,7 @@ void ASiltarnCharacter::INIT_SpawnWeaponAndAttachToCharacter()
 		}
 	}*/
 
+
 	if (m_PistolClass)
 	{
 		m_Pistol = GetWorld()->SpawnActor<APistol>(m_PistolClass);
@@ -171,6 +172,7 @@ void ASiltarnCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("ToggleInventory", IE_Pressed, this, &ASiltarnCharacter::Action_OpenCharacterProfileWidget_Pressed);
 	//PlayerInputComponent->BindAction("ToggleEchapMenu" , IE_Pressed, this, &ASiltarnCharacter::ACTION_ToggleEchapMenu_PRESSED  ); // old
 	PlayerInputComponent->BindAction("ToggleEchapMenu", IE_Pressed, this, &ASiltarnCharacter::Action_EchapKey_Pressed);
+	PlayerInputComponent->BindAction("TestDatabase", IE_Pressed, this, &ASiltarnCharacter::Action_TestDatabase_Pressed);
 }
 
 void ASiltarnCharacter::INIT_Inputs()
@@ -195,6 +197,7 @@ void ASiltarnCharacter::INIT_Inputs()
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping("Interact"        , EKeys::E                              ));
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping("ToggleInventory" , EKeys::I                              ));
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping("ToggleEchapMenu" , EKeys::Escape                         )); 
+		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping("TestDatabase", EKeys::T));
 
 		_bAreBindingsAdded = true;
 	}	
@@ -549,6 +552,8 @@ void ASiltarnCharacter::DROP_Item(UPickupEntity* p_Item)
 	//_Actor->ADD_Impulse(_Actor->GetActorForwardVector() * 250000.0f);
 }
 
+
+
 bool ASiltarnCharacter::DropItem(UPickupEntity* p_ItemEntity, AItemBagActor* p_OutBagPtr, APickupActor* p_ItemActor)
 {
 	if (p_ItemEntity && p_ItemEntity->GET_ActorClass() && GetWorld() && m_CharacterMesh)
@@ -589,6 +594,8 @@ bool ASiltarnCharacter::DropItem(UPickupEntity* p_ItemEntity, AItemBagActor* p_O
 	return false;
 }
 
+
+
 APickupActor* ASiltarnCharacter::DropItemAsItIs(UPickupEntity* p_ItemEntity)
 {
 	if (p_ItemEntity && p_ItemEntity->GET_ActorClass() && GetWorld() && m_CharacterMesh)
@@ -607,6 +614,8 @@ APickupActor* ASiltarnCharacter::DropItemAsItIs(UPickupEntity* p_ItemEntity)
 
 	return nullptr;
 }
+
+
 
 AItemBagActor* ASiltarnCharacter::DropItemAsBag(UClass* p_BagClass)
 {
@@ -642,4 +651,11 @@ void ASiltarnCharacter::Action_OpenCharacterProfileWidget_Pressed()
 	{
 		m_PlayerController->OpenCharacterProfileWidget();
 	}
+}
+
+
+
+void ASiltarnCharacter::Action_TestDatabase_Pressed()
+{
+	
 }

@@ -182,19 +182,7 @@ void UInventoryManager::DropItems()
 	}
 }
 
-void UInventoryManager::SetItemForGroupDrop(int32 p_ItemEntityId)
-{
-	if (p_ItemEntityId >= 0)
-	{
 
-		UPickupEntity* _ItemEntity = m_ItemEntities[p_ItemEntityId];
-
-		if (_ItemEntity)
-		{
-			m_ItemsToDrop.Emplace(_ItemEntity);
-		}
-	}
-}
 
 void UInventoryManager::SetItemForGroupDrop(UPickupEntity* p_ItemEntity)
 {

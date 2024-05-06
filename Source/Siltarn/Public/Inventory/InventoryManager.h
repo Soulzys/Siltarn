@@ -31,7 +31,6 @@ public:
 	bool DoesPlayerInventoryHasRoomForNewItem(const FIntPoint& p_ItemSize);
 	void DropItem(UPickupEntity* p_ItemEntity);
 	void DropItems();
-	void SetItemForGroupDrop(int32 p_ItemEntityId); // Old
 	void SetItemForGroupDrop(UPickupEntity* p_ItemEntity); // New
 	bool MoveItemToPlayerInventory(UPickupEntity* p_ItemEntity);
 

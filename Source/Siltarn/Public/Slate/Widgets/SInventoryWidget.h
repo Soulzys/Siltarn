@@ -62,7 +62,7 @@ struct SILTARN_API FTile
 	/*
 		If p_item is a nullptr, it means the FTile has been freed.
 	*/
-	void SET_Owner(TSharedPtr<SItemWidget> p_ItemWidget); // new
+	void SET_Owner(TSharedPtr<SItemWidget> p_ItemWidget);
 
 	/*
 		Returns null if unoccupied. 
@@ -84,7 +84,6 @@ private:
 
 	uint32 s_TileIndex; // Can also be seen as the FTile struct's id. It serves as the index to retrieve an FTile from the m_Tiles TArray.
 	FVector2D s_RelativeCoordinates = FVector2D(-100.0f);
-	class FInventoryItem* s_Owner = nullptr;
 	TSharedPtr<SItemWidget> s_ItemOwner; // new
 
 	static int32 s_InstanceCount;

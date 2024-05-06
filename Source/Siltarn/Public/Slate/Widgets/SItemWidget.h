@@ -178,11 +178,11 @@ public:
 	static TSharedRef<FInventoryItemDragDrop> CREATE_SingleItemDragOperation
 	(
 		TSharedPtr<SItemWidget> p_DraggedItem           ,
-		const float           p_ScreenToViewportRatio , 
-		const FVector2D&      p_WidgetSize            , 
-		UPickupEntity*        p_ItemEntity            ,
-		FTile*                p_Tile, 
-		FInventoryItem* p_InventoryItemClass
+		const float             p_ScreenToViewportRatio , 
+		const FVector2D&        p_WidgetSize            , 
+		UPickupEntity*          p_ItemEntity            ,
+		FTile*                  p_Tile, 
+		FInventoryItem*         p_InventoryItemClass
 	);
 
 	static TSharedRef<FInventoryItemDragDrop> CREATE_MultipleItemsDragOperation
@@ -204,7 +204,7 @@ private:
 	FSlateBrush             m_IconBrush                    ;
 	float                   m_ScreenToViewportRatio        ;
 	FVector2D               m_DecoratorSize                ;
-	TSharedPtr<SItemWidget>   m_DraggedItem        = nullptr ;
+	TSharedPtr<SItemWidget> m_DraggedItem        = nullptr ;
 	UPickupEntity*          m_ItemEntity         = nullptr ;
 	FTile*                  m_Tile               = nullptr ;
 	FInventoryItem*         m_InventoryItemClass = nullptr ;
