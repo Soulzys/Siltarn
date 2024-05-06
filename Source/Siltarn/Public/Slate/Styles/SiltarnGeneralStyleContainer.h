@@ -38,8 +38,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Slate Brush", meta = (DisplayName = "Debugging Magenta"     )) FSlateBrush m_DebuggingMagenta_SlateBrush     ;
 	UPROPERTY(EditAnywhere, Category = "Slate Brush", meta = (DisplayName = "White Background Image")) FSlateBrush m_WhiteBackgroundImage_SlateBrush ;
 	UPROPERTY(EditAnywhere, Category = "Slate Brush", meta = (DisplayName = "Item Tooltip Border"   )) FSlateBrush m_ItemTooltipBorder_SlateBrush    ;
+	UPROPERTY(EditAnywhere, Category = "Slate Brush", meta = (DisplayName = "ItemBag Icon"          )) FSlateBrush m_ItemBagIcon_SlateBrush          ;
 	UPROPERTY(EditAnywhere, Category = "Slate Brush - Alphabet", meta = (DisplayName = "E"            )) FSlateBrush m_Alphabet_E_SlateBrush         ;
 	UPROPERTY(EditAnywhere, Category = "Slate Brush - Box"     , meta = (DisplayName = "Alphabet Box" )) FSlateBrush m_Box_Alphabet_SlateBrush       ;
+
 
 	// Button Style
 	UPROPERTY(EditAnywhere, Category = "Button Style", meta = (DisplayName = "Echap Menu")) FButtonStyle m_EchapMenu_ButtonStyle;

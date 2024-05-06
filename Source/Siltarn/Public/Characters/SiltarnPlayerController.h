@@ -7,10 +7,10 @@
 DECLARE_LOG_CATEGORY_EXTERN(LogClass_SiltarnPlayerController, Log, All);
 
 class AGameplayHUD;
-class UInventory;
 class UInteractableEntity;
-
-struct FPickupItemData;
+class UPickupEntity;
+class UInventoryManager;
+class AItemBagActor;
 
 UCLASS()
 class SILTARN_API ASiltarnPlayerController : public APlayerController
@@ -19,19 +19,31 @@ class SILTARN_API ASiltarnPlayerController : public APlayerController
 
 public:
 
+	ASiltarnPlayerController();
+
 	virtual void PostInitializeComponents() override;
 
-	void TOGGLE_Inventory();
-	void TOGGLE_EchapMenu();
 	void SHUTDOWN_PickupItemWidget();
-	void DROP_Item(UPickupEntity* p_Item);
+	void OPEN_ItemBag(AItemBagActor* p_BagActor, const FIntPoint& p_InventorySize, TArray<UPickupEntity*>& p_Items);
+
+	// new
+	class APickupActor* DropItemAsItIs(UPickupEntity* p_ItemEntity); // Need to think of a better name
+	class AItemBagActor* DropItemAsBag(UClass* p_BagClass);
 	
 	// New inventory stuff
 	//
 	bool DOES_InventoryHasRoomForItem(const FIntPoint& p_ItemSize);
-	FORCEINLINE UInventory* GET_Inventory() const { return m_Inventory; }
+	FORCEINLINE bool IS_InventoryOpen() const { return m_bIsInventoryOpen; }
+	FORCEINLINE AGameplayHUD* GET_GameplayHUD() const { return m_GameplayHUD; }
 	void ADD_ItemToInventory(UPickupEntity* p_Item);
+
+
 	void DISPLAY_InteractableEntityTag(const FString& p_ItemName);
+
+
+	// new actions
+	void OpenEscapeMenu();
+	void OpenCharacterProfileWidget();
 
 
 protected:
@@ -40,16 +52,9 @@ protected:
 
 private:
 
-	// This function should run as early as possible, and only once. 
-	// It both instantiates the UInventory class and initializes its SiltarnPlayerController reference
-	void CREATE_Inventory();
-
-private:
-
 	AGameplayHUD* m_GameplayHUD = nullptr;
-
-	// Luciole ! Test when destroying the AActor
+	bool m_bIsInventoryOpen;
 
 	UPROPERTY()
-	UInventory* m_Inventory = nullptr;
+	UInventoryManager* m_InventoryManager = nullptr;
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Siltarn/Public/HUDS/GameplayHUD.h"
+#include "Siltarn/Public/Inventory/InventoryEnumsLib.h"
 #include "SlateBasics.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogClass_SInventoryWidget, Log, All);
@@ -11,14 +12,16 @@ DECLARE_LOG_CATEGORY_EXTERN(LogStruct_FCrossAnchor   , Log, All);
 
 class SCanvas              ;
 class SBorder              ;
-class SInventoryItemWidget ;
+class SItemWidget       ;
 class SDebugWidget         ;
-class UPickupEntity;
+class SProfileMenu         ;
+class UPickupEntity        ;
+class UInventoryManager    ;
 
 /*
 	The sole purpose of this struct is to draw the horizontal and vertical lines of the inventory widget in Paint()
 */
-struct FLine
+struct SILTARN_API FLine
 {
 	FLine();
 	FLine(FVector2D p_StartPoint, FVector2D p_EndPoint);
@@ -45,7 +48,7 @@ private:
 	|    |
 	+----+
 */
-struct FTile
+struct SILTARN_API FTile
 {
 	FTile();
 	FTile(FIntPoint p_Coordinates, int32 p_Id);
@@ -54,11 +57,12 @@ struct FTile
 	void DEBUG_DisplayStructDataThroughLogs();
 	uint32 GET_TileIndex() const; 
 	FVector2D GET_RelativeCoordinates(const int32 p_TileSize) const;
+	__forceinline FIntPoint GET_TileCoordinates() const { return s_TileCoordinates; }
 
 	/*
 		If p_item is a nullptr, it means the FTile has been freed.
 	*/
-	void SET_Owner(struct FInventoryItem* p_Item);
+	void SET_Owner(TSharedPtr<SItemWidget> p_ItemWidget);
 
 	/*
 		Returns null if unoccupied. 
@@ -69,7 +73,7 @@ struct FTile
 	/*
 		Used to check whether the FTile is occupied or not. If s_Owner is not NULL, it means the FTile is occupied. 
 	*/
-	struct FInventoryItem* GET_Owner() const;
+	TSharedPtr<SItemWidget> GET_Owner() const;
 
 public:
 
@@ -80,7 +84,7 @@ private:
 
 	uint32 s_TileIndex; // Can also be seen as the FTile struct's id. It serves as the index to retrieve an FTile from the m_Tiles TArray.
 	FVector2D s_RelativeCoordinates = FVector2D(-100.0f);
-	FInventoryItem* s_Owner = nullptr;
+	TSharedPtr<SItemWidget> s_ItemOwner; // new
 
 	static int32 s_InstanceCount;
 
@@ -107,7 +111,7 @@ private:
 	---+---
 	   |
 */
-struct FCrossAnchor
+struct SILTARN_API FCrossAnchor
 {
 	FCrossAnchor();
 	FCrossAnchor(const FIntPoint& p_Coordinates, int32 p_Id);
@@ -128,45 +132,6 @@ private:
 
 
 
-/*
-	A struct that represents an item in the inventory, minus all the item data itself. 
-	It contains a reference to the widget of the item and keeps track of all the FTile the item occupies. 
-*/
-struct FInventoryItem
-{
-	FInventoryItem();
-	~FInventoryItem();
-
-	void FREE_Tiles();
-	FTile* GET_ControlTile() const; // Returns the top left corner's FTile
-	void UPDATE_WidgetTile();
-	void SET_ParentSlot(SCanvas::FSlot* p_Slot);
-	void MOVE_Item(const FVector2D& p_NewLocation) const;
-
-	TSharedPtr<SInventoryItemWidget> s_ItemWidget = nullptr;
-	TArray<FTile*> s_OccupyingTiles; // Luciole || Should we really let this public ? 
-
-private:
-
-	SCanvas::FSlot* s_ParentSlot = nullptr;
-
-	static int32 s_InstanceCount;
-
-
-	/*
-		Used when calling FTile::IS_Occupied() to see whether the item possessing a particular FTile is itself or not.	
-	*/
-	friend bool operator==(const FInventoryItem& p_A, const FInventoryItem& p_B)
-	{
-		return (p_A.GET_ControlTile() == p_B.GET_ControlTile());
-	}
-
-	friend bool operator!=(const FInventoryItem& p_A, const FInventoryItem& p_B)
-	{
-		return (p_A.GET_ControlTile() != p_B.GET_ControlTile());
-	}
-};
-
 
 /*
 	Luciole
@@ -175,8 +140,6 @@ private:
 	2/ Investigate whether it would be better to make the item widget move itself by setting its slot position in SInventoryItemWidget, 
 	   or if we should keep its slot reference in FInventoryItem and move it from here only. When I think about it atm, it appears to make more sense. 
 */
-
-
 class SILTARN_API SInventoryWidget : public SCompoundWidget
 {
 
@@ -184,9 +147,10 @@ public:
 	
 	SLATE_BEGIN_ARGS(SInventoryWidget) {}
 
-	SLATE_ATTRIBUTE(int32, a_NumberOfColumns)
-	SLATE_ATTRIBUTE(int32, a_NumberOfRows)
-	SLATE_ATTRIBUTE(int32, a_TileSize)
+	SLATE_ATTRIBUTE(int32        , a_NumberOfColumns)
+	SLATE_ATTRIBUTE(int32        , a_NumberOfRows   )
+	SLATE_ATTRIBUTE(int32        , a_TileSize       )
+	SLATE_ATTRIBUTE(SProfileMenu*, a_ParentWidget   )
 
 	SLATE_ARGUMENT(TWeakObjectPtr<AGameplayHUD>, a_HUDOwner)
 
@@ -200,31 +164,46 @@ public:
 	virtual int32  OnPaint(const FPaintArgs& Args, const FGeometry& AllottedGeometry, const FSlateRect& MyCullingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const override;
 	virtual bool   SupportsKeyboardFocus() const override { return true; }
 	virtual FReply OnDrop(const FGeometry& MyGeometry, const FDragDropEvent& DragDropEvent) override;
+	virtual FReply OnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
 
 	void Construct(const FArguments& p_InArgs);
-	bool TRY_AddingItemToInventory(const FIntPoint& p_ItemSize);
-	bool ADD_Item(UPickupEntity* p_Item);
-	void REMOVE_Item(FTile* p_ItemControlTile);
+	bool IsThereRoomInInventory(const FIntPoint& p_ItemSize);
 
 	void DEBUG_DisplayTilesStatusThroughUELogs();
 
-private:
+	// Group dropping
+	void SET_InventoryManager(UInventoryManager* p_InventoryManager);
+
+	static int32 TileCoordinatesToTileIndexStatic(const FIntPoint& p_Coordinates, int32 p_NumberOfColumns);
+
+	void ClearInventoryVisual();
+	void MoveItemToPlayerInventory(TSharedPtr<SItemWidget> p_ItemWidget);
+
+	
+	// Luciole 29/03/2024 || This is a cheap way to "resolve" an issue. Look at MYSTERY 1 in Documentation.h for more info about it.
+	void ResetFocus();
+
+protected:
 
 	void COMPUTE_HorizontalLines();
 	void COMPUTE_VerticalLines();
+	void ClearVerticalAndHorizontalLines();
 	void BUILD_Tiles();
-	void BUILD_CrossAnchors(); 
-	void CONSTRUCT_CanvasItemSlot(UPickupEntity* p_Item, FTile* p_ControlTilePtr, FInventoryItem* p_InventoryItem);
+	void BUILD_CrossAnchors();
+	void DestroyTiles();
+	void DestroyCrossAnchors();
+	TSharedPtr<SItemWidget> ConstructItemWidget(UPickupEntity* p_ItemEntity, FTile* p_ControlTile, EItemWidgetLocation p_ItemWidgetLocation);
+	TSharedPtr<SItemWidget> ConstructItemWidget(UPickupEntity* p_ItemEntity, EItemWidgetLocation p_ItemWidgetLocation);
 
 	/*
 		Used when dragging & dropping item within the inventory. Called in OnDrop().
 	*/
-	bool TRY_DroppingItemToTile(FInventoryItem* p_Item, UPickupEntity* p_ItemEntity, FTile* p_OriginalTile, FTile* p_TargetTile);
+	bool TryDroppingItemToTileNew(TSharedPtr<SItemWidget> p_ItemWidget, FTile* p_TargetTile);
 
 	/*
-		Paired with TRY_DroppingItemToTile()
+		Paired with TryDroppingItemToTile()
 	*/
-	bool IS_TileAvailable(FInventoryItem* p_Item, UPickupEntity* p_ItemEntity, FTile* p_TargetTile);
+	bool IsTileAvailableNew(TSharedPtr<SItemWidget> p_ItemWidget, FTile* p_TargetTile);
 	
 	/*
 		Gets an item widget's relative location and returns it centered according to the item size and the inventory FTile size.
@@ -236,7 +215,7 @@ private:
 		Move SInventoryItemWidget to a new location at the end of a drag and drop operation.
 		The location is relative to the canvas as it is actually the SCanvas::FSlot that is being moved.
 	*/
-	void MOVE_Item(FInventoryItem* p_Item, const FVector2D& p_Location); 
+	void MoveItemCanvasSlotNew(TSharedPtr<SItemWidget> p_ItemWidget, const FVector2D& p_Location);
 
 	/*
 		Paired with TRY_AddingItemToInventory()
@@ -246,16 +225,15 @@ private:
 			- there are no other items that is in the way
 	*/
 	bool IS_RoomAvailableAtTileIndex(const FIntPoint& p_ItemSize, int32 p_TileIndex);
+	
 
-
-private:
-
-	void CLEAN_Everything();
+	void CleanCachedTilesIndexes();
 
 	// Utilitary FTile functions
 	//
 	FIntPoint IndexToTileCoordinates(int32            p_Index);
 	int32     TileCoordinatesToTileIndex(const FIntPoint& p_Coordinates );
+	
 
 	/*
 		Input a FCrossAnchor coordinates and output its id, which serves as its index in m_CrossAnchors TArray
@@ -265,7 +243,9 @@ private:
 	FTile*        RelativeLocationToTile                  (const FVector2D& p_Loc, const FIntPoint& p_ItemSize );
 	FCrossAnchor* RelativeLocationToCrossAnchor           (const FVector2D& p_Loc                              );
 
-private:
+
+
+protected:
 
 	int32 m_NumberOfColumns;
 	int32 m_NumberOfRows;
@@ -277,6 +257,8 @@ private:
 	/*
 		Every FTile in the SInventory is stored here.
 		They are created and added to the TArray in BUILD_Tiles()
+
+		Luciole 10/03/2024 || We should probably use * or &
 	*/
 	TArray<FTile> m_Tiles;
 
@@ -286,18 +268,14 @@ private:
 	*/
 	TArray<FCrossAnchor> m_CrossAnchors;
 
-	/*
-		Contains all the items in the inventory and their respective occupying FTile
-	*/
-	TMap<FTile, FInventoryItem*> m_InventoryItemsMap;
 
 	// Slate stuff
 	//
-	TWeakObjectPtr<AGameplayHUD> m_HUDOwner = nullptr;
-	TSharedPtr<SCanvas> m_Canvas = nullptr;
-	TSharedPtr<SBorder> m_BorderTest = nullptr;		
-	FLinearColor m_InventoryBackgroundColor;
-
+	TWeakObjectPtr<AGameplayHUD> m_HUDOwner     = nullptr   ;
+	TSharedPtr<SCanvas>          m_Canvas       = nullptr   ;
+	TSharedPtr<SBorder>          m_BorderTest   = nullptr   ;		
+	SProfileMenu*                m_ParentWidget = nullptr   ;
+	FLinearColor                 m_InventoryBackgroundColor ;
 
 
 	/*
@@ -306,8 +284,18 @@ private:
 		we need to retain some data to complete the adding process.
 	*/
 	int32 m_CachedTileIndex; // Refers to the soon-to-be-added item's Control Tile
-	TArray<int32> m_CachedTilesIndexes; // Refers to the FTile that will be occupied by the item once it is added to the inventory
+	// Luciole 10/03/2024 || We should probably switch this to a TArray<uint8> or a TArray<uint16>
+	TArray<int32> m_CachedTilesIndexes; // Refers to all the FTile that will be occupied by the item once it is added to the inventory
 
+
+	UInventoryManager* m_InventoryManager = nullptr;
+
+
+	// All item widgets are stored here
+	TMap<int64, TSharedPtr<SItemWidget>> m_ItemsMap;
+
+
+	
 
 	static int32 m_InstanceCount;
 };

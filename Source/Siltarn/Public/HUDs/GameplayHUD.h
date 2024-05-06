@@ -4,7 +4,7 @@
 #include "GameFramework/HUD.h"
 #include "GameplayHUD.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogClass_GameplayHUD, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogClass_AGameplayHUD, Log, All);
 
 class UTexture2D;
 class SInventoryWidget;
@@ -13,17 +13,12 @@ class SProfileMenu;
 class SGameMessageWidget;
 class SInGameMenu;
 class SEchapMenu;
+class SInGameBagInventory;
+class SPlayerInventoryWidget;
 class UInteractableEntity;
 class UPickupEntity;
+class AItemBagActor;
 
-
-UENUM() 
-enum class EWidgetVisibilityState : uint8
-{
-	VISIBLE   = 0, 
-	COLLAPSED = 1, 
-	BUG       = 2
-};
 
 UENUM()
 enum class ECrosshairTypes : uint8
@@ -32,10 +27,10 @@ enum class ECrosshairTypes : uint8
 	CROSS = 1
 };
 
+
 /*
 	This class should eventually renamed as PyralinthHUD
 */
-
 UCLASS()
 class SILTARN_API AGameplayHUD : public AHUD
 {
@@ -47,19 +42,25 @@ public:
 	virtual void PostInitializeComponents() override;
 	virtual void DrawHUD() override;
 
-	// Returns the visibility state of the widget
-	EWidgetVisibilityState TOGGLE_InventoryWidget();
-	EWidgetVisibilityState TOGGLE_EchapMenu();
-
 	void SET_GameMessageWidgetText(const FText& p_Message);
-
 	void SHUTDOWN_PickupItemWidget();
 
 	// New inventory stuff
 	//
-	bool DOES_InventoryHasRoomForItem(const FIntPoint& p_ItemSize);
-	bool ADD_ItemToInventory(UPickupEntity* p_Item);
 	void DISPLAY_InteractableEntityTag(const FString& p_ItemName);
+
+	void OPEN_ItemBag(AItemBagActor* p_BagActor, const FIntPoint& p_InventorySize, TArray<UPickupEntity*>& p_Items);
+
+	TSharedPtr<SInGameBagInventory> GET_InGameBagInventory() const;
+	TSharedPtr<SPlayerInventoryWidget> GET_InGamePlayerInventoryWidget() const;
+
+	void SET_InventoryManager(class UInventoryManager* p_InventoryManager) const;
+
+	// New ones
+	void OpenEscapeMenu();
+	void CloseEscapeMenu();
+	void OpenCharacterProfileWidget();
+	void CloseCharacterProfileWidget();
 
 private:
 
@@ -96,10 +97,10 @@ private:
 
 	// *** Slate widgets *** //
 	//
-	TSharedPtr<SProfileMenu      > m_ProfileMenu         = nullptr;
-	TSharedPtr<SGameMessageWidget> m_GameMessageWidget   = nullptr;
-	TSharedPtr<SInGameMenu       > m_InGameMenu          = nullptr;
-	TSharedPtr<SEchapMenu        > m_EchapMenu           = nullptr;
+	TSharedPtr<SProfileMenu       > m_ProfileMenu         = nullptr ;
+	TSharedPtr<SGameMessageWidget > m_GameMessageWidget   = nullptr ;
+	TSharedPtr<SInGameMenu        > m_InGameMenu          = nullptr ;
+	TSharedPtr<SEchapMenu         > m_EscapeMenu          = nullptr ;
 
 	bool m_bIsInventoryWidgetOpen;
 	bool m_bIsEchapMenuOpen;
@@ -107,6 +108,4 @@ private:
 	FTimerHandle m_GameMessageCollapseTimer;
 
 	FVector2D m_CenterOfScreen;
-
-	int32 m_Toto;
 };

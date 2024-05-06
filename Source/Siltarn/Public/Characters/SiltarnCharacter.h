@@ -4,7 +4,7 @@
 #include "GameFramework/Character.h"
 #include "SiltarnCharacter.generated.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogClass_SiltarnCharacter, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogClass_ASiltarnCharacter, Log, All);
 
 class USkeletalMeshComponent        ;
 class UCameraComponent              ;
@@ -17,6 +17,7 @@ class ASiltarnPlayerController      ;
 class IInteractInterface;
 class ADebugActor;
 class UPickupEntity;
+class AItemBagActor;
 
 
 UENUM()
@@ -38,7 +39,14 @@ public:
 
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	// old
 	void DROP_Item(UPickupEntity* p_Item);
+
+	// new
+	bool DropItem(UPickupEntity* p_ItemEntity, AItemBagActor* p_OutBagPtr, class APickupActor* p_ItemActor);
+	bool DropItems(TArray<UPickupEntity*>& p_Items);
+	class APickupActor* DropItemAsItIs(UPickupEntity* p_ItemEntity);
+	AItemBagActor* DropItemAsBag(UClass* p_BagClass);
 
 	FORCEINLINE USkeletalMeshComponent* GET_CharacterMesh()          const { return m_CharacterMesh;          }
 	//FORCEINLINE ARifle*                 GET_Weapon()                 const { return m_Weapon;                 }
@@ -70,8 +78,12 @@ private:
 	void ACTION_DebugCameraTop_PRESSED  ();
 	void ACTION_DebugCameraFront_PRESSED();
 	void ACTION_Interact_PRESSED        ();
-	void ACTION_ToggleInventory_PRESSED ();
-	void ACTION_ToggleEchapMenu_PRESSED ();
+
+
+	// New actions format
+	void Action_EchapKey_Pressed();
+	void Action_OpenCharacterProfileWidget_Pressed();
+	void Action_TestDatabase_Pressed();
 
 	void SWITCH_Camera(float p_DeltaTime);
 	void TRACE_LineForward();

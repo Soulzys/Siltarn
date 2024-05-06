@@ -57,13 +57,16 @@ void SEchapMenu::Construct(const FArguments& p_InArgs)
 
 FReply SEchapMenu::QUIT_Game()
 {
-	APlayerController* _PC = m_HUDOwner->GetOwningPlayerController();
-
-	if (_PC)
+	if (m_HUDOwner.IsValid())
 	{
-		_PC->ConsoleCommand("quit");
-		return FReply::Handled();
-	}
+		APlayerController* _PC = m_HUDOwner->GetOwningPlayerController();
+
+		if (_PC)
+		{
+			_PC->ConsoleCommand("quit");
+			return FReply::Handled();
+		}
+	}	
 
 	return FReply::Unhandled();
 }
@@ -72,16 +75,27 @@ FReply SEchapMenu::CLOSE_Menu()
 {
 	if (m_HUDOwner.IsValid())
 	{
-		ASiltarnPlayerController* _SPC = Cast<ASiltarnPlayerController>(m_HUDOwner->GetOwningPlayerController());
+		m_HUDOwner->CloseEscapeMenu();
 
-		if (_SPC)
-		{
-			_SPC->TOGGLE_EchapMenu();
-			return FReply::Handled();
-		}
+		return FReply::Handled();
 	}
 
 	return FReply::Unhandled();
 }
 
+FReply SEchapMenu::OnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent)
+{
+	if (InKeyEvent.GetKey() == EKeys::Escape)
+	{
+		if (m_HUDOwner.IsValid())
+		{
+			m_HUDOwner->CloseEscapeMenu();
+		}
+	}
+
+	return FReply::Handled();
+}
+
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
+
+

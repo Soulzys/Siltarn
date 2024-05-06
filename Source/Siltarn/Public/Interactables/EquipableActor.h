@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Interactables/PickupActor.h"
+#include "Siltarn/Public/Interactables/InteractibleEnums.h"
 #include "EquipableActor.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogClass_AEquipableActor, Log, All);
@@ -21,9 +22,10 @@ public:
 
 	void BeginPlay() override;
 
-	FORCEINLINE int32 GET_Damage()           const { return m_Damage           ; }
-	FORCEINLINE int32 GET_MagazineCapacity() const { return m_MagazineCapacity ; }
-	FORCEINLINE float GET_RateOfFire()       const { return m_RateOfFire       ; }
+	FORCEINLINE int32              GET_Damage()            const { return m_Damage            ; }
+	FORCEINLINE int32              GET_MagazineCapacity()  const { return m_MagazineCapacity  ; }
+	FORCEINLINE float              GET_RateOfFire()        const { return m_RateOfFire        ; }
+	FORCEINLINE EItemEquipmentType GET_ItemEquipmentType() const { return m_ItemEquipmentType ; }
 
 protected:
 
@@ -31,10 +33,10 @@ protected:
 
 protected:
 
-	UPROPERTY(EditAnywhere, Category = "Actor data", meta = (DisplayName = "Damage"           )) int32 m_Damage           ;
-	UPROPERTY(EditAnywhere, Category = "Actor data", meta = (DisplayName = "Magazine capacity")) int32 m_MagazineCapacity ;
-	UPROPERTY(EditAnywhere, Category = "Actor data", meta = (DisplayName = "Rate of fire"     )) float m_RateOfFire       ;
-
+	UPROPERTY(EditAnywhere, Category = "Actor data", meta = (DisplayName = "Damage"             )) int32 m_Damage                         ;
+	UPROPERTY(EditAnywhere, Category = "Actor data", meta = (DisplayName = "Magazine capacity"  )) int32 m_MagazineCapacity               ;
+	UPROPERTY(EditAnywhere, Category = "Actor data", meta = (DisplayName = "Rate of fire"       )) float m_RateOfFire                     ;
+	UPROPERTY(EditAnywhere, Category = "Actor data", meta = (DisplayName = "Item equipable slot")) EItemEquipmentType m_ItemEquipmentType ;
 
 
 };

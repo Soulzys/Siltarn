@@ -1,28 +1,59 @@
-#include "Slate/Widgets/SInventoryItemWidget.h"
+#include "Slate/Widgets/SItemWidget.h"
 #include "Siltarn/Public/Interactables/PickupEntity.h"
 #include "Siltarn/Public/Interactables/EquipableEntity.h"
 #include "Siltarn/Public/Interactables/NonEquipableEntity.h"
+#include "Siltarn/Public/Slate/Widgets/SInventoryWidget.h"
+#include "Siltarn/Public/Slate/Widgets/SExternalInventoryWidget.h"
+#include "Siltarn/Public/Slate/Widgets/SPlayerInventoryWidget.h"
 #include "Styling/CoreStyle.h"
 
-DEFINE_LOG_CATEGORY(LogClass_SInventoryItemWidget  );
-DEFINE_LOG_CATEGORY(LogClass_FInventoryItemDragDrop);
-DEFINE_LOG_CATEGORY(LogClass_FItemTooltip          );
+DEFINE_LOG_CATEGORY(LogClass_SInventoryItemWidget   );
+DEFINE_LOG_CATEGORY(LogClass_FInventoryItemDragDrop );
+DEFINE_LOG_CATEGORY(LogClass_FItemTooltip           );
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
-SInventoryItemWidget::~SInventoryItemWidget()
+SItemWidget::SItemWidget()
 {
-	UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("I was destroyed !"));
+	m_bIsInInventory          = true  ;
+	m_bIsSelectedForGroupDrop = false ;
+
+	m_ItemWidgetState    = EItemWidgetState   ::DEFAULT ;
+	m_ItemWidgetLocation = EItemWidgetLocation::UNKNOWN ;
+
+	UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("I was created !"));
 }
 
-void SInventoryItemWidget::Construct(const FArguments& p_InArgs)
+SItemWidget::~SItemWidget()
 {
-	m_Tile     = p_InArgs._a_Tile; // Luciole ! We are not using m_Tile anymore. However, the game crashed when dealing with two items in the inventory. Need to investigate. Once it is done, remove m_Tile from here.
-	m_ItemSize = p_InArgs._a_ItemSize;
-	m_ItemData = p_InArgs._a_ItemData;
+	if (!m_OccupiedTiles.IsEmpty())
+	{
+		for (auto _Tile : m_OccupiedTiles)
+		{
+			_Tile->SET_Owner(nullptr);
+		}
 
+		m_OccupiedTiles.Empty();
+	}
 
-	m_ItemIcon.SetResourceObject(m_ItemData->GET_Icon());
+	UE_LOG(LogClass_SInventoryItemWidget, Log, TEXT("I was destroyed !"));
+}
+
+void SItemWidget::Construct(const FArguments& p_InArgs)
+{
+	m_Tile            = p_InArgs._a_Tile; // Luciole ! We are not using m_Tile anymore. However, the game crashed when dealing with two items in the inventory. Need to investigate. Once it is done, remove m_Tile from here.
+	m_ItemSize        = p_InArgs._a_ItemSize;
+	m_ItemData        = p_InArgs._a_ItemData;
+	m_InventoryOwner  = p_InArgs._a_InventoryOwner;
+	m_InventoryItemId = p_InArgs._a_InventoryItemId;
+	m_ItemWidgetLocation = p_InArgs._a_InventoryItemWidgetLocation;
+	m_InventoryItemClass = p_InArgs._a_InventoryItemClass;
+	m_ItemId = p_InArgs._a_ItemId;
+
+	if (m_ItemData)
+	{
+		m_ItemIcon.SetResourceObject(m_ItemData->GET_Icon());
+	}
 
 	m_ItemBackgroundColor.R = 1.0f;
 	m_ItemBackgroundColor.G = 1.0f;
@@ -55,7 +86,7 @@ void SInventoryItemWidget::Construct(const FArguments& p_InArgs)
 	];
 }
 
-void SInventoryItemWidget::OnMouseEnter(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
+void SItemWidget::OnMouseEnter(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
 	if (m_BackgroundBorder == nullptr)
 	{
@@ -73,9 +104,13 @@ void SInventoryItemWidget::OnMouseEnter(const FGeometry& MyGeometry, const FPoin
 	{
 		m_ItemTooltip->MOVE_Window(MyGeometry.GetAbsolutePositionAtCoordinates(FVector2D(0)));
 	}
+
+
+	// Allows the player to receive keyboard inputs as soon the mouse enters the widget
+	FSlateApplication::Get().SetUserFocus(0, SharedThis(this), EFocusCause::SetDirectly);
 }
 
-void SInventoryItemWidget::OnMouseLeave(const FPointerEvent& MouseEvent)
+void SItemWidget::OnMouseLeave(const FPointerEvent& MouseEvent)
 {
 	if (m_BackgroundBorder == nullptr)
 	{
@@ -83,24 +118,32 @@ void SInventoryItemWidget::OnMouseLeave(const FPointerEvent& MouseEvent)
 		return;
 	}
 
-	m_ItemBackgroundColor.A = 0.0f;
-
-
-	m_BackgroundBorder->SetBorderBackgroundColor(m_ItemBackgroundColor);
+	if (!m_bIsSelectedForGroupDrop)
+	{
+		m_ItemBackgroundColor.A = 0.0f;
+		m_BackgroundBorder->SetBorderBackgroundColor(m_ItemBackgroundColor);
+	}	
 
 	if (m_ItemTooltip.IsValid())
 	{
 		m_ItemTooltip->DESTROY_Tooltip();
 		m_ItemTooltip.Reset(); // If we do not add this line, the FItemTooltip that is created when the item is hovered for the first time is never deleted 
 	}
+
+	/*
+		Luciole 29/03/2024
+		For some god forsaken reason, uncommenting the line below leads to a crash without debugging symbols. Yet, if we write basically the same
+		function within SInventoryWidget instead, it works like a charm. I suppose this thefore comes from the "MakeShareable(m_InventoryOwner)" part... but why ? 
+	*/
+	//FSlateApplication::Get().SetUserFocus(0, MakeShareable(m_InventoryOwner), EFocusCause::SetDirectly);
+	m_InventoryOwner->ResetFocus();
 }
 
-FReply SInventoryItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
+FReply SItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
+	// Left click -> drag 
 	if (MouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
 	{
-		UE_LOG(LogClass_SInventoryItemWidget, Log, TEXT("Left button clicked !"));
-
 		if (m_ItemTooltip.IsValid())
 		{
 			m_ItemTooltip->DESTROY_Tooltip();
@@ -110,54 +153,198 @@ FReply SInventoryItemWidget::OnMouseButtonDown(const FGeometry& MyGeometry, cons
 		return FReply::Handled().DetectDrag(SharedThis(this), EKeys::LeftMouseButton).CaptureMouse(SharedThis(this));
 	}
 
+
+	if (MouseEvent.GetEffectingButton() == EKeys::RightMouseButton)
+	{
+		if (m_ItemWidgetLocation == EItemWidgetLocation::PLAYER_INVENTORY)
+		{
+			RightButtonClicked_InPlayerInventory(MouseEvent.IsLeftShiftDown());
+			return FReply::Handled();
+		}
+
+		if (m_ItemWidgetLocation == EItemWidgetLocation::EXTERNAL_INVENTORY)
+		{
+			RightButtonClicked_InExternalInventory();
+			return FReply::Handled();
+		}
+	}
+
 	return FReply::Unhandled();
 }
 
-FReply SInventoryItemWidget::OnDragDetected(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
+void SItemWidget::RightButtonClicked_InPlayerInventory(bool p_bIsLeftShiftDown)
+{
+	if (!m_InventoryOwner)
+	{
+		UE_LOG(LogClass_SInventoryItemWidget, Error, TEXT("RightButtonClicked_InPlayerInventory() : m_InventoryOwner is NULL !"));
+		return;
+	}
+	if (!m_ItemData)
+	{
+		UE_LOG(LogClass_SInventoryItemWidget, Error, TEXT("RightButtonClicked_InPlayerInventory() : m_ItemData is NULL !"));
+		return;
+	}
+	if (!m_ItemTooltip.IsValid())
+	{
+		UE_LOG(LogClass_SInventoryItemWidget, Error, TEXT("RightButtonClicked_InPlayerInventory() : m_ItemTooltip is INVALID !"));
+		return;
+	}
+
+	if (p_bIsLeftShiftDown)
+	{
+		if (!m_bIsSelectedForGroupDrop)
+		{
+			m_ItemBackgroundColor.B = 0.5f;
+			m_ItemBackgroundColor.A = 0.5f;
+			m_BackgroundBorder->SetBorderBackgroundColor(m_ItemBackgroundColor);
+
+			//m_InventoryOwner->SetInventoryItemForGroupDropping(m_InventoryItemClass); old
+
+			SPlayerInventoryWidget* _PlayerInventory = static_cast<SPlayerInventoryWidget*>(m_InventoryOwner);
+
+			if (_PlayerInventory)
+			{
+				_PlayerInventory->SetItemForGroupDropping(SharedThis(this));
+				m_ItemWidgetState = EItemWidgetState::SET_FOR_GROUP_DROP;
+				m_bIsSelectedForGroupDrop = true;
+			}
+
+			/*m_InventoryOwner->SetInventoryItemForGroupDropping(SharedThis(this));
+			m_ItemWidgetState = EItemWidgetState::SET_FOR_GROUP_DROP;
+			m_bIsSelectedForGroupDrop = true;*/
+		}
+		else
+		{
+			m_ItemBackgroundColor.B = 1.0f;
+			m_ItemBackgroundColor.A = 0.25f;
+			m_BackgroundBorder->SetBorderBackgroundColor(m_ItemBackgroundColor);
+
+			SPlayerInventoryWidget* _PlayerInventory = static_cast<SPlayerInventoryWidget*>(m_InventoryOwner);
+
+			if (_PlayerInventory)
+			{
+				_PlayerInventory->RemoveItemFromGroupDropping(SharedThis(this));
+				m_ItemWidgetState = EItemWidgetState::SET_FOR_GROUP_DROP;
+				m_bIsSelectedForGroupDrop = true;
+			}
+
+			//m_InventoryOwner->RemoveInventoryItemFromGroupDropping(m_InventoryItemClass); old
+			//m_InventoryOwner->RemoveInventoryItemFromGroupDropping(SharedThis(this));
+			//m_ItemWidgetState = EItemWidgetState::DEFAULT;
+			//m_bIsSelectedForGroupDrop = false;
+		}
+	}
+	else
+	{
+		if (m_ItemData->IS_Equipable())
+		{
+			m_ItemTooltip->DESTROY_Tooltip();
+			m_ItemTooltip.Reset();
+
+			// Equip the item
+
+		}
+	}
+}
+
+
+
+void SItemWidget::RightButtonClicked_InExternalInventory()
+{
+	// Move item to player inventory
+	if (m_InventoryOwner)
+	{
+		//SInGameBagInventory* _BagInventory = Cast<SInGameBagInventory>(m_InventoryOwner);
+		SExternalInventoryWidget* _BagInventory = static_cast<SExternalInventoryWidget*>(m_InventoryOwner);
+
+		if (_BagInventory)
+		{
+			_BagInventory->MoveItemToPlayerInventory(SharedThis(this));
+		}
+
+		//m_InventoryOwner->MoveItemToPlayerInventory(SharedThis(this));
+
+		UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("I was clicked !"));
+	}
+}
+
+
+
+FReply SItemWidget::OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
+{
+	if (InKeyEvent.GetKey() == EKeys::I || InKeyEvent.GetKey() == EKeys::Escape)
+	{
+		if (m_InventoryOwner)
+		{
+			m_InventoryOwner->OnKeyDown(MyGeometry, InKeyEvent); // Luciole 29/03/2024 || Is it even right to do it this way ? 
+		}
+	}
+
+	return FReply::Handled();
+}
+
+
+
+FReply SItemWidget::OnDragDetected(const FGeometry& MyGeometry, const FPointerEvent& MouseEvent)
 {
 	if (MouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
 	{
-		const float _Ratio            = GET_ScreenToViewportRatio();
+		m_ItemWidgetState = EItemWidgetState::DRAGGED;
+
+		const float _Ratio = GET_ScreenToViewportRatio();
 		FVector2D _MousePositionLocal = MyGeometry.AbsoluteToLocal(MouseEvent.GetScreenSpacePosition());
 
-		TSharedRef<FInventoryItemDragDrop> _Operation = FInventoryItemDragDrop::New
-		(
-			this       , 
-			_Ratio     , 
-			m_ItemSize , 
-			m_ItemData , 
-			m_Tile
-		);
+		// Normal single item drag
+		if (!m_bIsSelectedForGroupDrop)
+		{
+			TSharedRef<FInventoryItemDragDrop> _Operation = FInventoryItemDragDrop::CREATE_SingleItemDragOperation
+			(
+				SharedThis(this),
+				_Ratio,
+				m_ItemSize,
+				m_ItemData,
+				m_Tile, 
+				m_InventoryItemClass
+			);
 
-		SetVisibility(EVisibility::Collapsed);
+			SetVisibility(EVisibility::Collapsed);
 
-		return FReply::Handled().BeginDragDrop(_Operation);
+			return FReply::Handled().BeginDragDrop(_Operation);
+		}
+		else
+		{
+			if (m_InventoryOwner)
+			{
+				TSharedRef<FInventoryItemDragDrop> _Operation = FInventoryItemDragDrop::CREATE_MultipleItemsDragOperation
+				(
+					_Ratio, 
+					m_ItemSize, 
+					&m_GeneralStyle.m_ItemBagIcon_SlateBrush
+				);
+
+				SPlayerInventoryWidget* _PlayerInventory = static_cast<SPlayerInventoryWidget*>(m_InventoryOwner);
+
+				if (_PlayerInventory)
+				{
+					_PlayerInventory->HideItemsSetForGroupDrop();
+
+					return FReply::Handled().BeginDragDrop(_Operation);
+				}
+
+				//m_InventoryOwner->HideAllItemsSetForGroupDrop();
+
+			}
+		}		
 	}
 
 	return FReply::Unhandled();
 }
 
-float SInventoryItemWidget::GET_ScreenToViewportRatio() const
+
+
+float SItemWidget::GET_ScreenToViewportRatio() const
 {
 	FVector2D _ViewportSize;
-
-	if (GEngine == nullptr)
-	{
-		UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("GET_ScreenToViewportRatio() : GEngine is NULL !"));
-	}
-	else
-	{
-		UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("GET_ScreenToViewportRatio() : GEngine is NOT NULL !"));
-	}
-
-	if (GEngine->GameViewport == nullptr)
-	{
-		UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("GET_ScreenToViewportRatio() : GameViewport is NULL !"));
-	}
-	else
-	{
-		UE_LOG(LogClass_SInventoryItemWidget, Warning, TEXT("GET_ScreenToViewportRatio() : GameViewport is NOT NULL !"));
-	}
 
 	GEngine->GameViewport->GetViewportSize(_ViewportSize);
 
@@ -191,9 +378,77 @@ float SInventoryItemWidget::GET_ScreenToViewportRatio() const
 	return _Ratio;
 }
 
-void SInventoryItemWidget::UPDATE_Tile(FTile& p_NewTile)
+
+
+void SItemWidget::UPDATE_Tile(FTile& p_NewTile)
 {
 	m_Tile = &p_NewTile;
+}
+
+
+
+void SItemWidget::AssignTiles(TArray<int32>& p_OccupiedTiles)
+{
+	if (p_OccupiedTiles.IsEmpty())
+	{
+		UE_LOG(LogClass_SInventoryItemWidget, Error, TEXT("AssignTile() : p_OccupiedTiles is empty !"));
+		return;
+	}
+
+	m_TilesIndexes.Append(p_OccupiedTiles);
+}
+
+
+
+void SItemWidget::AssignTiles(TArray<FTile>& p_InventoryTiles, TArray<int32>& p_OccupiedTilesIndexes)
+{
+	for (int32 i = 0; i < p_OccupiedTilesIndexes.Num(); i++)
+	{
+		FTile* _TilePtr = &p_InventoryTiles[p_OccupiedTilesIndexes[i]];
+
+		if (_TilePtr)
+		{
+			_TilePtr->SET_Owner(SharedThis(this));
+			m_OccupiedTiles.Emplace(_TilePtr);
+		}
+	}
+}
+
+
+
+void SItemWidget::FreeOccupiedTiles()
+{
+	for (FTile* _Tile : m_OccupiedTiles)
+	{
+		_Tile->SET_Owner(nullptr);
+		UE_LOG(LogClass_SInventoryItemWidget, Log, TEXT("FTile[%d] has been freed !"), _Tile->GET_TileIndex());
+	}
+
+	m_OccupiedTiles.Empty();
+}
+
+
+
+void SItemWidget::UPDATE_Widget(SItemWidget* p_ItemWidget)
+{
+	m_IconImage = p_ItemWidget->m_IconImage ;
+	m_ItemData  = p_ItemWidget->m_ItemData  ;
+
+	m_ItemIcon.SetResourceObject(m_ItemData->GET_Icon());
+}
+
+
+
+void SItemWidget::SET_InventoryItemLocation(EItemWidgetLocation p_Location)
+{
+	m_ItemWidgetLocation = p_Location;
+}
+
+
+
+void SItemWidget::SET_ItemCanvasSlot(SCanvas::FSlot* p_ItemCanvasSlot)
+{
+	m_ItemCanvasSlot = p_ItemCanvasSlot;
 }
 
 END_SLATE_FUNCTION_BUILD_OPTIMIZATION
@@ -203,20 +458,29 @@ END_SLATE_FUNCTION_BUILD_OPTIMIZATION
 
 
 /**************************************************************************************
-	Drag & drop operation class
+	Drag & drop Item Operation Class
 /**************************************************************************************/
 
 int32 FInventoryItemDragDrop::m_InstanceCount = 0;
 
 FInventoryItemDragDrop::FInventoryItemDragDrop()
 {
+	m_bIsSingleItemDrag     = true ;
+	m_ScreenToViewportRatio = 0.0f ;
+
 	m_InstanceCount++;
 	UE_LOG(LogClass_FInventoryItemDragDrop, Log, TEXT("A new instance was created ! || Instance count : %d"), m_InstanceCount);
 }
 
 FInventoryItemDragDrop::~FInventoryItemDragDrop()
 {
-	m_DraggedItem->SetVisibility(EVisibility::Visible);
+	if (m_bIsSingleItemDrag)
+	{
+		if (m_DraggedItem)
+		{
+			m_DraggedItem->SetVisibility(EVisibility::Visible);
+		}
+	}
 	
 	m_InstanceCount--;
 	UE_LOG(LogClass_FInventoryItemDragDrop, Log, TEXT("An instance was destroyed ! || Instance count : %d"), m_InstanceCount);
@@ -230,13 +494,14 @@ void FInventoryItemDragDrop::OnDragged(const class FDragDropEvent& DragDropEvent
 	}
 }
 
-TSharedRef<FInventoryItemDragDrop> FInventoryItemDragDrop::New
+TSharedRef<FInventoryItemDragDrop> FInventoryItemDragDrop::CREATE_SingleItemDragOperation
 (
-	SInventoryItemWidget* p_DraggedItem           , 
+	TSharedPtr<SItemWidget> p_DraggedItem           ,
 	const float           p_ScreenToViewportRatio , 
 	const FVector2D&      p_WidgetSize            , 
 	UPickupEntity*        p_ItemEntity            ,
-	FTile*                p_Tile
+	FTile*                p_Tile                  , 
+	FInventoryItem*       p_InventoryItemClass
 )
 {
 	TSharedRef<FInventoryItemDragDrop> _Operation = MakeShareable(new FInventoryItemDragDrop);
@@ -244,12 +509,34 @@ TSharedRef<FInventoryItemDragDrop> FInventoryItemDragDrop::New
 	_Operation->m_IconBrush.SetResourceObject(p_ItemEntity->GET_Icon());
 
 	_Operation->m_DraggedItem           = p_DraggedItem           ;
-	_Operation->m_DecoratorSize         = p_WidgetSize            ;
 	_Operation->m_ScreenToViewportRatio = p_ScreenToViewportRatio ;
+	_Operation->m_DecoratorSize         = p_WidgetSize            ;
 	_Operation->m_ItemEntity            = p_ItemEntity            ;
 	_Operation->m_Tile                  = p_Tile                  ;
+	_Operation->m_InventoryItemClass    = p_InventoryItemClass    ;
 
+	_Operation->m_bIsSingleItemDrag = true;
 	_Operation->Construct();
+
+	return _Operation;
+}
+
+TSharedRef<FInventoryItemDragDrop> FInventoryItemDragDrop::CREATE_MultipleItemsDragOperation
+(
+	const float             p_ScreenToViewportRatio ,
+	const FVector2D&        p_WidgetSize            ,
+	const FSlateBrush*      p_DecoratorIcon
+)
+{
+	TSharedRef<FInventoryItemDragDrop> _Operation = MakeShareable(new FInventoryItemDragDrop);
+
+	_Operation->m_ScreenToViewportRatio = p_ScreenToViewportRatio ;
+	_Operation->m_DecoratorSize         = p_WidgetSize            ;
+	_Operation->m_IconBrush             = *p_DecoratorIcon        ;
+
+	_Operation->m_bIsSingleItemDrag = false;
+	_Operation->Construct();
+
 
 	return _Operation;
 }

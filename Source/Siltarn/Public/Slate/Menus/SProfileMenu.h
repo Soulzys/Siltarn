@@ -9,7 +9,13 @@ DECLARE_LOG_CATEGORY_EXTERN(LogClass_SProfileMenu, Log, All);
 class AGameplayHUD            ;
 class SInventoryWidget        ;
 class SCharacterProfileWidget ;
-class UPickupEntity;
+class SItemWidget    ;
+class UPickupEntity           ;
+class SCharacterProfileWidget ;
+class SPlayerInventoryWidget;
+class SExternalInventoryWidget;
+class UInventoryManager;
+class AItemBagActor;
 
 class SILTARN_API SProfileMenu : public SCompoundWidget
 {
@@ -34,24 +40,39 @@ public:
 
 	virtual bool SupportsKeyboardFocus() const override { return true; }
 	virtual FReply OnDrop(const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent) override;
+	virtual FReply OnKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
 
 	void Construct(const FArguments& p_InArgs);
 
 	bool DOES_InventoryHasRoomForItem(const FIntPoint& p_ItemSize);
-	bool ADD_ItemToInventory(UPickupEntity* p_Item);
+	bool MOVE_ItemToCharacterProfileMenu(SItemWidget* p_ItemWidget);
+	FORCEINLINE TSharedPtr<SPlayerInventoryWidget> GET_InventoryWidget() const { return m_PlayerInventoryWidget; }
+
+	void SET_InventoryManager(UInventoryManager* p_InventoryManager);
+
+	// Dealing with external inventory (Bag, Chestbox...)
+	void OpenExternalInventoryWidget(AItemBagActor* p_BagActor, const FIntPoint& p_InventorySize, int32 p_TileSize, TArray<UPickupEntity*>& p_Items);
+	void CloseExternalInventoryWidget();
 
 private:
 
-	int32 m_NumberOfColumns;
-	int32 m_NumberOfRows;
+	int32 m_PlayerInventoryNumberOfColumns;
+	int32 m_PlayerInventoryNumberOfRows;
+	int32 m_ExternalInventoryNumberOfColumns;
+	int32 m_ExternalInventoryNumberOfRows;
 	int32 m_TileSize;
 
 	//
 
 	TWeakObjectPtr<AGameplayHUD> m_HUDOwner = nullptr;
 
-	TSharedPtr<SInventoryWidget> m_InventoryWidget = nullptr;
+	TSharedPtr<SPlayerInventoryWidget> m_PlayerInventoryWidget = nullptr;
+	TSharedPtr<SExternalInventoryWidget> m_ExternalInventoryWidget = nullptr;
 
+	TSharedPtr<SCharacterProfileWidget> m_CharacterProfileWidget = nullptr;
+
+
+	UInventoryManager* m_InventoryManager = nullptr;
 
 	const FSiltarnGeneralStyleContainerStruct m_GeneralStyle = FSiltarnStyleController::GET_SiltarnGeneralStyleContainerStruct();
 };

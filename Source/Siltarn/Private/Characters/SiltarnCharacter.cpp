@@ -9,11 +9,13 @@
 #include "Siltarn/Public/Interfaces/InteractInterface.h"
 #include "Siltarn/Public/Interactables/PickupActor.h"
 #include "Siltarn/Public/Interactables/PickupEntity.h"
+#include "Siltarn/Public/Interactables/ItemBagActor.h"
+#include "Siltarn/Public/HUDs/GameplayHUD.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/MovementComponent.h"
 
-DEFINE_LOG_CATEGORY(LogClass_SiltarnCharacter);
+DEFINE_LOG_CATEGORY(LogClass_ASiltarnCharacter);
 
 ASiltarnCharacter::ASiltarnCharacter()
 {
@@ -94,6 +96,7 @@ void ASiltarnCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+
 	INIT_References();
 	INIT_SpawnWeaponAndAttachToCharacter();
 }
@@ -126,6 +129,7 @@ void ASiltarnCharacter::INIT_SpawnWeaponAndAttachToCharacter()
 			}
 		}
 	}*/
+
 
 	if (m_PistolClass)
 	{
@@ -164,8 +168,11 @@ void ASiltarnCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("DebugCameraTop"  , IE_Pressed, this, &ASiltarnCharacter::ACTION_DebugCameraTop_PRESSED   );
 	PlayerInputComponent->BindAction("DebugCameraFront", IE_Pressed, this, &ASiltarnCharacter::ACTION_DebugCameraFront_PRESSED );
 	PlayerInputComponent->BindAction("Interact"        , IE_Pressed, this, &ASiltarnCharacter::ACTION_Interact_PRESSED         );
-	PlayerInputComponent->BindAction("ToggleInventory" , IE_Pressed, this, &ASiltarnCharacter::ACTION_ToggleInventory_PRESSED  );
-	PlayerInputComponent->BindAction("ToggleEchapMenu" , IE_Pressed, this, &ASiltarnCharacter::ACTION_ToggleEchapMenu_PRESSED  );
+	//PlayerInputComponent->BindAction("ToggleInventory" , IE_Pressed, this, &ASiltarnCharacter::ACTION_ToggleInventory_PRESSED  ); // old
+	PlayerInputComponent->BindAction("ToggleInventory", IE_Pressed, this, &ASiltarnCharacter::Action_OpenCharacterProfileWidget_Pressed);
+	//PlayerInputComponent->BindAction("ToggleEchapMenu" , IE_Pressed, this, &ASiltarnCharacter::ACTION_ToggleEchapMenu_PRESSED  ); // old
+	PlayerInputComponent->BindAction("ToggleEchapMenu", IE_Pressed, this, &ASiltarnCharacter::Action_EchapKey_Pressed);
+	PlayerInputComponent->BindAction("TestDatabase", IE_Pressed, this, &ASiltarnCharacter::Action_TestDatabase_Pressed);
 }
 
 void ASiltarnCharacter::INIT_Inputs()
@@ -189,7 +196,8 @@ void ASiltarnCharacter::INIT_Inputs()
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping("DebugCameraFront", EKeys::NumPadFour       , false, true ));
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping("Interact"        , EKeys::E                              ));
 		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping("ToggleInventory" , EKeys::I                              ));
-		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping("ToggleEchapMenu" , EKeys::Escape                         ));
+		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping("ToggleEchapMenu" , EKeys::Escape                         )); 
+		UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping("TestDatabase", EKeys::T));
 
 		_bAreBindingsAdded = true;
 	}	
@@ -237,6 +245,12 @@ void ASiltarnCharacter::LookUp(const float p_Value)
 
 void ASiltarnCharacter::ACTION_Aiming_PRESSED()
 {
+	// If the inventory is open, we do not want to consume this event. This may cause issue for multiplayer (perhaps ? need to check ?)
+	if (m_PlayerController->IS_InventoryOpen())
+	{
+		return;
+	}
+
 	if (m_AnimInstance)
 	{
 		if (m_bIsAiming == true)
@@ -362,18 +376,15 @@ void ASiltarnCharacter::ACTION_Interact_PRESSED()
 	}
 }
 
-void ASiltarnCharacter::ACTION_ToggleInventory_PRESSED()
+
+
+
+void ASiltarnCharacter::Action_EchapKey_Pressed()
 {
-	checkf(m_PlayerController != nullptr, TEXT("ASiltarnCharacter::ACTION_ToggleInventory_PRESSED() : m_PlayerController is NULL !"));
-
-	m_PlayerController->TOGGLE_Inventory();
-}
-
-void ASiltarnCharacter::ACTION_ToggleEchapMenu_PRESSED()
-{
-	checkf(m_PlayerController != nullptr, TEXT("ASiltarnCharacter::ACTION_ToggleEchapMenu_PRESSED() : m_PlayerController is NULL !"));
-
-	m_PlayerController->TOGGLE_EchapMenu();
+	if (m_PlayerController)
+	{
+		m_PlayerController->OpenEscapeMenu();
+	}
 }
 
 FVector ASiltarnCharacter::GET_DefaultCameraLocation() const
@@ -502,20 +513,12 @@ void ASiltarnCharacter::TRACE_LineForward()
 void ASiltarnCharacter::DROP_Item(UPickupEntity* p_Item)
 {
 	checkf(GetWorld() != nullptr, TEXT("ASiltarnCharacter::DROP_Item() : GetWorld() returns NULL."));
-
 	check(m_CharacterMesh != nullptr);
 
 	const USkeletalMeshSocket* _DropItemSocket = m_CharacterMesh->GetSocketByName("DropItemSocket");
 	check(_DropItemSocket != nullptr);
 
-	UE_LOG(LogTemp, Error, TEXT("We've arrived up to here !"));
-
 	const FTransform _SocketTransform = _DropItemSocket->GetSocketTransform(m_CharacterMesh);
-
-	//EPickupEntityType _ItemEntityType = p_Item->GET_ItemType();
-
-	//if ()
-
 	const FVector _Loc(_SocketTransform.GetLocation());
 	const FRotator _Rot(_SocketTransform.GetRotation().Rotator());
 
@@ -523,16 +526,23 @@ void ASiltarnCharacter::DROP_Item(UPickupEntity* p_Item)
 	check(p_Item->GET_ActorClass() != nullptr);
 	check(p_Item->GET_ActorClass()->GetName().IsEmpty() == false);
 
-	UE_LOG(LogClass_SiltarnCharacter, Warning, TEXT("p_Item class name : %s"), *p_Item->GET_ActorClass()->GetName());
-
+	UE_LOG(LogClass_ASiltarnCharacter, Warning, TEXT("p_Item class name : %s"), *p_Item->GET_ActorClass()->GetName());
 
 
 	//APickupActor* _Actor = GetWorld()->SpawnActor<APickupActor>(p_Item->GET_ActorClass(), _SocketTransform.GetLocation(), _SocketTransform.GetRotation().Rotator());
 
+	if (p_Item->IS_DroppableAsIs())
+	{
+		GetWorld()->SpawnActor(p_Item->GET_ActorClass(), &_Loc, &_Rot);
+	}
+	else
+	{
+		UE_LOG(LogClass_ASiltarnCharacter, Warning, TEXT("This item is not droppable as is."));
+		GetWorld()->SpawnActor(p_Item->GET_DroppableBagClass(), &_Loc, &_Rot);
+	}
 
-
-
-	GetWorld()->SpawnActor(p_Item->GET_ActorClass(), &_Loc, &_Rot);
+	// NEW Luciole 12/02/2024 | the game crashes if we uncomment the line below. Need to investigate why
+	//p_Item->BeginDestroy();
 
 
 	/*
@@ -540,4 +550,112 @@ void ASiltarnCharacter::DROP_Item(UPickupEntity* p_Item)
 		No matter the size of the object, they all should be dropped following the same curve.
 	*/
 	//_Actor->ADD_Impulse(_Actor->GetActorForwardVector() * 250000.0f);
+}
+
+
+
+bool ASiltarnCharacter::DropItem(UPickupEntity* p_ItemEntity, AItemBagActor* p_OutBagPtr, APickupActor* p_ItemActor)
+{
+	if (p_ItemEntity && p_ItemEntity->GET_ActorClass() && GetWorld() && m_CharacterMesh)
+	{
+		const USkeletalMeshSocket* _DropItemSocket = m_CharacterMesh->GetSocketByName("DropItemSocket");
+		
+		if (_DropItemSocket)
+		{
+			const FTransform _SocketTransform = _DropItemSocket->GetSocketTransform(m_CharacterMesh);
+			const FVector _Loc(_SocketTransform.GetLocation());
+			const FRotator _Rot(_SocketTransform.GetRotation().Rotator());
+
+			if (p_ItemEntity->IS_DroppableAsIs())
+			{
+				APickupActor* _ItemActor = GetWorld()->SpawnActor<APickupActor>(p_ItemEntity->GET_ActorClass(), _Loc, _Rot);
+
+				if (_ItemActor)
+				{
+					p_ItemActor = _ItemActor;
+					UE_LOG(LogClass_ASiltarnCharacter, Warning, TEXT("DropItem() : Dropping a %s item"), *p_ItemEntity->GET_ActorClass()->GetName());
+					return true;
+				}
+			}
+			else
+			{
+				AItemBagActor* _DroppedBag = GetWorld()->SpawnActor<AItemBagActor>(p_ItemEntity->GET_DroppableBagClass(), _Loc, _Rot);
+
+				if (_DroppedBag)
+				{
+					p_OutBagPtr = _DroppedBag;
+					UE_LOG(LogClass_ASiltarnCharacter, Warning, TEXT("DropItem() : Dropping a AItemBagActor"));
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+
+
+APickupActor* ASiltarnCharacter::DropItemAsItIs(UPickupEntity* p_ItemEntity)
+{
+	if (p_ItemEntity && p_ItemEntity->GET_ActorClass() && GetWorld() && m_CharacterMesh)
+	{
+		const USkeletalMeshSocket* _DropItemSocket = m_CharacterMesh->GetSocketByName("DropItemSocket");
+		
+		if (_DropItemSocket)
+		{
+			const FTransform _SocketTransform = _DropItemSocket->GetSocketTransform(m_CharacterMesh);
+			const FVector _Loc(_SocketTransform.GetLocation());
+			const FRotator _Rot(_SocketTransform.GetRotation().Rotator());
+
+			return GetWorld()->SpawnActor<APickupActor>(p_ItemEntity->GET_ActorClass(), _Loc, _Rot);
+		}
+	}
+
+	return nullptr;
+}
+
+
+
+AItemBagActor* ASiltarnCharacter::DropItemAsBag(UClass* p_BagClass)
+{
+	if (p_BagClass && GetWorld() && m_CharacterMesh)
+	{
+		const USkeletalMeshSocket* _DropItemSocket = m_CharacterMesh->GetSocketByName("DropItemSocket");
+
+		if (_DropItemSocket)
+		{
+			const FTransform _SocketTransform = _DropItemSocket->GetSocketTransform(m_CharacterMesh);
+			const FVector _Loc(_SocketTransform.GetLocation());
+			const FRotator _Rot(_SocketTransform.GetRotation().Rotator());
+
+			return GetWorld()->SpawnActor<AItemBagActor>(p_BagClass, _Loc, _Rot);
+		}
+	}
+
+	return nullptr;
+}
+
+
+
+bool ASiltarnCharacter::DropItems(TArray<UPickupEntity*>& p_Items)
+{
+	return false;
+}
+
+
+
+void ASiltarnCharacter::Action_OpenCharacterProfileWidget_Pressed()
+{
+	if (m_PlayerController)
+	{
+		m_PlayerController->OpenCharacterProfileWidget();
+	}
+}
+
+
+
+void ASiltarnCharacter::Action_TestDatabase_Pressed()
+{
+	
 }
